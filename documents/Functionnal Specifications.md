@@ -4,6 +4,7 @@
 
 <details>
 <summary>Table of contents</summary>
+
 - [harfang3d-binding](#harfang3d-binding)
   - [Functionnal Specifications](#functionnal-specifications)
   - [Overview](#overview)
