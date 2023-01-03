@@ -94,7 +94,7 @@ For this kind of software, there are a lot of laws and regulations that must be 
 - no dynamic memory allocation
 - ISO 26262 
 - MISRA 
-- CautoSAR
+- AutoSAR
 
 ## Functionalities
 
@@ -164,4 +164,4 @@ We need to make sure that the binding will be usefull and adapted to the future 
 
 - MISRA: MISRA is an independent, organization that provides coding standards for the development of embedded software, that specifies a set of rules for the C and C++ programming languages in order to keep the code consistent and to avoid common programming mistakes.
 
-- CautoSAR: CautoSAR is a set of guidelines for the development of software for automotive electronic control units (ECUs). It is based on the AUTOSAR standard and is used in the automotive industry, however it is not necessary to use it to develop the infotainment system of a car.
+- AutoSAR: AutoSAR is a set of guidelines for the development of software for automotive electronic control units (ECUs). It is based on the AUTOSAR standard and is used in the automotive industry, however it is not necessary to use it to develop the infotainment system of a car.
