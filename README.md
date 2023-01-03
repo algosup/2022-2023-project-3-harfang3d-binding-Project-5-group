@@ -10,6 +10,6 @@
 | Victor LEROY    | Project Manager   |
 | Clémentine CUREL    | Tech Lead         |
 | Théo DIANCOURT | Program Manager   |
-| PAUL MARIS  | Software Engineer |
-| MALO ARCHIMBAUD    | Quality Assurance |
+| Paul MARIS  | Software Engineer |
+| Malo ARCHIMBAUD    | Quality Assurance |
 
