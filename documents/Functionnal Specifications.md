@@ -25,6 +25,7 @@
     - [Usability](#usability)
     - [Maintainability](#maintainability)
   - [Risks and assumptions](#risks-and-assumptions)
+  - [Out of scope](#out-of-scope)
   - [Glossary](#glossary)
 </details>
 
@@ -42,17 +43,35 @@ HARFANG 3D is a 3D engine written in C++ that is cross platform and open source.
 
 The approach of the engine is based on openness and flexibility. It was created to fit the requirements of the industrial applications which consist in:
 - No dynamic memory allocation (everything is pre-allocated)
+- No exceptions (error handling is done with return codes)
+- No virtual functions (everything is done with function pointers)
+- ISO 26262 
+- MISRA
+- AutoSAR
+
+Industries that are using HARFANG 3D are using it because they need to respect a lot of strong technical requirements, for example:
+- Safety certifications 
+- Embedability and custom hardware
+- Low power consumption
+
+HARFANG 3D is not a comptetitor of other game engines like Unity or Unreal Engine since they are a lot of differences between the utilisations of the engines. 
+
+Compared to other game engines, HARFANG 3D has a couple of advantages for the industries:
+- Open and secure license 
+- Can run on premise 100% offline
+- Designed to handle large amounts of data
 
 ### What is FABGen?
 
-FABGen is a set of Python scripts to generate C++ binding code to different languages. It was written as a SWIG replacement 
+FABGen is a set of Python scripts to generate C++ binding code to different languages. It was written as a SWIG replacement
+
 It is used by HARFANG 3D to generate the binding for python, Lua and Go.
 
 ### Why rust?
 
 Rust is a programming language that is designed to be fast, reliable and productive. It is a new language that is used to create low level applications exactly like C++ but with a lot of new features that make it easier to work with and to maintain.
 
-FABGen already supports the binding for C++/python/Lua and Go, but it does not support rust yet.
+FABGen already supports the binding for python/Lua and Go, but it does not support rust yet.
 
 With all of these features and the rise of rust, it is a good idea to add the support for rust for FABGen.
 
@@ -90,7 +109,7 @@ Lena is an engineer for a car company, she uses HARFANG 3D to create AR tools fo
 
 ## Laws and regulations
 
-For this kind of software, there are a lot of laws and regulations that must be respected. The most important ones are:
+For this kind of software, there are a couple of laws and regulations that must be respected. The most important ones are:
 - no dynamic memory allocation
 - ISO 26262 
 - MISRA 
@@ -104,15 +123,21 @@ We need to implement an access to all of the available functionalities of the HA
 
 The binding needs to be compatible with the versions of the engine that are available on the github repository.
 
+The binding needs to be compatible with the latest version of the engine.
+
 ### Documentation
 
-The binding needs to be documented in the same way as the engine. The documentation needs to be clear and easy to understand for the user.
+The binding needs to be documented in the same way as the engine. The documentation needs to be clear and easy to understand for the user. 
+
+The documentation needs to be available on the github repository of the project.
 
 ## Non functional requirements
 
 ### Performance
 
 The binding must be as fast as possible, the engine is already very fast and we need to keep it that way.
+
+It also needs to be as fast as other bindings in other languages.
 
 ### Security
 
@@ -122,9 +147,13 @@ The binding must stay in the same security expectations as the engine.
 
 The binding must be easy to use and to understand for the user.
 
+The binding must be directly usable by the user without any additional work.
+
 ### Maintainability
 
-The binding must be easy to maintain and to update for the developer.
+The binding must be easy to maintain and update for the developer.
+
+We need to provide all the documentation required to facilitate the maintenance and the update of the binding. 
 
 ## Risks and assumptions
 
@@ -143,6 +172,14 @@ With all of these concerns, the binding might be deprecated and not used anymore
 To prevent this from happening, the binding needs to be thought and designed in a way that it is easy to maintain and update through the time. 
 
 We need to make sure that the binding will be useful and adapted to the future needs of the engine.
+
+## Out of scope 
+
+The binding will not be compatible with the version of the engine that are not available on the github repository. 
+
+It can not be fully compatible with the older versions of the engine. 
+
+If the engine receives new features, the binding will not automatically be supported for these versions.
 
 ## Glossary
 
