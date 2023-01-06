@@ -7,7 +7,8 @@ class RustClassTypeDefaultConverter(RustTypeConverterCommon):
     pass
 
 class RustPtrTypeDefaultConverter(RustTypeConverterCommon):
-    pass
+    def get_type_glue(self, gen, module_name):
+        return ''
 
 class RustExternTypeConverter(RustTypeConverterCommon):
     pass
@@ -19,8 +20,11 @@ class RustGenerator(gen.FABGen):
 
     def __init__(self):
         super().__init__()
-
-        raise NotImplementedError("Rust generator is not implemented yet")
+        self.rust = ''
+        self.crust_directives = ''
 
     def get_language(self):
         return "Rust"
+    
+    # def start(self, module_name):
+    #     super().start(module_name)
