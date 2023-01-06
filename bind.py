@@ -13,6 +13,7 @@ import lang.lua
 import lang.go
 import lang.cpython
 import lang.xml
+import lang.rust
 
 import lib.std
 import lib.stl
@@ -29,6 +30,7 @@ parser.add_argument('--lua', help='Bind to Lua 5.2+', action='store_true')
 parser.add_argument('--cpython', help='Bind to CPython', action='store_true')
 parser.add_argument('--go', help='Bind to Go', action='store_true')
 parser.add_argument('--xml', help='Bind to CPython', action='store_true')
+parser.add_argument('--rust', help='Bind to Rust', action='store_true')
 parser.add_argument('--out', help='Path to output generated files', required=True)
 parser.add_argument('--out_prefix', help='Prefix to append to output generated files name', default='')
 parser.add_argument('--prefix', help='Prefix to append to all public symbols')
@@ -119,6 +121,8 @@ if args.go:
 if args.xml:
 	output_binding(setup_generator(lang.xml.XMLGenerator()))
 
+if args.rust:
+	output_binding(setup_generator(lang.rust.RustGenerator()))
 
 # output Fabgen API
 if not args.no_fabgen_api:
