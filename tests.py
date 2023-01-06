@@ -13,6 +13,7 @@ import os
 import lang.cpython
 import lang.lua
 import lang.go
+import lang.rust
 
 
 start_path = os.path.dirname(__file__)
@@ -449,7 +450,10 @@ class GoTestBed:
 		print("Cleanup...")
 
 		return success
-
+	
+class RustTestBed:
+	def build_and_test_extension(self, work_path, module, sources):
+		raise NotImplementedError("RustTestBed not implemented yet")
 
 # Clang format
 def create_clang_format_file(work_path):
@@ -489,6 +493,10 @@ if args.go_build:
 	gen.verbose = False
 	run_tests(gen, test_names, GoTestBed())
 
+if args.rust_build:
+	gen = lang.rust.RustGenerator()
+	gen.verbose = False
+	run_tests(gen, test_names, RustTestBed())
 
 #
 print("[Final summary]")
