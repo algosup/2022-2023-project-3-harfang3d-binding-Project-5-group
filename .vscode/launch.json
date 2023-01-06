@@ -1,27 +1,29 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-	{
+	"version": "0.3.0",
+	"configurations": 
+	[
+		// TODO (Seems Outdated) go_test
+		{
 			"name": "go_test",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/go_test.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/go_test.py",
+			"cwd": "${workspaceFolder}",
 			"args": [],
 			"env": {}
 		},
+		// TODO (Seems Outdated) Launch GO test
         {
             "name": "Launch GO test",
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "remotePath": "",
             "port": 2345,
             "host": "127.0.0.1",
-            "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}",
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}",
             "env": {},
             "args": [
 				"-test.run",
@@ -37,264 +39,199 @@
                 "showGlobalVariables": "false"
             }
         },
+		// TODO (Missing CMake) Go: Tests
 		{
 			"name": "Go: Tests",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
 			"args": ["--go"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// TODO (Failed Test) CPython: Tests --linux
 		{
 			"name": "CPython: Tests --linux",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
 			"args": ["--linux", "--x64"],
-			"env": null,
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// TODO (Failed Test) CPython: Tests --debug --linux
 		{
 			"name": "CPython: Tests --debug --linux",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
 			"args": ["--linux", "--x64", "--debug", "arg_out"],
-			"env": null,
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// TODO (Missing CMake) CPython: Tests
 		{
 			"name": "CPython: Tests",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["--pybase", "C:/Anaconda3", "--x64"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["--pybase", "${command:python.interpreterPath}", "--x64"],
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// TODO (Unknown module) CPython: Tests --debug
 		{
 			"name": "CPython: Tests --debug",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["--pybase", "C:/Anaconda3", "--debug", "const_support", "--x64"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["--pybase", "${command:python.interpreterPath}", "--debug", "const_support", "--x64"],
+			"envFile": "${workspaceFolder}/.env",
 		},
-		{
-			"name": "CPython: Bind Harfang",
-			"type": "python",
-			"request": "launch",
-			"stopOnEntry": false,
-			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/bind.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["d:/gs/binding/bind_harfang.py", "--cpython", "--out", "d:/"],
-			"env": null,
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
-		},
+		// TODO (Missing SDK) Lua53: Tests
 		{
 			"name": "Lua53: Tests",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
 			"args": ["--luabase", "D:/harfang/sdk", "--x64"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// TODO (Missing SDK) Lua53: Tests --debug
 		{
 			"name": "Lua53: Tests --debug",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
 			"args": ["--luabase", "D:/harfang/sdk", "--debug", "std_function", "--x64"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"envFile": "${workspaceFolder}/.env",
 		},
-		{
-			"name": "Lua53: Bind Harfang",
-			"type": "python",
-			"request": "launch",
-			"stopOnEntry": false,
-			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/bind.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["d:/gs/binding/bind_harfang.py", "--lua", "--out", "d:/tmp", "--embedded"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
-		},
-		{
-			"name": "Lua53: Bind Harfang (PROFILE)",
-			"type": "python",
-			"request": "launch",
-			"stopOnEntry": false,
-			"python": "C:/Anaconda3/python.exe",
-			"program": "",
-			"cwd": "${workspaceRoot}",
-			"args": ["-m", "vprof", "-c", "hp", "\"${workspaceRoot}/bind.py d:/gs/binding/bind_harfang.py --lua --out d:/ --embedded\""],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
-		},
-		{
-			"name": "Lua53: Bind Assemble",
-			"type": "python",
-			"request": "launch",
-			"stopOnEntry": false,
-			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/bind.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["d:/gs/assemble/core/bind_assemble.py", "--lua", "--out", "d:/", "--embedded"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
-		},
-		{
-			"name": "XML: Bind Harfang",
-			"type": "python",
-			"request": "launch",
-			"stopOnEntry": false,
-			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/bind.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["d:/gs/binding/bind_harfang.py", "--xml", "--out", "d:/tmp/issue_739"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
-		},
+		// TODO (Missing SDK) All: Tests
 		{
 			"name": "All: Tests",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["--pybase", "C:/Pythons/35", "--luabase", "D:/harfang/sdk", "--x64"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["--pybase", "${command:python.interpreterPath}", "--luabase", "D:/harfang/sdk", "--x64"], // Missing SDK
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// TODO (Missing /lua) All: Tests --linux
 		{
 			"name": "All: Tests --linux",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/tests.py",
-			"cwd": "${workspaceRoot}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
 			"args": ["--linux", "--x64", "--luabase", "/home/ejulien/Code/lua"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"envFile": "${workspaceFolder}/.env",
 		},
+		// All the test Above this line are not working as expected
+
+		// Lua53: Bind Harfang (PROFILE)
+		{
+			"name": "Lua53: Bind Harfang (PROFILE)",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "",
+			"cwd": "${workspaceFolder}",
+			"args": ["-m", "vprof", "-c", "hp", "\"${workspaceFolder}/bind.py ${workspaceFolder}/harfang3d/binding/bind_harfang.py --lua --out ${workspaceFolder}/output/bind_lua_profile --embedded\""],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// Lua53: Bind Harfang
+		{
+			"name": "Lua53: Bind Harfang",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["${workspaceFolder}/harfang3d/binding/bind_harfang.py", "--lua", "--out", "${workspaceFolder}/output/bind_lua", "--embedded"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// CPython: Bind Harfang
+		{
+			"name": "CPython: Bind Harfang",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["${workspaceFolder}/harfang3d/binding/bind_harfang.py", "--cpython", "--out", "${workspaceFolder}/output/bind_cpython"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// Go: Bind Harfang
+		{
+			"name": "Go: Bind Harfang",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["${workspaceFolder}/harfang3d/binding/bind_harfang.py", "--go", "--out", "${workspaceFolder}/output/bind_go"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// Rust: Bind Harfang
+		{
+			"name": "Rust: Bind Harfang",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["${workspaceFolder}/harfang3d/binding/bind_harfang.py", "--rust", "--out", "${workspaceFolder}/output/bind_rust"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// XML: Bind Harfang
+		{
+			"name": "XML: Bind Harfang",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["${workspaceFolder}/harfang3d/binding/bind_harfang.py", "--xml", "--out", "${workspaceFolder}/output/bind_xml"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// All: Bind Harfang
 		{
 			"name": "All: Bind Harfang",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/bind.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["d:/gs-fabgen/bind_harfang.py", "--lua", "--cpython", "--out", "d:/gs-fabgen/"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["${workspaceFolder}/harfang3d/binding/bind_harfang.py", "--lua", "--cpython", "--go", "--rust", "--out", "${workspaceFolder}/output/bind_all"],
+			"envFile": "${workspaceFolder}/.env",
 		},
-		{
-			"name": "All: GO Bind Harfang",
-			"type": "python",
-			"request": "launch",
-			"stopOnEntry": false,
-			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceRoot}/bind.py",
-			"cwd": "${workspaceRoot}",
-			"args": ["C:/boulot/works/nengine_gamestart/moteur_harfang_bgfx/binding/bind_harfang.py", "--go", "--out", "C:/boulot/works/nengine_gamestart/moteur_harfang_bgfx/extern/FABGen/"],
-			"envFile": "${workspaceRoot}/.env",
-			"debugOptions": [
-				"WaitOnAbnormalExit",
-				"WaitOnNormalExit",
-				"RedirectOutput"
-			]
-		}
 	]
 }
