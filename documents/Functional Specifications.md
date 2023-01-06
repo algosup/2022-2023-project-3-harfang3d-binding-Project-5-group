@@ -1,16 +1,17 @@
 # HARFANG3D-binding
 
-## Functionnal Specifications 
+## Functional Specifications 
 
 <details>
 <summary>Table of contents</summary>
 
 - [HARFANG3D-binding](#harfang3d-binding)
-  - [Functionnal Specifications](#functionnal-specifications)
+  - [Functional Specifications](#functional-specifications)
   - [Overview](#overview)
     - [What is HARFANG 3D?](#what-is-harfang-3d)
     - [What is FABGen?](#what-is-fabgen)
-    - [Why rust?](#why-rust)
+    - [Why Rust?](#why-rust)
+  - [Audience](#audience)
   - [Personas](#personas)
     - [Persona 1](#persona-1)
     - [Persona 2](#persona-2)
@@ -25,6 +26,7 @@
     - [Usability](#usability)
     - [Maintainability](#maintainability)
   - [Risks and assumptions](#risks-and-assumptions)
+  - [Success criteria](#success-criteria)
   - [Out of scope](#out-of-scope)
   - [Glossary](#glossary)
 </details>
@@ -35,7 +37,32 @@ The goal of the project is to create a binding in Rust for the HARFANG 3D and th
 
 The point of this project is to give access to the HARFANG 3D engine in more languages and in this case in Rust, this will allow more people to use the engine and to use it for their projects.
 
-The project is due to be done the 17th february 2023.
+The project is due to be done the 17th February 2023.- [HARFANG3D-binding](#harfang3d-binding)
+- [HARFANG3D-binding](#harfang3d-binding)
+  - [Functional Specifications](#functional-specifications)
+  - [Overview](#overview)
+    - [What is HARFANG 3D?](#what-is-harfang-3d)
+    - [What is FABGen?](#what-is-fabgen)
+    - [Why Rust?](#why-rust)
+  - [Audience](#audience)
+  - [Personas](#personas)
+    - [Persona 1](#persona-1)
+    - [Persona 2](#persona-2)
+    - [Persona 3](#persona-3)
+  - [Laws and regulations](#laws-and-regulations)
+  - [Functionalities](#functionalities)
+    - [Compatibility](#compatibility)
+    - [Documentation](#documentation)
+  - [Non functional requirements](#non-functional-requirements)
+    - [Performance](#performance)
+    - [Security](#security)
+    - [Usability](#usability)
+    - [Maintainability](#maintainability)
+  - [Risks and assumptions](#risks-and-assumptions)
+  - [Success criteria](#success-criteria)
+  - [Out of scope](#out-of-scope)
+  - [Glossary](#glossary)
+
 
 ### What is HARFANG 3D?
 
@@ -54,7 +81,7 @@ Industries that are using HARFANG 3D are using it because they need to respect a
 - Embedability and custom hardware
 - Low power consumption
 
-HARFANG 3D is not a comptetitor of other game engines like Unity or Unreal Engine since they are a lot of differences between the utilisations of the engines. 
+HARFANG 3D is not a comptetitor of other game engines like Unity or Unreal Engine since there are a lot of differences between the uses of the engines. 
 
 Compared to other game engines, HARFANG 3D has a couple of advantages for the industries:
 - Open and secure license 
@@ -63,17 +90,27 @@ Compared to other game engines, HARFANG 3D has a couple of advantages for the in
 
 ### What is FABGen?
 
-FABGen is a set of Python scripts to generate C++ binding code to different languages. It was written as a SWIG replacement
+FABGen is a set of Python scripts to generate C++ binding code to different languages. It was written as a SWIG replacement.
 
 It is used by HARFANG 3D to generate the binding for python, Lua and Go.
 
-### Why rust?
+### Why Rust?
 
 Rust is a programming language that is designed to be fast, reliable and productive. It is a new language that is used to create low level applications exactly like C++ but with a lot of new features that make it easier to work with and to maintain.
 
-FABGen already supports the binding for python/Lua and Go, but it does not support rust yet.
+FABGen already supports the binding for python/Lua and Go, but it does not support Rust yet.
 
-With all of these features and the rise of rust, it is a good idea to add the support for rust for FABGen.
+With all of these features and the rise of Rust, it is a good idea to add the support for Rust for FABGen.
+
+## Audience
+
+The audience of the solution is the developers who are using the HARFANG 3D engine, it will allow them to use the engine in Rust. 
+
+A lot of developpers are using Rust for their projects, and a lof of sotfware in C++ are translated in Rust, for a memory safety purpose.
+
+In the recent surveys from the developers, Rust is one of the most popular languages in 2022 and it is expected to be the most popular language in 2023. 
+
+Which will result in more opportunities for the engine and the people who are using it. 
 
 ## Personas
 
@@ -84,7 +121,7 @@ Age: 45
 Job: Data scientist 
 
 Description:
-Lonus is a data scientist, he uses HARFANG 3D to visualize the data in 3dimensions collected from a VR simulation to determine the human behavior in a specific situation.
+Lonus is a data scientist, he uses HARFANG 3D to visualize the data in 3Dimensions collected from a VR simulation to determine the human behavior in a specific situation.
 ```
 
 ### Persona 2
@@ -110,14 +147,14 @@ Lena is an engineer for a car company, she uses HARFANG 3D to create AR tools fo
 ## Laws and regulations
 
 For this kind of software, there are a couple of laws and regulations that must be respected. The most important ones are:
-- no dynamic memory allocation
+- No dynamic memory allocation
 - ISO 26262 
 - MISRA 
 - AutoSAR
 
 ## Functionalities
 
-We need to implement an access to all of the available functionalities of the HARFANG 3D engine in rust.
+We need to implement an access to all of the available functionalities of the HARFANG 3D engine in Rust.
 
 ### Compatibility
 
@@ -165,13 +202,18 @@ The main risks are:
 - The binding does not respect the laws and regulations required to be used in some industries,
 - The binding is not well documented and is confusing for the user,
 - The binding is difficult to be maintained and updated,
-- The binding is not compatible with the latest version of the engine and is difficult to update,
+- The binding is not compatible with the latest version of the engine and is difficult to update.
 
 With all of these concerns, the binding might be deprecated and not used anymore.
 
-To prevent this from happening, the binding needs to be thought and designed in a way that it is easy to maintain and update through the time. 
+To prevent this from happening, the binding needs to be thought and designed in a way that it is easy to maintain and update through the time.  
 
-We need to make sure that the binding will be useful and adapted to the future needs of the engine.
+## Success criteria 
+
+The binding will be considered as a success if it is compatible with all the features of the engine, if it is on the same degree of performance as other bindings in other languages. 
+
+We aim to have a binding useful and adapted for the users and the future needs of the engine.
+
 
 ## Out of scope 
 
@@ -187,13 +229,13 @@ If the engine receives new features, the binding will not automatically be suppo
 
 - Rust: Rust is a programming language that is designed to be fast, reliable and productive. It is a compiled language that is used to create low level software like operating systems, device drivers, and embedded software. 
 
-- 3D engine : A 3D engine is a software that is used to create 3D applications. It is used to create 3D games, simulations, and data visualization.
+- 3D engine: A 3D engine is a software that is used to create 3D applications. It is used to create 3D games, simulations, and data visualization.
 
 - SWIG: SWIG is a software development tool that connects programs written in C and C++ with a variety of high-level programming languages.
 
 - Data scientist: A data scientist is a person who is skilled in extracting knowledge or insights from data in various forms, either structured or unstructured, similar to a data analyst but more focused on advanced analysis and modeling techniques.
 
-- AR : Augmented reality is a live direct or indirect view of a physical, real-world environment whose elements are augmented by computer-generated sensory input such as sound, video, graphics or GPS data.
+- AR: Augmented reality is a live direct or indirect view of a physical, real-world environment whose elements are augmented by computer-generated sensory input such as sound, video, graphics or GPS data.
 
 - VR: Virtual reality is a computer technology that uses virtual reality headsets, sometimes in combination with physical spaces or multi-projected environments, to generate realistic images, sounds and other sensations that simulate a user's physical presence in a virtual or imaginary environment.
 
