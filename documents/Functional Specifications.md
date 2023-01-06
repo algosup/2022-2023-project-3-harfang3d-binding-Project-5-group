@@ -106,7 +106,7 @@ With all of these features and the rise of Rust, it is a good idea to add the su
 
 The audience of the solution is the developers who are using the HARFANG 3D engine, it will allow them to use the engine in Rust. 
 
-A lot of developpers are using Rust for their projects, and a lof of sotfware in C++ are translated in Rust, for a memory safety purpose.
+A lot of developpers are using Rust for their projects, and a lot of software in C++ are translated in Rust, for a memory safety purpose.
 
 In the recent surveys from the developers, Rust is one of the most popular languages in 2022 and it is expected to be the most popular language in 2023. 
 
