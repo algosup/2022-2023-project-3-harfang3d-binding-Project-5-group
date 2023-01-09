@@ -20,3 +20,14 @@ def bind_defaults(gen):
 
 		lib.go.std.bind_std(gen)
 		lib.go.stl.bind_stl(gen)
+
+	elif gen.get_language() == 'Rust':
+		import lib.rust.std
+		import lib.rust.stl
+
+		lib.rust.std.bind_std(gen)
+		lib.rust.stl.bind_stl(gen)
+
+# This is not in the original code, but it's a good thing to have it to facilitate the development 
+	else :
+		raise NameError("Unsupported generator: " + gen.get_language())

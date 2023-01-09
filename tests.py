@@ -13,6 +13,7 @@ import os
 import lang.cpython
 import lang.lua
 import lang.go
+import lang.rust
 
 
 start_path = os.path.dirname(__file__)
@@ -24,6 +25,7 @@ parser.add_argument('--go', dest='go_build', help='Build GO', action="store_true
 parser.add_argument('--debug', dest='debug_test', help='Generate a working solution to debug a test')
 parser.add_argument('--x64', dest='x64', help='Build for 64 bit architecture', action='store_true', default=False)
 parser.add_argument('--linux', dest='linux', help='Build on Linux', action='store_true', default=False)
+parser.add_argument('--rust', dest='rust', help='Build Rust', action='store_true', default=False)
 
 args = parser.parse_args()
 
@@ -340,7 +342,6 @@ class LuaTestBed:
 
 		return success
 
-
 # GO test bed
 def create_go_cmake_file(module, work_path, sources):
 	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
@@ -450,6 +451,50 @@ class GoTestBed:
 		return success
 
 
+def create_clang_rust_format_file(work_path):
+	with open(os.path.join(work_path, '_clang-format'), 'w') as file:
+		file.write('''ColumnLimit: 0
+UseTab: Always
+TabWidth: 4
+IndentWidth: 4
+IndentCaseLabels: true
+AccessModifierOffset: -4
+AlignAfterOpenBracket: DontAlign
+AlwaysBreakTemplateDeclarations: false
+AlignTrailingComments: false''')
+
+def create_rust_cmake_file(name, work_path, sources):
+	with open(os.path.join(work_path, 'CMakeLists.txt'), 'w') as file:
+		file.write(f"""cmake_minimum_required(VERSION 3.0)
+set(CMAKE_MODULE_PATH ${{CMAKE_MODULE_PATH}} "{work_path}")
+project({name})
+enable_language(Rust)
+set(CMAKE_CXX_STANDARD 14)
+
+add_library({name} SHARED {' '.join(sources)})
+set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_path}/")
+		""")
+
+def RustTestBed():
+	def build_and_test_extension(self, work_path, module, sources):
+		if not hasattr(module, "test_rust"):
+			print("Can't find test_rust")
+			return False
+
+		# copy test file
+		test_path = os.path.join(work_path, 'test.rs')
+		with open(test_path, 'w') as file:
+			file.write(module.test_rust)
+
+		build_path = os.path.join(work_path, 'build')
+		os.mkdir(build_path)
+		os.chdir(build_path)
+
+		create_rust_cmake_file("test", work_path, sources)
+		create_clang_rust_format_file(work_path)
+
+		
+
 # Clang format
 def create_clang_format_file(work_path):
 	with open(os.path.join(work_path, '_clang-format'), 'w') as file:
@@ -487,7 +532,11 @@ if args.go_build:
 	gen = lang.go.GoGenerator()
 	gen.verbose = False
 	run_tests(gen, test_names, GoTestBed())
-
+	
+if args.rust_build:
+	gen = lang.rust.RustGenerator()
+	gen.verbose = False
+	run_tests(gen, test_names, RustTestBed())
 
 #
 print("[Final summary]")

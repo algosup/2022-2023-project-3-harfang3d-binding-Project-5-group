@@ -42,12 +42,14 @@ def bind_std_vector(gen, T_conv):
 def expand_std_vector_proto(gen, protos):
 	prefix = {
 		'CPython' : 'PySequenceOf',
-		'Lua' : 'LuaTableOf'
+		'Lua' : 'LuaTableOf',
+		'Rust' : 'VecOf'
 	}
 	name_prefix = {
 		'CPython' : 'SequenceOf',
 		'Lua' : 'TableOf',
-		'Go' : 'SliceOf'
+		'Go' : 'SliceOf',
+		'Rust' : 'VecOf'
 	}
 	
 	if gen.get_language() not in prefix:
