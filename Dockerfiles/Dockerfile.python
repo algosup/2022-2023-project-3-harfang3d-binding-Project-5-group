@@ -1,10 +1,19 @@
 FROM python:3
 
 LABEL version="1.0"
+LABEL customname="FABGen-tests" 
 
-WORKDIR /
+WORKDIR /usr/src/tests
 
-COPY requirements.txt ./
+COPY requirements.txt /usr/src/tests
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY tests.py /usr/src/tests
+COPY tests/ /usr/src/tests/tests
+
+COPY lib/ /usr/src/tests/lib
+COPY lang/ /usr/src/tests/lang
+
+COPY gen.py /usr/src/tests
+
+RUN echo "This is the list of directories and files on this system: $(ls)"
