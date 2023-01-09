@@ -15,5 +15,3 @@ COPY lib/ /usr/src/tests/lib
 COPY lang/ /usr/src/tests/lang
 
 COPY gen.py /usr/src/tests
-
-RUN echo "This is the list of directories and files on this system: $(ls)"
