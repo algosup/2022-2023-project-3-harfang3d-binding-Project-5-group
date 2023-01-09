@@ -37,7 +37,7 @@ The goal of the project is to create a binding in Rust for the Harfang 3D and th
 
 The point of this project is to give access to the Harfang 3D engine in more languages and in this case in Rust, this will allow more people to use the engine and to use it for their projects.
 
-The project is due to be done the 17th February 2023.- [Harfang3D-binding](#harfang3d-binding)
+The project is due to be done the 17th February 2023.
 
 ### What is Harfang 3D?
 
