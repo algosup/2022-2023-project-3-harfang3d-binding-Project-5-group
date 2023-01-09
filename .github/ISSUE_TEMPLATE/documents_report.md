@@ -11,7 +11,7 @@ assignees: ''
 
 What is the problem?
 
-### **What do detail more**
+### **What to detail more**
 
 A clear and concise description of what you expected.
 
