@@ -1,0 +1,7 @@
+*.md
+
+/**
+
+!tests/*.py
+
+!requirements.txt

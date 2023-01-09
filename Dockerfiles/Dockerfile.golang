@@ -1,0 +1,15 @@
+FROM python:3
+
+LABEL version="1.0"
+
+WORKDIR /
+
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+RUN apt update -y && apt upgrade -y
+RUN wget https://go.dev/dl/go1.19.4.linux-amd64.tar.gz
+RUN tar -C /usr/local/ -xzf go1.19.4.linux-amd64.tar.gz
+RUN export PATH=$PATH:/usr/local/go/bin
+
+COPY . .
