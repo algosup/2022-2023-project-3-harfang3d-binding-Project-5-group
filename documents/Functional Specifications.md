@@ -38,31 +38,6 @@ The goal of the project is to create a binding in Rust for the Harfang 3D and th
 The point of this project is to give access to the Harfang 3D engine in more languages and in this case in Rust, this will allow more people to use the engine and to use it for their projects.
 
 The project is due to be done the 17th February 2023.- [Harfang3D-binding](#harfang3d-binding)
-- [Harfang3D-binding](#harfang3d-binding)
-  - [Functional Specifications](#functional-specifications)
-  - [Overview](#overview)
-    - [What is Harfang 3D?](#what-is-harfang-3d)
-    - [What is FABGen?](#what-is-fabgen)
-    - [Why Rust?](#why-rust)
-  - [Audience](#audience)
-  - [Personas](#personas)
-    - [Persona 1](#persona-1)
-    - [Persona 2](#persona-2)
-    - [Persona 3](#persona-3)
-  - [Laws and regulations](#laws-and-regulations)
-  - [Functionalities](#functionalities)
-    - [Compatibility](#compatibility)
-    - [Documentation](#documentation)
-  - [Non functional requirements](#non-functional-requirements)
-    - [Performance](#performance)
-    - [Security](#security)
-    - [Usability](#usability)
-    - [Maintainability](#maintainability)
-  - [Risks and assumptions](#risks-and-assumptions)
-  - [Success criteria](#success-criteria)
-  - [Out of scope](#out-of-scope)
-  - [Glossary](#glossary)
-
 
 ### What is Harfang 3D?
 
