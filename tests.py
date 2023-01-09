@@ -298,7 +298,7 @@ class LuaTestBed:
 
 		if args.linux:
 			os.chdir(work_path)
-			shutil.copy(os.path.join(args.lua_base_path, 'bin', 'lua'), work_path)
+			shutil.copy(os.path.join(args.lua_base_path), work_path)
 
 			build_cmd = 'gcc -I' + os.path.join(args.lua_base_path, 'include') + ' -g -O0 -fPIC -std=c++14 -c %s -o my_test.o' % ' '.join(sources)
 
