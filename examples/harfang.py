@@ -24,12 +24,17 @@ def bind_std_vector(gen, T_conv):
 	elif gen.get_language() == 'Lua':
 		LuaTable_T_type = 'LuaTableOf%s' % T_conv.bound_name.title()
 		gen.bind_type(lib.lua.stl.LuaTableToStdVectorConverter(LuaTable_T_type, T_conv))
+	elif gen.get_language() == 'Rust':
+		RustTable_T_type = 'VecOf%s' % T_conv.bound_name.title()
+		gen.bind_type(lib.rust.stl.RustTableToStdVectorConverter(RustTable_T_type, T_conv))
 	
 	conv = gen.begin_class('std::vector<%s>' % T_conv.ctype, bound_name='%sList' % T_conv.bound_name.title(), features={'sequence': lib.std.VectorSequenceFeature(T_conv)})
 	if gen.get_language() == 'CPython':
 		gen.bind_constructor(conv, ['?%s sequence' % PySequence_T_type])
 	elif gen.get_language() == 'Lua':
 		gen.bind_constructor(conv, ['?%s sequence' % LuaTable_T_type])
+	elif gen.get_language() == 'Rust':
+		gen.bind_constructor(conv, ['?%s sequence' % RustTable_T_type])
 
 	gen.bind_method(conv, 'push_back', 'void', ['%s v' % T_conv.ctype])
 	gen.bind_method(conv, 'size', 'size_t', [])
