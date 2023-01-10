@@ -78,3 +78,16 @@ func Test(t *testing.T) {
 	assert.Equal(t, future.Get(), int32(8), "should be the same.")
 }
 """
+
+test_rust = '''\
+use my_test;
+
+#[test]
+fn test() {
+	let future = my_test::get_future_value();
+	assert!(future.valid(), "should be the same.");
+
+	future.wait();
+	assert_eq!(future.get(), 8, "should be the same.");
+}
+'''

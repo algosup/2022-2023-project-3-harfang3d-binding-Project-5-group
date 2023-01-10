@@ -109,3 +109,18 @@ func Test(t *testing.T) {
 	assert.Equal(t, C.GetBaseValue(), int32(12), "should be the same.")
 }
 '''
+
+test_rust = '''\
+use my_test;
+
+#[test]
+fn test() {
+	let B = my_test::get_B();
+	assert_eq!(cast_A_to_B(B).get_b(), 3, "should be the same.");
+	assert_eq!(B.get_base_value(), 12, "should be the same.");
+
+	let C = my_test::get_C();
+	assert_eq!(cast_A_to_C(C).get_c(), 7, "should be the same.");
+	assert_eq!(C.get_base_value(), 12, "should be the same.");
+}
+'''

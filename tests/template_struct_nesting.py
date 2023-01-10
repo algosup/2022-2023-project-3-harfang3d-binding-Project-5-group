@@ -69,3 +69,14 @@ func Test(t *testing.T) {
 	assert.Equal(t, n.GetV(), int32(9), "should be the same.")
 }
 """
+
+test_rust = '''\
+use my_test;
+
+#[test]
+fn test() {
+	let s = my_test::enclosing_template_int::new();
+	let n = my_test::get_nested_struct_int(&s);
+	assert_eq!(n.v, 9, "should be the same.");
+}
+'''

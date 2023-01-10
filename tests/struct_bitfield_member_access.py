@@ -87,3 +87,23 @@ func Test(t *testing.T) {
 	assert.Equal(t, s.GetC(), int32(2), "should be the same.")
 }
 '''
+
+test_rust = '''
+use my_test;
+
+#[test]
+fn test() {
+	let mut s = my_test::simple_struct::new();
+
+	assert_eq!(s.a(), 3, "should be the same.");
+	assert_eq!(s.b(), 11, "should be the same.");
+	assert_eq!(s.c(), 1, "should be the same.");
+
+	s.set_a(1);
+	s.set_b(7);
+	s.set_c(2);
+
+	assert.eq!(s.a(), 1, "should be the same.");
+	assert.eq!(s.b(), 7, "should be the same.");
+	assert.eq!(s.c(), 2, "should be the same.");
+'''

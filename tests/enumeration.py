@@ -95,3 +95,26 @@ func Test(t *testing.T) {
 	assert.Equal(t, NEc, NamedEnum(4096), "should be the same.")
 }
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	assert_eq!(GlobalEnum::GE_a as i32, 0, "should be the same.");
+	assert_eq!(GlobalEnum::GE_b as i32, 1, "should be the same.");
+	assert_eq!(GlobalEnum::GE_c as i32, 8, "should be the same.");
+
+	assert_eq!(Type::StructEnum::SE_a as i32, 0, "should be the same.");
+	assert_eq!(Type::StructEnum::SE_b as i32, 128, "should be the same.");
+	assert_eq!(Type::StructEnum::SE_c as i32, 512, "should be the same.");
+
+	assert_eq!(TypedEnum::TE_a as i16, 0, "should be the same.");
+	assert_eq!(TypedEnum::TE_b as i16, 1, "should be the same.");
+	assert_eq!(TypedEnum::TE_c as i16, 16384, "should be the same.");
+
+	assert_eq(NamedEnum::NE_a as i32, 0, "should be the same.");
+	assert_eq(NamedEnum::NE_b as i32, 1, "should be the same.");
+	assert_eq(NamedEnum::NE_c as i32, 4096, "should be the same.");
+}
+'''

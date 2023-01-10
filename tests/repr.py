@@ -39,3 +39,15 @@ test_go = '''\
 package mytest
 
 '''
+
+tet_rust = '''\
+use my_test;
+
+#[test]
+fn test() {
+	let o = my_test::SomeStruct::new();
+
+	assert_eq!(o, "repr!");
+}
+'''
+
