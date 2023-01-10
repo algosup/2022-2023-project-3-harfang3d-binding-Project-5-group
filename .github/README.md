@@ -24,3 +24,14 @@
 ### Update Harfang3D version
 
 `git submodule update --remote --merge`
+
+### Tests
+
+- Unix:
+    1. `make build`
+    2. `make tests-all`
+
+- Windows:
+    1. `wsl`
+    2. `make build`
+    3. `make tests-all`
