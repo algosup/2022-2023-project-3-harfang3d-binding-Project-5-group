@@ -8,15 +8,10 @@ WORKDIR /usr/src/tests
 COPY requirements.txt /usr/src/tests
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY tests.py /usr/src/tests
-COPY tests/ /usr/src/tests/tests
-
-COPY lib/ /usr/src/tests/lib
-COPY lang/ /usr/src/tests/lang
-
-COPY gen.py /usr/src/tests
-
 RUN apt update -y && apt upgrade -y
+
+RUN apt-get install -y lua5.4
+
 RUN wget https://go.dev/dl/go1.19.4.linux-amd64.tar.gz
 RUN tar -C /usr/local/ -xzf go1.19.4.linux-amd64.tar.gz
 RUN export PATH=$PATH:/usr/local/go/bin
