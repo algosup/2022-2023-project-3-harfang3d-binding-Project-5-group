@@ -17,10 +17,10 @@ clear-build: # Clear docker images built by this Makefile.
 	docker system prune --filter "label=customname=FABGen-tests" -af
 
 tests-python: tests-echo # Run python tests.
-	docker run -it --rm --name tests-fabgen --volume $(CURRENT_DIR):/usr/src/tests --workdir /usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --pybase /usr/bin/python/
+	docker run -it --rm --name tests-python --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --pybase /usr/bin/python/
 
 tests-golang: tests-echo # Run golang tests.
-	docker run -it --rm --name tests-golang fabgen-golang-tests:1.0 python3 tests.py --linux --go
+	docker run -it --rm --name tests-golang --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --go
 
 tests-lua54: tests-echo # Run lua54 tests.
-	docker run -it --rm --name tests-lua54 fabgen-lua54-tests:1.0 python3 tests.py --linux --luabase /usr/bin/lua5.4
+	docker run -it --rm --name tests-lua54 --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --luabase /usr/bin/lua5.4
