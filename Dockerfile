@@ -12,6 +12,6 @@ RUN apt update -y && apt upgrade -y
 
 RUN apt-get install -y lua5.4
 
-RUN wget https://go.dev/dl/go1.19.4.linux-amd64.tar.gz
-RUN tar -C /usr/local/ -xzf go1.19.4.linux-amd64.tar.gz
-RUN export PATH=$PATH:/usr/local/go/bin
+RUN apt-get install -y golang
+
+RUN apt-get install -y cmake
