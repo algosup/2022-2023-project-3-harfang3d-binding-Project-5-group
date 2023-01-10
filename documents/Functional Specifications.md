@@ -16,6 +16,7 @@
     - [Persona 1](#persona-1)
     - [Persona 2](#persona-2)
     - [Persona 3](#persona-3)
+    - [Persona 4](#persona-4)
   - [Laws and regulations](#laws-and-regulations)
   - [Functionalities](#functionalities)
     - [Compatibility](#compatibility)
@@ -94,9 +95,16 @@ Which will result in more opportunities for the engine and the people who are us
 Name: Lonus Tirvalds
 Age: 45
 Job: Data scientist 
+Place: Berlin, Germany
+
+Behaviors: Lonus to do his job efficiently and use the most optimal tools for his job. He is using Harfang 3D in C++ and python
 
 Description:
 Lonus is a data scientist, he uses Harfang 3D to visualize the data in 3Dimensions collected from a VR simulation to determine human behavior in a specific situation.
+
+Needs & goals: Lonus wants to have the fastest, the most efficient and the most secure way to visualize the data he is collecting from a VR simulation.
+
+Use case: Lonus is interested about learning and using Rust, to be more efficient and to have a better performance in his job, it will also bring him new opportunities for his carrer to learn a new language.
 ```
 
 ### Persona 2
@@ -104,20 +112,43 @@ Lonus is a data scientist, he uses Harfang 3D to visualize the data in 3Dimensio
 Name: Harry webb
 Age: 30
 Job: Software engineer for the government
+Place: Zurich, Switzerland
 
 Description:
 Harry is a software engineer, he uses Harfang 3D to create high quality simulations for the government with a software that respects the laws and regulations required for his job. 
+
+Needs & goals: Harry wants to use a good 3D engine that respects everything his employer asked, he is using Harfang 3D in Go however he also needs to treat the data and he is using a Rust program to create graph with them.
+
+Use case: Harry wants to use the same language for his 3D engine and for his data treatment, which will improve his productivity, he will be able to focus on only one language and not have to switch between them.
 ```
 
 ### Persona 3
 ```
 Name: Lena Nelson
 Age: 25
-Job: Engineer for a car company
+Job: Manager for a car company
+Place: London, UK
 
 Description:
-Lena is an engineer for a car company, she uses Harfang 3D to create AR tools for the head-up display of a car. 
+Lena is a manager for a car company, her employees use Harfang 3D to create AR tools for the head-up display of a car.
+
+Needs & goals: Lena wants to standardize the tools her employees are using, she wants to use the same language for everything, and on top of that she wants to use a modern language for this kind of work.
+
+Use case: Lena have chosen Rust for the new tools her employees will be using, she wants everyone to use the same language, which will make it easier for them to work together. Our solution will allow her to do that.
 ```
+
+### Persona 4
+```
+Name: John Doe
+Age: 30
+Job: Kernel developer
+
+Description: John is a kernel developer, he is creating an embedded system for a VR headset in Rust, which is supposed to be used with an Harfang 3D simulation in it, he also would like to use only one language for everything, Rust is the best choice for him. However he is currently using Harfang 3D in C++.
+
+Needs & goals: John wants to have the most optimal performance for his system, he also wants to use an open-source 3D engine, he has strong requirements towards the engine, he wants to provide the most optimal experience for the users of his VR headset.
+
+Use case: John wants to use Rust for everything, with our solution he will be able to use Harfang 3D in Rust, which will allow him to use only one language for everything.
+``` 
 
 ## Laws and regulations
 
