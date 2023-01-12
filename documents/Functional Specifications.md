@@ -166,7 +166,7 @@ We need to implement an access to all of the available functionalities of the Ha
 
 The binding needs to be compatible with the versions of the engine that are available on the GitHub repository.
 
-The binding needs to be compatible with the latest version of the engine.
+The binding needs to be compatible with the latest version of the engine. 
 
 ### Documentation
 
@@ -185,6 +185,8 @@ It also needs to be as fast as other bindings in other languages.
 ### Security
 
 The binding must stay in the same security expectations as the engine.
+
+Since we are only going to add bindings to FABGen and that we can not really change the functions of Harfang 3D, we should never face a security breach.
 
 ### Usability
 
@@ -220,6 +222,7 @@ The binding will be considered as a success if it is compatible with all the fea
 
 We aim to have a binding useful and adapted for the users and the future needs of the engine.
 
+If the solution is available on all of the already supported Operating System by FABGen.
 
 ## Out of scope 
 
@@ -228,6 +231,8 @@ The binding will not be compatible with the version of the engine that are not a
 It can not be fully compatible with the older versions of the engine. 
 
 If the engine receives new features, the binding will not automatically be supported for these versions.
+
+Making FABGen available on Mac M1, MacOS M1 machines use a different architecture, which we can only make usable unless if we use Docker on our machine to run it. 
 
 ## Glossary
 
@@ -250,3 +255,5 @@ If the engine receives new features, the binding will not automatically be suppo
 - MISRA: MISRA is an independent organization that provides coding standards for the development of embedded software, that specifies a set of rules for the C and C++ programming languages in order to keep the code consistent and to avoid common programming mistakes.
 
 - AutoSAR: AutoSAR is a set of guidelines for the development of software for automotive electronic control units (ECUs). It is based on the AUTOSAR standard and is used in the automotive industry, however it is not necessary to use it to develop the infotainment system of a car.
+
+- M1: The M1 is processor developped by Apple which is now the standard for their machines, it uses a different architecture than the regular CPU, a lot of softwares are not available with these machines because of that. 
