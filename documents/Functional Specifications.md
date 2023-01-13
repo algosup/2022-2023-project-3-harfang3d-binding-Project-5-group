@@ -34,9 +34,9 @@
 
 ## Overview 
 
-The goal of the project is to create a binding in Rust for the Harfang 3D and their 3D engine. They have a binding generator called FABGen that already supports the binding for C++/Python/Lua and Go.
+The goal of the project is to create a binding in Rust for the company Harfang 3D and their 3D engine. They have a binding generator called FABGen that already supports the binding for C++/Python/Lua and Go.
 
-The point of this project is to give access to the Harfang 3D engine in more languages and in this case in Rust, this will allow more people to use the engine and to use it for their projects.
+The project aims to make Harfang 3D engine accessible to more languages, specifically Rust, this will allow more people to use the engine and to use it for their projects.
 
 The project is due to be done the 17th February 2023.
 
@@ -44,8 +44,8 @@ The project is due to be done the 17th February 2023.
 
 Harfang 3D is a 3D engine written in C++ that is cross platform and open source. It is mainly used to develop industrial applications like simulation, data visualization, and Augmented Reality.
 
-The approach of the engine is based on openness and flexibility. It was created to fit the requirements of the industrial applications which consist in:
-- No dynamic memory allocation (everything is pre-allocated)
+The engine is designed to be open and flexible. It was created to fit the requirements of the industrial applications which consist in:
+- No dynamic memory allocation (memory is pre-allocated)
 - No exceptions (error handling is done with return codes)
 - No virtual functions (everything is done with function pointers)
 - ISO 26262 
@@ -76,7 +76,7 @@ Rust is a programming language that is designed to be fast, reliable and product
 
 FABGen already supports the binding for Python/Lua and Go, but it does not support Rust yet.
 
-With all of these features and the rise of Rust, it is a good idea to add the support for Rust for FABGen.
+Given Rust's popularity and its features, adding support for Rust in FABGen is a good idea.
 
 ## Audience
 
