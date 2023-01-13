@@ -449,10 +449,6 @@ class GoTestBed:
 		print("Cleanup...")
 
 		return success
-	
-class RustTestBed:
-	def build_and_test_extension(self, work_path, module, sources):
-		raise NotImplementedError("RustTestBed not implemented yet")
 
 def create_clang_rust_format_file(work_path):
 	with open(os.path.join(work_path, '_clang-format'), 'w') as file:
@@ -478,7 +474,7 @@ add_library({name} SHARED {' '.join(sources)})
 set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_path}/")
 		""")
 
-def RustTestBed():
+class RustTestBed:
 	def build_and_test_extension(self, work_path, module, sources):
 		if not hasattr(module, "test_rust"):
 			print("Can't find test_rust")
@@ -495,8 +491,6 @@ def RustTestBed():
 
 		create_rust_cmake_file("test", work_path, sources)
 		create_clang_rust_format_file(work_path)
-
-		
 
 # Clang format
 def create_clang_format_file(work_path):
