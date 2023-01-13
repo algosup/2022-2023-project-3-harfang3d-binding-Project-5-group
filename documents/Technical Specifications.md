@@ -416,13 +416,11 @@ The first step for converting Rust types to C is to know the corresponding type 
 ||i32|int|
 ||i64|long|
 ||i64|long long int|
-||i128|-|	
 ||u8|unsigned char|
 ||u16|unsigned short|
 ||u32|unsigned int|
 ||u64|unsigned long|
 ||u64|unsigned long long int|
-||u128|-|   
 ||isize|-|		
 ||usize|size_t|
 |Floating types|||
