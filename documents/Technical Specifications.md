@@ -355,15 +355,15 @@ When the tasks of a milestones will be done, the milestones will be completed.
 |Understanding the project|Have a view of all the interesting files of the project|Medium|
 ||Understanding the interesting files|High|
 |Documents|Technical specifications|Medium|
-||Architecture design choices||
-||Test plan||
+||Architecture design choices|Medium|
+||Test plan|High|
 |Working tests|Working on Windows|High|
-||Working on Linux||
-||Working on MacOs||
+||Working on Linux|High|
+||Working on MacOs|High|
 |Convert types|Rust types to C|High|
-||C types to Rust||
+||C types to Rust|High|
 |Convert keywords|Rust keywords to C|Medium|
-||C keywords to Rust||
+||C keywords to Rust|Medium|
 
 ## Code convention
 
