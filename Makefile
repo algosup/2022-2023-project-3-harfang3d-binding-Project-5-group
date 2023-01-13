@@ -22,8 +22,8 @@ tests-python: tests-echo # Run python tests.
 tests-golang: tests-echo # Run golang tests.
 	docker run -it --rm --name tests-golang --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --go
 
-#tests-lua54: tests-echo # Run lua54 tests.
-#	docker run -it --rm --name tests-lua54 --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --luabase /usr/bin/lua5.4
+tests-lua54: tests-echo # Run lua54 tests.
+	docker run -it --rm --name tests-lua54 --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --luabase /usr
 
 tests-rust: tests-echo # Run rust tests.
 	docker run -it --rm --name tests-rust --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --rust --debug variable_access
