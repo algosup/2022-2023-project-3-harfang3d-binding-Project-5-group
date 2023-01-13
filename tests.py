@@ -25,7 +25,6 @@ parser.add_argument('--rust', dest='rust_build', help='Build Rust', action="stor
 parser.add_argument('--debug', dest='debug_test', help='Generate a working solution to debug a test')
 parser.add_argument('--x64', dest='x64', help='Build for 64 bit architecture', action='store_true', default=False)
 parser.add_argument('--linux', dest='linux', help='Build on Linux', action='store_true', default=False)
-parser.add_argument('--rust', dest='rust', help='Build Rust', action='store_true', default=False)
 
 args = parser.parse_args()
 
