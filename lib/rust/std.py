@@ -85,7 +85,7 @@ def bind_std(gen):
     gen.bind_type("std::os::raw::c_schar", RustBasicTypeConverter, "C.schar", "c_schar")
 
 
-    class RustBoolConverter(lang.rust.rustTypeConverterCommon):
+    class RustBoolConverter(lang.rust.RustTypeConverterCommon):
         def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
             super().__init__(type, to_c_storage_type, bound_name, from_c_storage_type, needs_c_storage_class)
             self.rust_to_c_type = "C.bool"

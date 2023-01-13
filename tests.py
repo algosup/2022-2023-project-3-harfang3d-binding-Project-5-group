@@ -7,6 +7,7 @@ import subprocess
 import argparse
 import shutil
 import sys
+import gen
 import os
 
 import lang.cpython
@@ -14,6 +15,7 @@ import lang.lua
 import lang.go
 import lang.rust
 
+from types import ModuleType
 
 start_path = os.path.dirname(__file__)
 
@@ -53,7 +55,7 @@ run_test_list = []
 failed_test_list = []
 
 
-def run_test(gen, name, testbed):
+def run_test(gen, name: str, testbed): # gen: lang.{lang}.{lang}Generator(gen.FABGen), name: str, testbed: {lang}Testbed
 	work_path = tempfile.mkdtemp()
 	print('Working directory is ' + work_path)
 
@@ -61,7 +63,7 @@ def run_test(gen, name, testbed):
 
 	# generate the interface file
 	files = test_module.bind_test(gen)
-	sources = []
+	sources: list[str] = []
 
 	for path, src in files.items():
 		if path[-2:] != '.h':
@@ -91,7 +93,7 @@ def run_test(gen, name, testbed):
 		shutil.rmtree(work_path, ignore_errors=True)
 
 
-def run_tests(gen, names, testbed):
+def run_tests(gen, names: list[str], testbed): # gen: lang.{lang}.{lang}Generator(gen.FABGen), names: [str], testbed: class {lang}TestBed
 	print("Starting tests with generator %s" % gen.get_language())
 
 	test_count = len(names)
@@ -449,6 +451,39 @@ class GoTestBed:
 		print("Cleanup...")
 
 		return success
+	
+def build_and_deploy_rust_extension(work_path: str, build_path: str):
+	print("Generating build system...")
+	try:
+		if args.linux:
+			subprocess.check_output(['cmake', '..'])
+		else:
+			subprocess.check_output('cmake .. -G "%s"' % cmake_generator)
+	except subprocess.CalledProcessError as e:
+		print(e.output.decode('utf-8'))
+		return False
+
+	print("Building extension...")
+	try:
+		if args.linux:
+			subprocess.check_output(['make'])
+		else:
+			subprocess.check_output(['cmake', '--build', '.', '--config', 'Release'])
+	except subprocess.CalledProcessError as e:
+		print(e.output.decode('utf-8'))
+		return False
+
+	print("install extension...")
+	try:
+		if args.linux:
+			subprocess.check_output(['make', 'install'])
+		else:
+			subprocess.check_output(['cmake', '--install', '.', '--config', 'Release'])
+	except subprocess.CalledProcessError as e:
+		print(e.output.decode('utf-8'))
+		return False
+
+	return True
 
 def create_clang_rust_format_file(work_path):
 	with open(os.path.join(work_path, '_clang-format'), 'w') as file:
@@ -475,7 +510,7 @@ set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_
 		""")
 
 class RustTestBed:
-	def build_and_test_extension(self, work_path, module, sources):
+	def build_and_test_extension(self, work_path: str, module: ModuleType, sources: list[str]):
 		if not hasattr(module, "test_rust"):
 			print("Can't find test_rust")
 			return False
@@ -491,6 +526,9 @@ class RustTestBed:
 
 		create_rust_cmake_file("test", work_path, sources)
 		create_clang_rust_format_file(work_path)
+
+		if not build_and_deploy_rust_extension(work_path, build_path):
+			return False
 
 # Clang format
 def create_clang_format_file(work_path):
@@ -545,3 +583,15 @@ else:
 	for test in failed_test_list:
 		print(" - " + test)
 		#sys.exit(1)
+
+"""
+! Linux:
+1. Init with selected {lang}
+2. run_tests for each: {[names]}
+3. run_test {name}
+4. Generate the C interface file
+5. Testbed.build_and_test_extension
+6. create file with the right test_{lang} in it (test.{lang.ext})
+7. create_{lang}_cmake_file
+8. (don't care) create_clang_{lang}_format_file
+"""

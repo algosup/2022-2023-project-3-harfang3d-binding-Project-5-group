@@ -164,21 +164,44 @@ class RustExternTypeConverter(RustTypeConverterCommon):
         return "(*%s)(%s)" % (self.check_func, in_var)
     
     def get_type_glue(self, gen, module_name):
-        out = 
+        out = ''
 
-
-# class RustGenerator(gen.FABGen):
-#     default_class_converter = RustClassTypeDefaultConverter
-#     default_ptr_converter = RustPtrTypeDefaultConverter
-#     default_extern_converter = RustExternTypeConverter
-
-#     def __init__(self):
-#         super().__init__()
-#         self.rust = ''
-#         self.crust_directives = ''
-
-#     def get_language(self):
-#         return "Rust"
+class RustPtrTypeDefaultConverter(RustTypeConverterCommon):
+    def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
+        super().__init__(type, to_c_storage_type, bound_name, from_c_storage_type, needs_c_storage_class)
     
-#     # def start(self, module_name):
-#     #     super().start(module_name)
+    def is_type_ptr(self):
+        return True
+    
+    def get_type_api(self, module_name):
+        return ""
+    
+    def to_c_call(self, in_var, out_var_p, is_pointer):
+        out = f"let mut {out_var_p.replace('&', '_')} = {in_var}.h;\n"
+        return out
+    
+    def from_c_call(self, out_var, expr, ownership):
+        return ""
+    
+    def check_call(self, in_var):
+        return ""
+    
+    def get_type_glue(self, gen, module_name):
+        return ""
+
+
+class RustGenerator(gen.FABGen):
+    default_class_converter = RustClassTypeDefaultConverter
+    default_ptr_converter = RustPtrTypeDefaultConverter
+    default_extern_converter = RustExternTypeConverter
+
+    def __init__(self):
+        super().__init__()
+        self.rust = ''
+        self.crust_directives = ''
+
+    def get_language(self):
+        return "Rust"
+    
+    def start(self, module_name):
+        super().start(module_name)
