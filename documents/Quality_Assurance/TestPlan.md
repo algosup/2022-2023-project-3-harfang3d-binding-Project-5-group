@@ -4,59 +4,56 @@ This document is the test plan for this project. This document will list all the
 
 Author: [Malo Archimbaud](https://github.com/Malo-Archimbaud)
 
-Documents created on the: 03-01-23
+<details>
 
-Last modified on the: 06-01-23
+<summary> Table of content </summary>
 
 - [Introduction](#introduction)
 - [1 Glossary](#1-glossary)
-- [2 Test Strategy](#2-test-strategy)
-  - [2.1 Test type](#21-test-type)
-  - [2.2 Scope of testing](#22-scope-of-testing)
-    - [2.2.1 In-scope](#221-in-scope)
-    - [2.2.2 Out-of-scope](#222-out-of-scope)
-- [3 Test Environment](#3-test-environment)
-- [4 Testing](#4-testing)
-  - [4.1 Functionnal Test Table](#41-functionnal-test-table)
-  - [4.2 Test cases](#42-test-cases)
+- [2 Scope of testing](#2-scope-of-testing)
+- [3 Test Strategy](#3-test-strategy)
+- [4 Test Environment](#4-test-environment)
+- [5 Testing](#5-testing)
+  - [5.1 Functionnal Test Table](#51-functionnal-test-table)
+  - [5.2 Test cases](#52-test-cases)
+
+</details>
 
 # 1 Glossary
 
-- <ins>FABGen</ins>: FABGen is a set of scripts used to generate bindings with other languages such as Python, Lua and Go
-- <ins>HARFANG</ins>: Harfang is a 3D engine developed in C++ and it uses FABGen to have compatibility with other languages
+- <ins>FABGen</ins>: FABGen is a set of scripts used to generate bindings with other languages such as Python, Lua and Go.
+- <ins>Harfang</ins>: Harfang is a 3D engine developed in C++ and it uses FABGen to have compatibility with other languages.
+- <ins>Docker</ins>: Docker is a platform which allows you to build, share and run applications on any platform by emulating everything needed.
 
-# 2 Test Strategy
+# 2 Scope of testing
 
-## 2.1 Test type
+The goal of the project is to create the binding in Rust for FABGen. There are already some tests for the other languages, so we will translate these tests so that we can use them with Rust. We will also test that the bindings work properly by using Harfand3D in Rust.
 
-- **Functionnal testing**: these test will be used to verify that the software meets the [functionnal specification](../Functionnal%20Specifications.md).
-- **Technical testing**: these test will be used to verify that the software meets the [technical specification](../Technical%20Specifications.md).
+All the test provided should pass and we have to be able to use FABGen without crashes to meet our success criteria.
 
-## 2.2 Scope of testing
+# 3 Test Strategy
 
-### 2.2.1 In-scope
+The first step will be to pass the tests already provided with FABGen to be sure that our bindings works as intended. 
 
-The following features will be tested:
+Then, we will use our bindings to use Harfang3D in Rust and ensure that the engine behaves as it would with languages already supported by FABGen.
 
-### 2.2.2 Out-of-scope
+We will also let a user unfamiliar with FABGen uses it to ensure that our bindings are easy to use and that they are fairly intuitive.
 
-The following features will **not** be tested:
+Any bugs encountered while using the Rust bindings of FABGen will have to be reported on the [issue page](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/issues) of our github repo
 
-- All the standards (like ISO, Misra ...) that some industry have to respect when using the HARFANG engine don't have to be tested
+# 4 Test Environment
 
-# 3 Test Environment
+All the test are going to be run on Mac M1 with the M1 chip. Since the already available tests are not runable on M1 chip and making FABGen compatible is out of scope, we will use Docker to create an image which allow us to run the test.
 
-The test environment will be the following:
+# 5 Testing
 
-# 4 Testing
-
-## 4.1 Functionnal Test Table
+## 5.1 Functionnal Test Table
 
 | Function number | Description | Test Number | Test type |
 | --- | --- | --- | --- | 
 | F1 || FT1 ||
 
-## 4.2 Test cases
+## 5.2 Test cases
 
 - FT1
   - 
