@@ -269,6 +269,12 @@ FABGen had already a specific architecture for files and folders, so you must fo
 
 </pre>
 
+### Software architecture design choices
+
+<img src="img/architecture_diagram.png">
+
+
+
 ## Test plan
 
 Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/documents/documents/Quality_Assurance/TestPlan.md) of this project, it will helps us determine the effort needed to validate the quality of the project under test.
@@ -286,7 +292,7 @@ Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d
 
 ## Impact on other teams
 
-For Rust programmers will be allowed to use Harfang3D in Rust, it will be a gain of time.
+Rust programmers will be allowed to use Harfang3D in Rust, it will be a gain of time.
 For Harfang3D, it will bring new users.
 
 
@@ -361,6 +367,8 @@ When the tasks of a milestones will be done, the milestones will be completed.
 
 ## Code convention
 
+### Rust
+
 While writing code in Rust, we need to follow the convention of RFC 430.[^rfc]
 
 In general, Rust tends to use UpperCamelCase for "type-level" constructs and snake_case for "value-level" constructs.
@@ -390,6 +398,12 @@ In UpperCamelCase, acronyms and contractions of compound words count as a single
 In snake_case or SCREAMING_SNAKE_CASE, a "word" should never consist of a single letter unless it is the last "word". So, we have atree_map rather than a_tree_map, but PI_1 rather than PI1.
 
 Crate names should not use -rs or -rust as a prefix or suffix. Every crate is Rust! It serves no purpose to remind users of this constantly.
+
+### Pyhton
+
+While writing code in Python, we need to follow the convention of PEP-0008.[^pep]
+
+Here is a link to a [summary of the PEP-0008](https://github.com/PaulMarisOUMary/Discord-Bot/blob/main/.github/CONVENTIONS.md) made by Paul MARIS.
 
 ## Convert types
 
@@ -620,3 +634,5 @@ There will be all the questions that don't have an answer.
 [^contain]: A technology like Docker allow you to run your application in a container that isolates it from the underlying operating system, this way you can ensure that your application works on any system that supports running that container.
 
 [^rfc]: The [RFC 430](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md) is the code convention written by the developers of Rust.
+
+[^pep]: The [PEP-0008](https://peps.python.org/pep-0008/) is the code convention written by the developers of Python.
