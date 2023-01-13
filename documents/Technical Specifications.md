@@ -29,6 +29,7 @@
 - [Solution](#solution)
 	- [Current solution](#current-solution)
 	- [Proposed solution](#proposed-solution)
+    - [New FABGen architecture](#new-fabgen-architecture)
 	- [Test plan](#test-plan)
 - [Further considerations](#further-considerations)
     - [Impact on other teams](#impact-on-other-teams)
@@ -39,6 +40,8 @@
     - [Risks](#risks)
 - [Success evaluation](#success-evaluation)
 - [Work estimate](#work-estimate)
+    - [Code convention](#code-convention)
+    -[Convert types](#convert-types)
 - [Deliberation](#deliberation)
     - [Discussion](#discussion)
     - [Open questions](#open-questions)
@@ -109,7 +112,8 @@ You need to generate a code without dependencies and it has to be human-readable
 - Extern type support to "link" C++ types shared by different bindings.
 - Simple and hopefully easy to dive into the codebase.
 
-The solution has to be available for Windows, Linux, and macOS.
+The solution has to be available for Windows, Linux, and MacOS.
+
 
 # Solution
 
@@ -223,12 +227,51 @@ print(f'x: {c.x} y: {c.y} z: {c.z}')
 
 Achieving this degree of integration of the native API types with CPython requires the use of PyTypeObject which is exactly what Fabgen does to implement support for operator overload and automatic memory management of native objects.
 
+## New FABGen architecture
+
+FABGen had already a specific architecture for files and folders, so you must follow the pattern.
+
+<pre>
+├── lang
+|  ├── __init__.py
+|  ├── cpython.py
+|  ├── go.py
+|  ├── lua.py
+|  ├── xml.py
+|  ├── xml.py
+|  ├── xml.py
+|  └── <b>rust.py (added) </b>
+|
+├── lib
+|  ├── cpython
+|  │	├── __init__.py
+|  │	├── std.py
+|  │	└── stl.py
+|  ├── lua
+|  │	├── __init__.py
+|  │	├── std.py
+|  │	└── stl.py
+|  ├── xml
+|  │	├── __init__.py
+|  │	├── std.py
+|  │	└── stl.py
+|  └── <b>rust (added)
+|  	├── __init__.py
+|  	├── std.py
+|  	└── stl.py </b>
+|		
+├── tests
+├── bind.py
+├── gen.py
+├── license.md
+├── readme.md
+└── tests.py
+
+</pre>
 
 ## Test plan
 
-// to do a link to the test plan.
-
-[Test plan](#)
+Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/documents/documents/Quality_Assurance/TestPlan.md) of this project, it will helps us determine the effort needed to validate the quality of the project under test.
 
 # Further considerations
 
@@ -237,6 +280,8 @@ Achieving this degree of integration of the native API types with CPython requir
 - Any feature that can be done using what's available should be culled (aka. no feature creep).
 
 - Output library must feel as native as possible to the target language.
+
+- Do not lower the performance of existing code.
 
 
 ## Impact on other teams
@@ -255,9 +300,7 @@ This solution has to not affect the security of other services, and systems.
 
 ## Privacy
 
-Fabgen is licensed under the GPLv3[^gpl].
-
-**Fabgen output does not fall under the GPLv3, you are free to license it as you please.**
+Fabgen is licensed under the GPLv3[^gpl], **but the output does not fall under the GPLv3.**
 
 
 ## Accessibility
@@ -303,7 +346,9 @@ When the tasks of a milestones will be done, the milestones will be completed.
 
 |Milestones|Tasks|Priority|
 |----------|-----|------|
-|Documents|Technical specifications|High|
+|Understanding the project|Have a view of all the interesting files of the project|Medium|
+||Understanding the interesting files|High|
+|Documents|Technical specifications|Medium|
 ||Architecture design choices||
 ||Test plan||
 |Working tests|Working on Windows|High|
@@ -314,14 +359,205 @@ When the tasks of a milestones will be done, the milestones will be completed.
 |Convert keywords|Rust keywords to C|Medium|
 ||C keywords to Rust||
 
+## Code convention
+
+While writing code in Rust, we need to follow the convention of RFC 430.[^rfc]
+
+In general, Rust tends to use UpperCamelCase for "type-level" constructs and snake_case for "value-level" constructs.
+
+|Item|Convention|
+|-|-|
+|Crates	|unclear|
+|Modules	|snake_case|
+|Types	|UpperCamelCase|
+|Traits	|UpperCamelCase|
+|Enum variants|	UpperCamelCase|
+|Functions	|snake_case|
+|Methods	|snake_case|
+|General constructors|	new or with_more_details|
+|Conversion constructors|	from_some_other_type|
+|Macros|	snake_case!|
+|Local variables|	snake_case|
+|Statics	|SCREAMING_SNAKE_CASE|
+|Constants	|SCREAMING_SNAKE_CASE|
+|Type parameters|	concise UpperCamelCase, usually single uppercase letter: T|
+|Lifetimes|	short lowercase, usually a single letter: 'a, 'de, 'src|
+|Features|unclear but see C-FEATURE|
+
+
+In UpperCamelCase, acronyms and contractions of compound words count as a single word: use Uuid instead of UUID, Usize instead of USize or Stdin instead of studying. In snake_case, acronyms and contractions are lower-cased.
+
+In snake_case or SCREAMING_SNAKE_CASE, a "word" should never consist of a single letter unless it is the last "word". So, we have atree_map rather than a_tree_map, but PI_1 rather than PI1.
+
+Crate names should not use -rs or -rust as a prefix or suffix. Every crate is Rust! It serves no purpose to remind users of this constantly.
+
+## Convert types
+
+The first step for converting Rust types to C is to know the corresponding type in C language.
+
+### Primitives types:
+
+|Type|Rust|C & C++|
+|----|----|-------|
+|Integer types|||
+||i8|(signed) char|
+||i16|short|
+||i32|int|
+||i64|long|
+||i64|long long int|
+||i128|-|	
+||u8|unsigned char|
+||u16|unsigned short|
+||u32|unsigned int|
+||u64|unsigned long|
+||u64|unsigned long long int|
+||u128|-|   
+||isize|-|		
+||usize|size_t|
+|Floating types|||
+||f32|float|
+||f64|double|
+||-|long double|
+|Boolean|bool|bool|
+|Void, null|()|void|
+|String|||
+||char|signed char|
+||-|unsigned char|
+||str|-|
+|Never|!|-|
+
+### Sequence types:
+
+- Tuples: 
+
+In Rust, a tuple is a fixed-size collection of elements of different types, enclosed in parentheses and separated by commas. For example, (i32, f64, u8) defines a tuple containing an i32, a f64, and a u8. C doesn't have a direct equivalent to a tuple, but you can use structs to achieve similar functionality.
+
+- Arrays: 
+
+In Rust, an array is a fixed-size collection of elements of the same type, enclosed in square brackets and separated by commas. In C, arrays are also defined with square brackets, but the size must be a constant expression.
+
+- Slices: 
+
+In Rust, a slice is a dynamic view into a contiguous sequence of elements in memory. Slices are represented by the &[T] type, where T is the type of the elements. In C, slices can be represented by a pointer and a length.
+
+
+### User-defined types:
+
+User-defined types can include structs, enums, and unions. Here's a comparison of how they're represented in Rust and C:
+
+- Structs: 
+
+In Rust, a struct is a user-defined type that groups together a set of named fields, each with its own type.
+
+```Rust
+struct Point {
+    x: i32,
+    y: i32,
+}
+```
+
+In C, a struct is also a user-defined type that groups together a set of named fields, but each field must be preceded by its type.
+
+```C
+struct Point {
+    int x;
+    int y;
+};
+```
+- Enums: 
+
+In Rust, an enum is a user-defined type that can have a set of named variants, each with an optional set of fields. 
+
+```Rust
+enum Color {
+    Red,
+    Green,
+    Blue,
+}
+```
+
+In C, an enum is also a user-defined type that can have a set of named constants.
+
+```C
+enum Color {
+    Red,
+    Green,
+    Blue,
+};
+```
+
+- Unions: 
+
+In Rust, a union is a user-defined type that can have a set of named fields, but only one of them can be active at a time.
+
+```Rust
+union IntOrFloat {
+    i: i32,
+    f: f32,
+}
+```
+
+In C, a union is also a user-defined type that can have a set of named fields, but only one of them can be active at a time. 
+
+```C
+union IntOrFloat {
+    int i;
+    float f;
+};
+```
+
+### Function types:
+
+In Rust, function types are represented by the keyword fn, followed by a set of parameter types and a return type.
+
+```Rust
+fn add(a: i32, b: i32) -> i32 {
+    a + b
+}
+```
+
+In C, function types are represented by the return type, followed by the function name and a set of parameter types enclosed in parentheses.
+
+```C
+int add(int a, int b) {
+    return a + b;
+}
+```
+
+### Pointer types:
+
+In Rust, pointer types are represented by the & operator, followed by the type of the data that the pointer points to.
+
+```Rust
+let x = 5;
+let x_ptr: &i32 = &x;
+```
+
+In C, pointer types are represented by the * operator, followed by the type of the data that the pointer points to. 
+
+```C
+int x = 5;
+int* x_ptr = &x;
+```
+
+Rust also has the *const T and *mut T types, which are used to represent a pointer to a constant or a mutable memory location, respectively.
+
+Rust has the &mut and & types which are used to borrow a reference to a variable. C has the const keyword to specify that a variable should not be modified. Rust's type system enforces these borrowing rules at compile-time, whereas in C, it's the programmer's responsibility to ensure that the correct variables are accessed.
+
+Rust, pointers are not nullable by default, and the null pointer is represented by the std::ptr::null() or std::ptr::null_mut() functions, whereas in C, pointers can be assigned the value NULL, which is a macro that represents a null pointer.
 
 # Deliberation  
 
 ## Discussion
 
+Here will be all the answers and decisions we made during the project.
+
+- We will use Docker[^docker] because of the non-compatibility of the project with our Mac M1.
+- Add comments to the existing code to make it easier to understand.
+
 ## Open questions
 
-  
+There will be all the questions that don't have an answer.
 
 # End matter
 
@@ -338,9 +574,9 @@ When the tasks of a milestones will be done, the milestones will be completed.
 
 [Harfang3D](https://github.com/harfang3d)
 
-[Emmanuel Julien](https://github.com/ejulien)
+[Emmanuel Julien](https://github.com/ejulien) - Main Engine Architect
 
-[François Gutherz](#)
+[François Gutherz](#) - CTO & R&D management
 
 [ALGOSUP](https://github.com/algosup)
 
@@ -382,3 +618,5 @@ When the tasks of a milestones will be done, the milestones will be completed.
 [^os]: An operating system (OS) is the software that manages a computer's hardware and provides an interface for interacting with it.
 
 [^contain]: A technology like Docker allow you to run your application in a container that isolates it from the underlying operating system, this way you can ensure that your application works on any system that supports running that container.
+
+[^rfc]: The [RFC 430](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md) is the code convention written by the developers of Rust.
