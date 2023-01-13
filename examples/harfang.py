@@ -1,10 +1,17 @@
 # This is the Harfang Fabgen script used to generate bindings for the CPython and Lua languages.
 
 import lang.cpython
+import lang.lua
 
 import lib.std
 import lib.stl
 import lib
+
+import lib.cpython.stl
+import lib.cpython.std
+
+import lib.lua.stl
+import lib.lua.std
 
 import copy
 
@@ -27,9 +34,9 @@ def bind_std_vector(gen, T_conv):
 	
 	conv = gen.begin_class('std::vector<%s>' % T_conv.ctype, bound_name='%sList' % T_conv.bound_name.title(), features={'sequence': lib.std.VectorSequenceFeature(T_conv)})
 	if gen.get_language() == 'CPython':
-		gen.bind_constructor(conv, ['?%s sequence' % PySequence_T_type])
+		gen.bind_constructor(conv, ['?%s sequence' % PySequence_T_type]) # type: ignore
 	elif gen.get_language() == 'Lua':
-		gen.bind_constructor(conv, ['?%s sequence' % LuaTable_T_type])
+		gen.bind_constructor(conv, ['?%s sequence' % LuaTable_T_type]) # type: ignore
 
 	gen.bind_method(conv, 'push_back', 'void', ['%s v' % T_conv.ctype])
 	gen.bind_method(conv, 'size', 'size_t', [])
@@ -73,7 +80,7 @@ def expand_std_vector_proto(gen, protos):
 	return protos + expanded_protos
 
 
-def bind_task_system(gen):
+def bind_task_system(gen): # Function declaration "bind_task_system" is obscured by a declaration of the same name
 	gen.add_include('foundation/task_system.h')
 
 	gen.insert_binding_code('''

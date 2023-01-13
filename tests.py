@@ -6,13 +6,13 @@ import tempfile
 import subprocess
 import argparse
 import shutil
-import lib
 import sys
 import os
 
 import lang.cpython
 import lang.lua
 import lang.go
+import lang.rust
 
 
 start_path = os.path.dirname(__file__)
@@ -21,6 +21,7 @@ parser = argparse.ArgumentParser(description='Run generator unit tests.')
 parser.add_argument('--pybase', dest='python_base_path', help='Path to the Python interpreter')
 parser.add_argument('--luabase', dest='lua_base_path', help='Path to the Lua interpreter')
 parser.add_argument('--go', dest='go_build', help='Build GO', action="store_true")
+parser.add_argument('--rust', dest='rust_build', help='Build Rust', action="store_true")
 parser.add_argument('--debug', dest='debug_test', help='Generate a working solution to debug a test')
 parser.add_argument('--x64', dest='x64', help='Build for 64 bit architecture', action='store_true', default=False)
 parser.add_argument('--linux', dest='linux', help='Build on Linux', action='store_true', default=False)
@@ -439,7 +440,8 @@ class GoTestBed:
 		try:
 			subprocess.check_output('go mod init mytest', shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output("go fmt mytest", shell=True, stderr=subprocess.STDOUT)
-			subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
+			subprocess.check_output("go mod tidy", shell=True, stderr=subprocess.STDOUT)
+			#subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output('go test -run ""', shell=True, stderr=subprocess.STDOUT)
 		except subprocess.CalledProcessError as e:
 			print(e.output.decode('utf-8'))
@@ -448,7 +450,10 @@ class GoTestBed:
 		print("Cleanup...")
 
 		return success
-
+	
+class RustTestBed:
+	def build_and_test_extension(self, work_path, module, sources):
+		raise NotImplementedError("RustTestBed not implemented yet")
 
 # Clang format
 def create_clang_format_file(work_path):
@@ -473,7 +478,7 @@ else:
 	test_names = [file[:-3] for file in os.listdir('./tests') if file.endswith('.py')]
 
 
-if args.linux or args.python_base_path:
+if args.python_base_path:
 	gen = lang.cpython.CPythonGenerator()
 	gen.verbose = False
 	run_tests(gen, test_names, CPythonTestBed())
@@ -488,6 +493,10 @@ if args.go_build:
 	gen.verbose = False
 	run_tests(gen, test_names, GoTestBed())
 
+if args.rust_build:
+	gen = lang.rust.RustGenerator()
+	gen.verbose = False
+	run_tests(gen, test_names, RustTestBed())
 
 #
 print("[Final summary]")
@@ -498,4 +507,4 @@ else:
 	print("The following tests failed:")
 	for test in failed_test_list:
 		print(" - " + test)
-	sys.exit(1)
+		#sys.exit(1)

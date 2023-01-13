@@ -1,0 +1,9 @@
+**/*~
+
+!tests/
+!lib/
+!lang/
+
+!tests.py
+!gen.py
+!requirements.txt
