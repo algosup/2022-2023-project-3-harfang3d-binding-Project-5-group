@@ -65,7 +65,7 @@ The ALGOSUP binding is a project asked by the company Harfang3D[^harfang].
 This project aims to improve the FABGen[^fabgen] tool by adding the Rust bindings[^binding].
 In simple words, it will be a translation of your code to another language.
 
-This project is due on the 17th of February, 2023.
+This project started on the 3rd of January, 2023 and is due on the 17th of February, 2023.
 
 ## Context
 
