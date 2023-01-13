@@ -10,6 +10,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN apt update -y && apt upgrade -y
 
+RUN apt-get install -y rustc
+
 RUN apt-get install -y lua5.4
 
 RUN apt-get install -y golang
