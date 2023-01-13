@@ -500,18 +500,21 @@ AlignTrailingComments: false''')
 def create_rust_cmake_file(name, work_path, sources):
 	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
 	with open(cmake_path, 'w') as file:
-		file.write(f"""cmake_minimum_required(VERSION 3.18)
-project({name})
+		file.write(f"""cmake_minimum_required(VERSION 3.1)
+
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 set(CMAKE_MODULE_PATH ${{CMAKE_MODULE_PATH}} "{work_path}")
 
-set(CMAKE_Rust_COMPILER_ENV_VAR /usr/bin/rustc)
-
+project({name})
 enable_language(C CXX)
 set(CMAKE_CXX_STANDARD 14)
 
 add_library({name} SHARED {' '.join(sources)})
 set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_path}/")
-		""")
+
+install(TARGETS {name} DESTINATION "${{CMAKE_SOURCE_DIR}}/" COMPONENT {name})
+""")
 
 class RustTestBed:
 	def build_and_test_extension(self, work_path: str, module: ModuleType, sources: list[str]):
