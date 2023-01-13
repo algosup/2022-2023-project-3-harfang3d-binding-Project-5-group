@@ -238,8 +238,6 @@ FABGen had already a specific architecture for files and folders, so you must fo
 |  ├── go.py
 |  ├── lua.py
 |  ├── xml.py
-|  ├── xml.py
-|  ├── xml.py
 |  └── <b>rust.py (added) </b>
 |
 ├── lib
@@ -264,7 +262,6 @@ FABGen had already a specific architecture for files and folders, so you must fo
 ├── bind.py
 ├── gen.py
 ├── license.md
-├── readme.md
 └── tests.py
 
 </pre>
