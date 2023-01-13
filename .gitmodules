@@ -1,0 +1,3 @@
+[submodule "harfang3d"]
+	path = harfang3d
+	url = https://github.com/harfang3d/harfang3d.git
