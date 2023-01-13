@@ -58,31 +58,39 @@ def bind_std(gen):
             return f"{out_var} = {in_var}\n"
         # end of update
 
-    gen.bind_type("std::ffi::CString", RustConstCharPtrConverter)
-    gen.bind_type("std::ffi::CStr", RustConstCharPtrConverter)
+    gen.bind_type(RustBasicTypeConverter("char", "C.char", "i8"))
 
-    gen.bind_type("std::os::raw::c_char", RustBasicTypeConverter, "C.char", "c_char")
-    gen.bind_type("std::os::raw::c_uchar", RustBasicTypeConverter, "C.uchar", "c_uchar") # Unsigned char is not supported natively by Rust
+    gen.bind_type(RustBasicTypeConverter("unsigned char", "C.uchar", "u8"))
+    gen.bind_type(RustBasicTypeConverter("uint8_t", "C.uchar", "u8"))
+
+    gen.bind_type(RustBasicTypeConverter("short", "C.short", "i16"))
+    gen.bind_type(RustBasicTypeConverter("int16_t", "C.ushort", "i16"))
+    gen.bind_type(RustBasicTypeConverter("char16_t", "C.ushort", "i16"))
     
-    gen.bind_type("std::os::raw::c_short", RustBasicTypeConverter, "C.short", "c_short")
-    gen.bind_type("std::os::raw::c_ushort", RustBasicTypeConverter, "C.ushort", "c_ushort")
+    gen.bind_type(RustBasicTypeConverter("uint16_t", "C.ushort", "u16"))
+    gen.bind_type(RustBasicTypeConverter("unsigned short", "C.ushort ", "uint16"))
 
+    gen.bind_type(RustBasicTypeConverter("int32", "C.int32_t", "i32"))
+    gen.bind_type(RustBasicTypeConverter("int", "C.int32_t", "i32"))
+    gen.bind_type(RustBasicTypeConverter("int32_t", "C.int32_t", "i32"))
+    gen.bind_type(RustBasicTypeConverter("char32_t", "C.int32_t", "i32"))
+    gen.bind_type(RustBasicTypeConverter("size_t", "C.size_t", "i32"))
 
-    gen.bind_type("std::os::raw::c_int", RustBasicTypeConverter, "C.int", "c_int")
-    gen.bind_type("std::os::raw::c_uint", RustBasicTypeConverter, "C.uint", "c_uint")
-    gen.bind_type("std::os::raw::c_long", RustBasicTypeConverter, "C.long", "c_long")
-    gen.bind_type("std::os::raw::c_ulong", RustBasicTypeConverter, "C.ulong", "c_ulong")
-    gen.bind_type("std::os::raw::c_longlong", RustBasicTypeConverter, "C.longlong", "c_longlong")
-    gen.bind_type("std::os::raw::c_ulonglong", RustBasicTypeConverter, "C.ulonglong", "c_ulonglong")
+    gen.bind_type(RustBasicTypeConverter("uint32_t", "C.uint32_t", "u32"))
+    gen.bind_type(RustBasicTypeConverter("unsigned int32_t", "C.uint32_t", "u32"))
+    gen.bind_type(RustBasicTypeConverter("unsigned int", "C.uint32_t", "u32"))
 
-    gen.bind_type("std::os::raw::c_float", RustBasicTypeConverter, "C.float", "c_float")
-    gen.bind_type("std::os::raw::c_double", RustBasicTypeConverter, "C.double", "c_double")
+    gen.bind_type(RustBasicTypeConverter("int64_t", "C.int64_t", "i64"))
+    gen.bind_type(RustBasicTypeConverter("long", "C.int64_t", "i64"))
 
-    gen.bind_type("std::os::raw::c_bool", RustBasicTypeConverter, "C.bool", "c_bool")
+    gen.bind_type(RustBasicTypeConverter("float32", "C.float", "f32"))
+    gen.bind_type(RustBasicTypeConverter("float", "C.float", "f32"))
 
-    gen.bind_type("std::os::raw::c_void", RustBasicTypeConverter, "C.void", "c_void")
+    gen.bind_type(RustBasicTypeConverter("intptr_t", "C.intptr_t", "*i32")) # ! <--- Could change in the future
 
-    gen.bind_type("std::os::raw::c_schar", RustBasicTypeConverter, "C.schar", "c_schar")
+    gen.bind_type(RustBasicTypeConverter("unsigned long", "C.uint64_t", "u64"))
+    gen.bind_type(RustBasicTypeConverter("uint64_t", "C.uint64_t ", "u64"))
+    gen.bind_type(RustBasicTypeConverter("double", "C.double", "f64"))
 
 
     class RustBoolConverter(lang.rust.RustTypeConverterCommon):
