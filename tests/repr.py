@@ -41,11 +41,11 @@ package mytest
 '''
 
 tet_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let o = my_test::SomeStruct::new();
+	let o = SomeStruct::new();
 
 	assert_eq!(o, "repr!");
 }

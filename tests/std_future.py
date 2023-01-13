@@ -80,11 +80,11 @@ func Test(t *testing.T) {
 """
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let future = my_test::get_future_value();
+	let future = get_future_value();
 	assert!(future.valid(), "should be the same.");
 
 	future.wait();

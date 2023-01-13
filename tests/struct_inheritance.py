@@ -170,22 +170,22 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let base = my_test::base_class::new();
+	let base = base_class::new();
 	assert_eq!(base.base_method(), 4), "should be the same.");
 	assert_eq!(base.base_method_override(), 4), "should be the same.");
 
-	let derived = my_test::derived_class::new();
+	let derived = derived_class::new();
 	assert_eq!(derived.base_method(), 4), "should be the same.");         // can still access base class
 	assert_eq!(derived.derived_method(), 8), "should be the same.");      // can access its own methods
 	assert_eq!(derived.base_method_override(), 8), "should be the same."); // properly overshadows redeclared base methods
 
 	// argument casting through inheritance tree
-	assert_eq!(my_test::read_virtual_method_through_base_class(base), 6), "should be the same.");
-	assert_eq!(my_test::read_virtual_method_through_base_class(derived), 9), "should be the same.");
+	assert_eq!(read_virtual_method_through_base_class(base), 6), "should be the same.");
+	assert_eq!(read_virtual_method_through_base_class(derived), 9), "should be the same.");
 
 	assert_eq!(base.u, 6), "should be the same.");
 	assert_eq!(derived.u, 6), "should be the same."); // can access base class member
@@ -197,9 +197,9 @@ fn test() {
 	assert_eq!(derived.override, 12), "should be the same.");       // member overshadowing
 	assert_eq!(derived.static_override, 42), "should be the same."); // static member overshadowing
 
-	assert_eq!(my_test::base_class::v, 7), "should be the same.");
-	assert_eq!(my_test::derived_class::v, 7), "should be the same.");
-	assert_eq!(my_test::base_class::static_override, 1), "should be the same.");
-	assert_eq!(my_test::derived_class::static_override, 42), "should be the same.");
+	assert_eq!(base_class::v, 7), "should be the same.");
+	assert_eq!(derived_class::v, 7), "should be the same.");
+	assert_eq!(base_class::static_override, 1), "should be the same.");
+	assert_eq!(derived_class::static_override, 42), "should be the same.");
 }
 '''

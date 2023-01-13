@@ -89,11 +89,11 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let mut s = my_test::simple_struct::new();
+	let mut s = simple_struct::new();
 
 	assert_eq!(s.a(), 3, "should be the same.");
 	assert_eq!(s.b(), 11, "should be the same.");

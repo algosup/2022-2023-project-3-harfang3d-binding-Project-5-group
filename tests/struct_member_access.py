@@ -139,11 +139,11 @@ func Test(t *testing.T) {
 """
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let s = my_test::return_simple_struct_by_pointer();
+	let s = return_simple_struct_by_pointer();
 
 	assert_eq!(s.a, 7, "should be the same);
 	assert_eq!(s.b, 17.5, "should be the same);

@@ -47,14 +47,14 @@ package mytest
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
 	let exception_raised = false;
 
 	if let Err(_) = std::panic::catch_unwind(|| {
-		my_test::get_int();
+		get_int();
 	}) {
 		exception_raised = true;
 	}

@@ -106,21 +106,21 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let sp = my_test::get_shared_ptr_to_simple_struct();
+	let sp = get_shared_ptr_to_simple_struct();
 
 	assert_eq!(sp.u, 4.0, "should be the same.");
 	assert_eq!(sp.v, 7, "should be the same.");
 
-	let sp2 = my_test::ssimple_struct(9.0);
+	let sp2 = ssimple_struct(9.0);
 
 	assert_eq!(sp2.u, 9.0, "should be the same.");
 	assert_eq!(sp2.v, 90, "should be the same.");
 
-	let spn = my_test::get_empty_shared_ptr();
+	let spn = get_empty_shared_ptr();
 
 	assert!(spn.is_none(), "should be none.");
 }

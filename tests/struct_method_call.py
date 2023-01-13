@@ -141,11 +141,11 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let s = my_test::simple_struct::SimplestConstructor();
+	let s = simple_struct::SimplestConstructor();
 
 	assert_eq!(s.get_a(), 1, "should be the same.");
 	assert_eq!(s.set_a(8, 2), true, "should be the same.");
@@ -155,21 +155,21 @@ fn test() {
 	assert_eq!(s.set_a(9), 9, "should be the same.");
 	assert_eq!(s.get_a(), 9, "should be the same.");
 
-	assert_eq!(my_test::simple_struct::get_static_int(), 4, "should be the same.");
+	assert_eq!(simple_struct::get_static_int(), 4, "should be the same.");
 
-	let mut s_out = my_test::get_modify_arg_out();
+	let mut s_out = get_modify_arg_out();
 	assert_eq!(s_out.get_a(), 4, "should be the same.");
 
-	s_out = my_test::get_modify_arg_out_with_k(my_test::simple_struct::WithV(5));
+	s_out = get_modify_arg_out_with_k(my_test::simple_struct::WithV(5));
 	assert_eq!(s_out.get_a(), 16, "should be the same.");
 
-	let s2 = my_test::simple_struct2::WithOtherStruct(s_out);
+	let s2 = simple_struct2::WithOtherStruct(s_out);
 	assert_eq!(s2.get_a(), 16, "should be the same.");
 
-	let mut s_out2 = my_test::get_modify_arg_out2();
+	let mut s_out2 = get_modify_arg_out2();
 	assert_eq!(s_out2.get_a(), 4, "should be the same.");
 
-	s_out2 = my_test::get_modify_arg_out2_with_k(s);
+	s_out2 = get_modify_arg_out2_with_k(s);
 	assert_eq!(s_out2.get_a(), 28, "should be the same.");
 }
 '''

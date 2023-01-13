@@ -124,34 +124,34 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	assert_eq!(my_test::get_int(), 8, "should be the same");
+	assert_eq!(get_int(), 8, "should be the same");
 	
-	assert_eq!(my_test::get_global_int(), 0, "should be the same");
+	assert_eq!(get_global_int(), 0, "should be the same");
 
-	my_test::set_global_int();
-	assert.eq!(my_test::get_global_int(), 8, "should be the same");
+	set_global_int();
+	assert.eq!(get_global_int(), 8, "should be the same");
 
 	// overload
-	assert_eq!(my_test::get(), 0, "should be the same");
-	assert_eq!(my_test::get_with_v(2), 1, "should be the same");
-	assert_eq!(my_test::get_with_vk(4, 3), 12, "should be the same");
-	assert_eq!(my_test::get_with_vkb(4, 3, 2), 14, "should be the same");
+	assert_eq!(get(), 0, "should be the same");
+	assert_eq!(get_with_v(2), 1, "should be the same");
+	assert_eq!(get_with_vk(4, 3), 12, "should be the same");
+	assert_eq!(get_with_vkb(4, 3, 2), 14, "should be the same");
 
 	// optional argument
-	assert.eq!(my_test::get_global_int_multiplied(), 15, "should be the same");
-	assert.eq!(my_test::get_global_int_multiplied_with_k(2), 6, "should be the same");
+	assert.eq!(get_global_int_multiplied(), 15, "should be the same");
+	assert.eq!(get_global_int_multiplied_with_k(2), 6, "should be the same");
 
 	// argument in out
 	let mut v = 2;
-	my_test::get_modify_arg_in_out(&mut v);
+	get_modify_arg_in_out(&mut v);
 	assert_eq!(v, 17, "should be the same");
 
 	let mut v = 2;
-	my_test::get_modify_arg_in_out_with_k(&mut v, 4);
+	get_modify_arg_in_out_with_k(&mut v, 4);
 	assert_eq!(v, 14, "should be the same");
 }
 '''

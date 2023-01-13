@@ -80,16 +80,16 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let a = my_test::get_obj0();
-	let b = my_test::get_obj0();
+	let a = get_obj0();
+	let b = get_obj0();
 
 	assert_eq!(a, b, "should be the same.");
 
-	let c = my_test::get_obj1();
+	let c = get_obj1();
 
 	assert_ne!(a, c, "should not be the same.");
 	assert_ne!(b, c, "should not be the same.");

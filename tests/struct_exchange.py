@@ -109,21 +109,21 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
 	// take by value
-	let s = my_test::return_simple_struct_by_value();
-	my_test::take_simple_struct_by_value(s);
-	assert!(my_test::test_simple_struct(), "should be true.");
+	let s = return_simple_struct_by_value();
+	take_simple_struct_by_value(s);
+	assert!(test_simple_struct(), "should be true.");
 
-	let sp = my_test::return_simple_struct_by_pointer();
-	my_test::take_simple_struct_by_value(sp);
-	assert!(my_test::test_simple_struct(), "should be true.");
+	let sp = return_simple_struct_by_pointer();
+	take_simple_struct_by_value(sp);
+	assert!(test_simple_struct(), "should be true.");
 
-	let sr = my_test::return_simple_struct_by_ref();
-	my_test::take_simple_struct_by_value(sr);
-	assert!(my_test::test_simple_struct(), "should be true.");
+	let sr = return_simple_struct_by_ref();
+	take_simple_struct_by_value(sr);
+	assert!(test_simple_struct(), "should be true.");
 }
 '''

@@ -172,12 +172,12 @@ func Test(t *testing.T) {
 """
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let a = my_test::simple_struct::new(4);
-	let b = my_test::simple_struct::new(8);
+	let a = simple_struct::new(4);
+	let b = simple_struct::new(8);
 
 	let mut s = a.add_simple_struct(&b);
 	assert_eq!(s.get_v(), 12, "should be the same.");

@@ -67,12 +67,12 @@ func Test(t *testing.T) {
 """
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let s = my_test::new_simple_struct();
-	let u = my_test::new_simple_struct_with_v(4);
+	let s = new_simple_struct();
+	let u = new_simple_struct_with_v(4);
 
 	assert_eq!(s.get_v(), -8), "should be the same.");
 	assert_eq!(u.get_v(), 4), "should be the same.");

@@ -94,21 +94,21 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let a = my_test::get_obj0();
-	let b = my_test::get_obj0();
+	let a = get_obj0();
+	let b = get_obj0();
 
 	assert!(a == b, "should be the equal.");
 
-	let c = my_test::get_obj1();
+	let c = get_obj1();
 
 	assert!(a != c, "should be different.");
 	assert!(b != c, "should be different.");
 
-	let d = my_test::get_obj2();
+	let d = get_obj2();
 
 	assert!(a == d, "should be the equal.");
 }

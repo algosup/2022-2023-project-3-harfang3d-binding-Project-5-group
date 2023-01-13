@@ -45,11 +45,11 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let v = my_test::return_nullptr();
+	let v = return_nullptr();
 	assert!(v.is_none(), "should be none.");
 }
 '''

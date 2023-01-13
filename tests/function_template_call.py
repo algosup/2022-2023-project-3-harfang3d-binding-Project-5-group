@@ -49,11 +49,11 @@ func Test(t *testing.T) {
 """
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	assert_eq!(my_test::get_int(), 8, "should be the same.");
-	assert_eq!(my_test::get_float(), 8.0, "should be the same.");
+	assert_eq!(get_int(), 8, "should be the same.");
+	assert_eq!(get_float(), 8.0, "should be the same.");
 }
 '''

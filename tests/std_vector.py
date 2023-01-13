@@ -248,11 +248,11 @@ func Test(t *testing.T) {
 '''
 
 test_rust = '''\
-use my_test;
+use my_test::*;
 
 #[test]
 fn test() {
-	let mut v = my_test::vector_of_int();
+	let mut v = vector_of_int();
 
 	assert_eq!(v.size(), 0, "should be the same.");
 	assert_eq!(v.len(), 0, "should be the same.");
@@ -282,19 +282,19 @@ fn test() {
 
 	assert_eq(v.get(0), 20, "should be the same.");
 
-	assert_eq!(my_test::consume_pointer_to_int(v.data()), 16, "should be the same.");
+	assert_eq!(consume_pointer_to_int(v.data()), 16, "should be the same.");
 
 	// implicit cast to const int *
-	//	assert_eq!(my_test::consume_pointer_to_int(v), 16, "should be the same.");
+	//	assert_eq!(consume_pointer_to_int(v), 16, "should be the same.");
 
 	// construct from rust slice
-	let w = my_test::vector_of_int_with_sequence(&[5, 2, 8]);
+	let w = vector_of_int_with_sequence(&[5, 2, 8]);
 	
 	assert_eq!(w.get(0), 5, "should be the same.");
 	assert_eq!(w.get(1), 2, "should be the same.");
 	assert_eq!(w.get(2), 8, "should be the same.");
 
-	let mut v_ptr = my_test::vector_of_int_ptr();
+	let mut v_ptr = vector_of_int_ptr();
 	v_ptr.push_back(None);
 	v_ptr.push_back(v.data());
 
