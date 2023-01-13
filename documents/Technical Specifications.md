@@ -408,32 +408,32 @@ The first step for converting Rust types to C is to know the corresponding type 
 
 ### Primitives types:
 
-|Type|Rust|C & C++|
-|----|----|-------|
-|Integer types|||
-||i8|(signed) char|
-||i16|short|
-||i32|int|
-||i64|long|
-||i64|long long int|
-||u8|unsigned char|
-||u16|unsigned short|
-||u32|unsigned int|
-||u64|unsigned long|
-||u64|unsigned long long int|
-||isize|-|		
-||usize|size_t|
-|Floating types|||
-||f32|float|
-||f64|double|
-||-|long double|
-|Boolean|bool|bool|
-|Void, null|()|void|
-|String|||
-||char|signed char|
-||-|unsigned char|
-||str|-|
-|Never|!|-|
+|Type|Rust|C & C++|stdint.h / cstdint|
+|----|----|-------|------------------|
+|Integer types||||
+||i8|(signed) char|nt8_t|
+||i16|short|int16_t|
+||i32|int|uint32_t|
+||i64|long|int64_t|
+||i64|long long int|int64_t|
+||u8|unsigned char|uint8_t|
+||u16|unsigned short|uint16_t|
+||u32|unsigned int|int32_t|
+||u64|unsigned long|uint64_t|
+||u64|unsigned long long int|uint64_t|
+||isize|-||	
+||usize|size_t||
+|Floating types||||
+||f32|float||
+||f64|double||
+||-|long double||
+|Boolean|bool|bool||
+|Void, null|()|void||
+|String||||
+||char|signed char||
+||-|unsigned char||
+||str|-||
+|Never|!|-||
 
 ### Sequence types:
 
