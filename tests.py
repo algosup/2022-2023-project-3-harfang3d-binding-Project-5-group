@@ -498,11 +498,15 @@ AlwaysBreakTemplateDeclarations: false
 AlignTrailingComments: false''')
 
 def create_rust_cmake_file(name, work_path, sources):
-	with open(os.path.join(work_path, 'CMakeLists.txt'), 'w') as file:
-		file.write(f"""cmake_minimum_required(VERSION 3.0)
-set(CMAKE_MODULE_PATH ${{CMAKE_MODULE_PATH}} "{work_path}")
+	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
+	with open(cmake_path, 'w') as file:
+		file.write(f"""cmake_minimum_required(VERSION 3.18)
 project({name})
-enable_language(Rust)
+set(CMAKE_MODULE_PATH ${{CMAKE_MODULE_PATH}} "{work_path}")
+
+set(CMAKE_Rust_COMPILER_ENV_VAR /usr/bin/rustc)
+
+enable_language(C CXX)
 set(CMAKE_CXX_STANDARD 14)
 
 add_library({name} SHARED {' '.join(sources)})
@@ -570,7 +574,7 @@ if args.go_build:
 
 if args.rust_build:
 	gen = lang.rust.RustGenerator()
-	gen.verbose = False
+	gen.verbose = True
 	run_tests(gen, test_names, RustTestBed())
 
 #
