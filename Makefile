@@ -1,4 +1,4 @@
-.PHONY: help tests-echo clear-build
+.PHONY: help tests-echo clear-build tests-all
 .DEFAULT_GOAL=help
 
 CURRENT_DIR=$(shell pwd)
@@ -27,3 +27,5 @@ tests-lua54: tests-echo # Run lua54 tests.
 
 tests-rust: tests-echo # Run rust tests.
 	docker run -it --rm --name tests-rust --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --rust --debug variable_access
+
+tests-all: tests-python tests-golang tests-lua54 tests-rust # Run all tests.
