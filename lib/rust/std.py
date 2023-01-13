@@ -107,6 +107,3 @@ def bind_std(gen):
             return "bool (%s)" % (out_var)
     
     gen.bind_type(RustBoolConverter("bool")).nobind = True
-
-
-

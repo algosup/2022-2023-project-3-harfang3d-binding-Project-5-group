@@ -13,7 +13,7 @@ import lang.lua
 import lang.go
 import lang.cpython
 import lang.xml
-import lang.rust 
+import lang.rust
 
 import lib.std
 import lib.stl
