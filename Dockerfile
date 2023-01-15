@@ -15,6 +15,7 @@ RUN apt-get install -y rustc
 RUN apt-get install -y lua5.4
 
 RUN apt-get install -y golang
+RUN apt-get install -y golang-golang-x-tools
 
 RUN apt-get install -y xdg-utils --fix-missing
 
