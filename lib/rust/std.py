@@ -37,7 +37,15 @@ def bind_std(gen):
     gen.bind_type(RustConstCharPtrConverter("const char *"))
 
     class RustBasicTypeConverter(lang.rust.RustTypeConverterCommon):
-        def __init__(self, type, c_type, rust_type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
+        def __init__(self,
+            type: str,                  # C++ type
+            c_type: str,                # C type
+            rust_type: str,             # Rust type
+            to_c_storage_type=None,
+            bound_name=None,
+            from_c_storage_type=None,
+            needs_c_storage_class=False
+        ):
             super().__init__(type, to_c_storage_type, bound_name, from_c_storage_type, needs_c_storage_class)
             self.rust_to_c_type = c_type
             self.rust_type = rust_type
