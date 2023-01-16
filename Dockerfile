@@ -7,6 +7,7 @@ WORKDIR /usr/src/tests
 
 COPY requirements.txt /usr/src/tests
 RUN pip3 install --no-cache-dir -r requirements.txt
+RUN rm /usr/src/tests/requirements.txt
 
 RUN apt update -y && apt upgrade -y
 
