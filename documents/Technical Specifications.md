@@ -41,7 +41,7 @@
 - [Success evaluation](#success-evaluation)
 - [Work estimate](#work-estimate)
     - [Code convention](#code-convention)
-    -[Convert types](#convert-types)
+    - [Convert types](#convert-types)
 - [Deliberation](#deliberation)
     - [Discussion](#discussion)
     - [Open questions](#open-questions)
