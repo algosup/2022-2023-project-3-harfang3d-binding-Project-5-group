@@ -516,6 +516,39 @@ set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_
 install(TARGETS {name} DESTINATION "${{CMAKE_SOURCE_DIR}}/" COMPONENT {name})
 """)
 
+def build_and_deploy_rust_extension(work_path, build_path):
+	print("Generating build system...")
+	try:
+		if args.linux:
+			subprocess.check_output(['cmake', '..'])
+		else:
+			subprocess.check_output('cmake .. -G "%s"' % cmake_generator)
+	except subprocess.CalledProcessError as e:
+		print(e.output.decode('utf-8'))
+		return False
+
+	print("Building extension...")
+	try: 
+		if args.linux:
+			subprocess.check_output(['make', '..'])
+		else:
+			subprocess.check_output(['cmake', '--build', '.', '--config', 'Release'])
+	except subprocess.CalledProcessError as e:
+		print(e.output.decode('utf-8'))
+		return False
+	
+	print("install extension...")
+	try: 
+		if args.linux:
+			subprocess.check_output(['make', 'install'])
+		else:
+			subprocess.check_output(['cmake', '--install', '.', '--config', 'Release'])
+	except subprocess.CalledProcessError as e:
+		print(e.output.decode('utf-8'))
+		return False
+	
+	return True
+
 class RustTestBed:
 	def build_and_test_extension(self, work_path: str, module: ModuleType, sources: list[str]):
 		if not hasattr(module, "test_rust"):

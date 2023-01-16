@@ -24,7 +24,7 @@ def clean_name(name):
     return new_name
 
 
-def clean_name_with_type(name, type):
+def clean_name_with_title(name, type):
     '''
     This function is used to clean the name of the function and the type of the function, to format everything
 
@@ -557,7 +557,7 @@ struct %s {
                 
                 if val["conv"].is_type_class():
                     retval_boundname = val["conv"].bound_name
-                    retval_boundname = clean_name_with_type(retval_boundname)
+                    retval_boundname = clean_name_with_title(retval_boundname)
 
                     src += f"   let {retval_name}_rust = {retval_boundname}::from_c({retval_name});\n"
                     
@@ -567,5 +567,43 @@ struct %s {
                         # However, Rust has a built-in mechanism to do that, so we don't need it 
                         src += f"  let {retval_name}_rust, fn(cleanval &{retval_boundname}) {{\n" \
                                f"  libc::{clean_name_with_title(self.name)}{retval_boundname}libc::free(cleanval);\n" \
-                            
+                                f" }};\n"
+                    retval_name = f"{retval_name}_rust"
+        
+        elif is_pointer:
+            if "RustConstCharPtrConverter" in str(val["conv"]) or \
+                "RustStringConverter" in str(val)["conv"]:
+                stars = self.__get_stats(val)
 
+                retval_name_from_c = "*"*len(stars) + retval_name
+                if "RustConstCharPtrConverter" in str(val["conv"]):
+                    retval_name_from_c = "*"*(len(stars) -1) + retval_name
+
+                conversation_ret = val['conv'].from_c_call(retval_name_from_c, "","")
+
+                # This if statement is used to check if the conversation_ret has a pointer in it
+                if len(stars) >= 1:
+                    prefix = "&" * len(stars)
+                    if "RustConstCharPtrConverter" in str(val["conv"]):
+                        prefix = "&" * (len(stars) -1)
+
+                    # if it's a const char*, we need to convert it to a string 
+                    src+= f"let mut{retval_name}_rust = string({conversation_ret});\n"
+                    retval_name = prefix + retval_name + "_rust"
+                else:
+                    conversation_ret = retval_name
+            
+            elif self.__get_is_type_class_or_pointer_with_class(val["conv"]):
+                retval_boundname = val["conv"].bound_name
+                retval_boundname = clean_name_with_title(retval_boundname)
+                src += f"let mut{retval_name}_rust &{retval_boundname}\n" \
+                        f"if {retval_name} != std::ptr::null_mut() {{\n" \
+                        f"  {retval_name}_rust = &{retval_boundname}{{h:{retval_name}}}\n"
+
+                        # src += f"  let {retval_name}_rust, fn(cleanval &{retval_boundname}) {{\n" \
+                        #        f"  libc::{clean_name_with_title(self.name)}{retval_boundname}libc::free(cleanval);\n" \
+                        #         f" }};\n"                
+
+
+                if rval_ownership != "NonOwning" and not is_ref and not non_owning:
+                    src += f"   let "
