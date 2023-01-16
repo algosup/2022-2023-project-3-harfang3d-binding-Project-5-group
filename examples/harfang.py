@@ -2,6 +2,7 @@
 
 import lang.cpython
 import lang.lua
+import lang.rust
 
 import lib.std
 import lib.stl
@@ -12,6 +13,9 @@ import lib.cpython.std
 
 import lib.lua.stl
 import lib.lua.std
+
+import lib.rust.stl
+import lib.rust.std
 
 import copy
 
@@ -41,7 +45,7 @@ def bind_std_vector(gen, T_conv):
 	elif gen.get_language() == 'Lua':
 		gen.bind_constructor(conv, ['?%s sequence' % LuaTable_T_type]) # type: ignore
 	elif gen.get_language() == 'Rust':
-		gen.bind_constructor(conv, ['?%s sequence' % RustTable_T_type])
+		gen.bind_constructor(conv, ['?%s sequence' % RustTable_T_type]) # type: ignore
 
 	gen.bind_method(conv, 'push_back', 'void', ['%s v' % T_conv.ctype])
 	gen.bind_method(conv, 'size', 'size_t', [])
