@@ -70,6 +70,7 @@ def bind_std(gen):
     gen.bind_type(RustBasicTypeConverter("char", "C.char", "i8"))
 
     gen.bind_type(RustBasicTypeConverter("unsigned char", "C.uchar", "u8"))
+    gen.bind_type(RustBasicTypeConverter("int8t_t", "C.short", "i8"))
     gen.bind_type(RustBasicTypeConverter("uint8_t", "C.uchar", "u8"))
 
     gen.bind_type(RustBasicTypeConverter("short", "C.short", "i16"))
