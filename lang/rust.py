@@ -5,10 +5,17 @@ import re
 
 
 def route_lambda(name):
+    '''
+    This function is used to concatenate the name of the function and the arguments of the function, to format everything for the Rust code    
+    '''
+
     return lambda args: "%s(%s);" % (name, ", ".join(args))
 
 
 def clean_name(name):
+    '''
+    This function list all the keywords in Rust (even the ones that are not used yet) and check if the name of the function is a keyword, if it is, we add an underscore at the end of the name of the function, to follow the rust syntax
+    '''
     new_name = name[0].lower() + re.sub(r'([A-Z])', r'_\1',
                                         name[1:]).lower()  # Convert to snake case
     # The following line is a list of keywords in rust, the words after "abstract" are reserved to be used in the future
@@ -55,6 +62,9 @@ def clean_name_with_type(name, type):
 
 
 class RustTypeConverterCommon(gen.TypeConverter):
+    '''
+    This class is used to convert the type of the function to the type of Rust 
+    '''
     def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
         super().__init__(type, to_c_storage_type, bound_name,
                          from_c_storage_type, needs_c_storage_class)
@@ -63,6 +73,9 @@ class RustTypeConverterCommon(gen.TypeConverter):
         self.rust_type = None
 
     def get_type_api(self, module_name):
+        '''
+        This function is used to get the type of the function in the Rust code
+        '''
         out = "// type API for %s\n" % self.base_type
         if self.c_storage_class:
             out += "struct %s;\n" % self.c_storage_class
@@ -83,6 +96,9 @@ class RustTypeConverterCommon(gen.TypeConverter):
 
 
 class DummyTypeConverter(gen.TypeConverter):
+    '''
+    This class inherits from the class TypeConverter, and is used as a template for the other classes
+    '''
     def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
         super().__init__(type, to_c_storage_type, bound_name,
                          from_c_storage_type, needs_c_storage_class)
@@ -104,6 +120,11 @@ class DummyTypeConverter(gen.TypeConverter):
 
 
 class RustPtrTypeConverter(gen.TypeConverter):
+    '''
+    This class converts the type of the function to the type of Rust 
+
+    In this case it is used with pointers 
+    '''
     def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
         super().__init__(type, to_c_storage_type, bound_name,
                          from_c_storage_type, needs_c_storage_class)
@@ -125,6 +146,11 @@ class RustPtrTypeConverter(gen.TypeConverter):
 
 
 class RustClassTypeDefaultConverter(RustTypeConverterCommon):
+    '''
+    This class converts the type of the function to the type of Rust
+
+    In this case it is used without pointers
+    '''
     def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
         super().__init__(type, to_c_storage_type, bound_name,
                          from_c_storage_type, needs_c_storage_class)
@@ -150,6 +176,11 @@ class RustClassTypeDefaultConverter(RustTypeConverterCommon):
 
 
 class RustExternTypeConverter(RustTypeConverterCommon):
+    '''
+    This class inherits from the class RustTypeConverterCommon, and is used to convert the type of the function to the type of Rust
+
+    It is used when the type is an external type (for example, a type from another module) that requires to use `extern` keyword
+    '''
     def __init__(self, type, to_c_storage_type, bound_name, module):
         super().__init__(type, to_c_storage_type, bound_name)
         self.module = module
@@ -188,6 +219,11 @@ class RustExternTypeConverter(RustTypeConverterCommon):
 
 
 class RustGenerator(gen.FABGen):
+    ''' 
+    This class is the main class of the generator, it is used to initialize the generator and to generate the code of the binding
+
+    It inherits from the class FABGen, which is the main class of the generator
+    '''
     default_ptr_converter = RustPtrTypeConverter
     default_class_converter = RustClassTypeDefaultConverter
     default_extern_converter = RustExternTypeConverter
@@ -201,7 +237,7 @@ class RustGenerator(gen.FABGen):
     def get_language(self):
         return "Rust"
 
-    def output_includes(self):
+    def output_includes(self): 
         pass
 
     def start(self, module_name):
@@ -252,6 +288,13 @@ class RustGenerator(gen.FABGen):
         return ""
 
     def get_binding_api_declaration(self):
+        '''
+        This function is used to generate the declaration of the binding API 
+
+        It is also used to generate the declaration of the type info structure 
+
+        It returns a string containing the declaration of the binding API
+        '''
         type_info_name = gen.apply_api_prefix("type_info")
 
         out = '''\
@@ -280,6 +323,11 @@ struct %s {
             "get_wrapped_object_type_tag")
 
     def output_binding_api(self):
+        '''
+        This function is used to generate two C functions, `get_type_info` and `get_wrapped_object_type_tag
+        
+        The function takes a single argument which is the type tag of the object, and returns a pointer to the type info structure`
+        '''
         type_info_name = gen.apply_api_prefix("type_info")
         self._source += '''
     %s *%s(const char *name) {
@@ -295,32 +343,56 @@ struct %s {
     }\n\n''' % gen.apply_api_prefix("get_wrapped_object_type_tag")
 
     def get_output(self):
+        '''
+        This function return the generated code of the binding API 
+
+        It returns a dictionary containing the generated code of the binding API
+        '''
         return {"wrapper.cpp": self.rust_c, "wrapper.h": self.rust_h, "bind.rs": self.rust_bind, "translate_file.json": self.rust_translate_file}
 
     def _get_type(self, name):
+        '''
+        This function only returns the type converter of the given name
+        '''
         for type in self._bound_types:
             if type:
                 return type
         return None
 
     def _get_conv(self, conv_name):
+        '''
+        This function check if the given name is a type converter, if it is, it returns the type converter, otherwise it returns None
+        '''
         if conv_name in self._FABGen_type_convs:
             return self.get_conv(conv_name)
         return None
 
     def _get_conv_from_bound_name(self, bound_name):
+        '''
+        This function check if the given bound name is a type converter, if it is, it returns the type converter, otherwise it returns None
+        '''
         for name, conv in self._FABGen__type_convs.items():
             if conv.bound_name == bound_name:
                 return conv
         return None
 
     def __get_is_type_class_or_pointer_with_class(self, conv):
+        '''
+        This function check if the given type converter is a class or a pointer to a class
+
+        It returns True if the given type converter is a class or a pointer to a class, otherwise it returns False
+        '''
         if conv.is_type_class() or \
                 (isinstance(conv, RustPtrTypeConverter) and self._get_conv(str(conv.ctype.scoped_typename)) is None):
             return True
         return False
 
     def __get_stars(self, val, start_stars=0, add_stars_for_ref=True):
+        '''
+        This function is used to determine the level of indirection of a pointer in C
+
+        It returns a string containing the level of indirection of a pointer in C
+        '''
         stars = "*" * start_stars
         if "carg" in val and hasattr(val["carg"].ctype, "ref"):
             stars += "*" * (len(val["carg"].ctype.ref) if add_stars_for_ref else val["carg"].ctype.ref.count('*'))
@@ -329,8 +401,13 @@ struct %s {
         elif hasattr(val["conv"].ctype, "ref"):
             stars += "*" * (len(val["conv"].ctype.ref) if add_stars_for_ref else val["conv"].ctype.ref.count('*'))
         return stars
+    
+    def __arg_from_cpp_to_c(self, val, retval_name, just_copy): # We don't need to change this function from the original go binding generator
+        '''
+        This function is used to generate the code to convert a C++ argument to a C argument 
 
-    def __arg_from_cpp_to_c(self, val, retval_name, just_copy):
+        It returns a string containing the generated code to convert a C++ argument to a C argument
+        '''
         src = ""
                # type class, not a pointer
         if val['conv'] is not None and val['conv'].is_type_class() and \
@@ -381,13 +458,18 @@ struct %s {
 
         return src, retval_name
 
-    def __arg_from_c_to_cpp(self, val, retval_name, add_star=True):
+    def __arg_from_c_to_cpp(self, val, retval_name, add_star=True): # We don't need to change this function from the original go binding generator
+        '''
+        This function is used to generate the code to convert a C argument to a C++ argument
+
+        It returns a string containing the generated code to convert a C argument to a C++ argument
+        '''
         src = ""
 		# check if there is special slice to convert
-        if isinstance(val["conv"], lib.go.stl.GoSliceToStdVectorConverter):
+        if isinstance(val["conv"], lib.rust.stl.RustSliceToStdVectorConverter):
 			# special if string or const char*
-            if "GoStringConverter" in str(val["conv"].T_conv): # or \
-				# "GoConstCharPtrConverter" in str(val["conv"].T_conv):
+            if "RustStringConverter" in str(val["conv"].T_conv): # or \
+				# "RustConstCharPtrConverter" in str(val["conv"].T_conv):
                 src += f"std::vector<{val['conv'].T_conv.ctype}> {retval_name};\n"\
                     f"for(int i_counter_c=0; i_counter_c < {retval_name}ToCSize; ++i_counter_c)\n"\
 					f"	{retval_name}.push_back(std::string({retval_name}ToCBuf[i_counter_c]));\n"
@@ -401,17 +483,17 @@ struct %s {
 
         retval = ""
 		# very special case, std::string &
-        if "GoStringConverter" in str(val["conv"]) and \
+        if "RustStringConverter" in str(val["conv"]) and \
 			"carg" in val and hasattr(val["carg"].ctype, "ref") and any(s in val["carg"].ctype.ref for s in ["&"]) and \
 			not val["carg"].ctype.const:
             src += f"std::string {retval_name}_cpp(*{retval_name});\n"
             retval += f"{retval_name}_cpp"
 		# std::function
-        elif "GoStdFunctionConverter" in str(val["conv"]):
+        elif "RustStdFunctionConverter" in str(val["conv"]):
             func_name = val["conv"].base_type.replace("std::function<", "")[:-1]
             first_parenthesis = func_name.find("(")
             retval += f"({func_name[:first_parenthesis]}(*){func_name[first_parenthesis:]}){retval_name}"
-		# classe or pointer on class
+		# class or pointer on class
         else:
             if self.__get_is_type_class_or_pointer_with_class(val["conv"]):
                 stars = self.__get_stars(val, add_start_for_ref=False)
@@ -419,7 +501,7 @@ struct %s {
                 if isinstance(val['conv'], RustPtrTypeConverter):
                     stars = stars[1:]
 				
-				# if it's not a pointer, add a star anyway because we use pointer to use in go
+				# if it's not a pointer, add a star anyway because we use pointer to use in rust
                 if (not val["conv"].ctype.is_pointer() and ("carg" not in val or ("carg" in val and not val["carg"].ctype.is_pointer()))):
                     stars += "*"
                     if add_star:
@@ -439,7 +521,11 @@ struct %s {
         return src, retval
 
     def __arg_from_c_to_rust(self, val, retval_name, non_owning=False):
+        '''
+        This function is used to generate the code to convert a C argument to a Rust argument
 
+        It returns a string containing the generated code to convert a C argument to a Rust argument
+        '''
         rval_ownership = self._FABGen__ctype_to_ownership_policy(val["conv"].ctype)
 
         src = ""
@@ -458,7 +544,7 @@ struct %s {
         else:
             is_ref = False
         
-
+        
         if not is_pointer:
             if val['conv'].bound_name in self._enums.keys():
                 retval_name = f"{val['conv'].bound_name}({retval_name})"
@@ -475,4 +561,9 @@ struct %s {
                     
 
                     if rval_ownership != "NonOwning" and not is_ref and not non_owning:
-                        src += f"  " #TODO ff
+                        # The following line use a go package to register a finalizer function for a go object
+                        # However, Rust has a built-in mechanism to do that, so we don't need it 
+                        src += f"  let {retval_name}_rust, fn(cleanval &{retval_boundname}) {{\n" \
+                               f"  libc::{clean_name_with_title(self.name)}{retval_boundname}libc::free(cleanval);\n" \
+                            
+

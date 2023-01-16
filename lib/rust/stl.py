@@ -18,11 +18,11 @@ def bind_stl(gen):
         
         def to_c_call(self, in_var, out_var_p, is_pointer = False):
             if is_pointer:
-                out = f"{out_var_p.replace('&', '_')}1 := C.CString(*{in_var})\n"
-                out += f"{out_var_p.replace('&', '_')} := &{out_var_p.replace('&', '_')}1\n"
+                out = f" let {out_var_p.replace('&', '_')}1 = CString::new(&{in_var});\n"
+                out += f"let {out_var_p.replace('&', '_')} = &{out_var_p.replace('&', '_')}1.;\n"
             else: 
-                out = f"{out_var_p.replace('&', '_')}, idFin{out_var_p.replace('&', '_')} := wrapString({in_var})\n"
-                out += f"defer idFin{out_var_p.replace('&', '_')}()\n"
+                out = f"let {out_var_p.replace('&', '_')}, id_fin{out_var_p.replace('&', '_')} = wrapString({in_var})\n"
+                out += f"defer id_fin{out_var_p.replace('&', '_')}()\n"
             return out
         
         def from_c_call(self, out_var, expr, ownership):
