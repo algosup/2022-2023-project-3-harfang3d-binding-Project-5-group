@@ -8,7 +8,7 @@ def bind_stl(gen):
         def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
             super().__init__(type, to_c_storage_type, bound_name, from_c_storage_type, needs_c_storage_class)
             self.rust_to_c_type = "*C.char"
-            self.rust_type = "string"
+            self.rust_type = "String"
 
         def get_type_glue(self, gen, module_name):
             return ''
@@ -30,6 +30,7 @@ def bind_stl(gen):
         
     gen.bind_type(RustStringConverter("std::string"))
 
+
 def bind_function_T(gen, type, bound_name=None):
     class RustStdFunctionConverter(lang.rust.RustTypeConverterCommon):
         def get_type_glue(self, gen, module_name):
@@ -41,7 +42,7 @@ def bind_function_T(gen, type, bound_name=None):
 class RustSliceToStdVectorConverter(lang.rust.RustTypeConverterCommon):
     def __init__(self, type, T_conv):
         native_type = f"std::vector<{T_conv.rust_type}>"
-        super().__init__(type, native_type, native_type, native_type, None)
+        super().__init__(type, native_type, native_type, native_type)
         self.T_conv = T_conv
     
     def get_type_glue(self, gen, module_name):

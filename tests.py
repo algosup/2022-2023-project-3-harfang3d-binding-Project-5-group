@@ -442,7 +442,7 @@ class GoTestBed:
 			subprocess.check_output('go mod init mytest', shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output("go fmt mytest", shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output("go mod tidy", shell=True, stderr=subprocess.STDOUT)
-			#subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
+			subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output('go test -run ""', shell=True, stderr=subprocess.STDOUT)
 		except subprocess.CalledProcessError as e:
 			print(e.output.decode('utf-8'))
@@ -498,16 +498,23 @@ AlwaysBreakTemplateDeclarations: false
 AlignTrailingComments: false''')
 
 def create_rust_cmake_file(name, work_path, sources):
-	with open(os.path.join(work_path, 'CMakeLists.txt'), 'w') as file:
-		file.write(f"""cmake_minimum_required(VERSION 3.0)
+	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
+	with open(cmake_path, 'w') as file:
+		file.write(f"""cmake_minimum_required(VERSION 3.1)
+
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 set(CMAKE_MODULE_PATH ${{CMAKE_MODULE_PATH}} "{work_path}")
+
 project({name})
-enable_language(Rust)
+enable_language(C CXX)
 set(CMAKE_CXX_STANDARD 14)
 
 add_library({name} SHARED {' '.join(sources)})
 set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_path}/")
-		""")
+
+install(TARGETS {name} DESTINATION "${{CMAKE_SOURCE_DIR}}/" COMPONENT {name})
+""")
 
 class RustTestBed:
 	def build_and_test_extension(self, work_path: str, module: ModuleType, sources: list[str]):
@@ -570,7 +577,7 @@ if args.go_build:
 
 if args.rust_build:
 	gen = lang.rust.RustGenerator()
-	gen.verbose = False
+	gen.verbose = True
 	run_tests(gen, test_names, RustTestBed())
 
 #

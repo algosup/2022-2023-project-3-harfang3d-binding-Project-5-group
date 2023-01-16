@@ -5,7 +5,7 @@ def bind_std(gen):
         def __init__(self, type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
             super().__init__(type, to_c_storage_type, bound_name, from_c_storage_type, needs_c_storage_class)
             self.rust_to_c_type = "*C.char"
-            self.rust_type = "String", "Cow<str>", "&str", "OsString", "PathBuf"
+            self.rust_type = "String"#, "Cow<str>", "&str", "OsString", "PathBuf"
 
         def get_type_glue(self, gen, module_name):
             return ''
@@ -33,10 +33,19 @@ def bind_std(gen):
         
         def from_c_storage(self, out_var, in_var):
             return f"{out_var} = CString({in_var})\n"
-        
-    
+
+    gen.bind_type(RustConstCharPtrConverter("const char *"))
+
     class RustBasicTypeConverter(lang.rust.RustTypeConverterCommon):
-        def __init__(self, type, c_type, rust_type, to_c_storage_type=None, bound_name=None, from_c_storage_type=None, needs_c_storage_class=False):
+        def __init__(self,
+            type: str,                  # C++ type
+            c_type: str,                # C type
+            rust_type: str,             # Rust type
+            to_c_storage_type=None,
+            bound_name=None,
+            from_c_storage_type=None,
+            needs_c_storage_class=False
+        ):
             super().__init__(type, to_c_storage_type, bound_name, from_c_storage_type, needs_c_storage_class)
             self.rust_to_c_type = c_type
             self.rust_type = rust_type
@@ -61,6 +70,7 @@ def bind_std(gen):
     gen.bind_type(RustBasicTypeConverter("char", "C.char", "i8"))
 
     gen.bind_type(RustBasicTypeConverter("unsigned char", "C.uchar", "u8"))
+    gen.bind_type(RustBasicTypeConverter("int8t_t", "C.short", "i8"))
     gen.bind_type(RustBasicTypeConverter("uint8_t", "C.uchar", "u8"))
 
     gen.bind_type(RustBasicTypeConverter("short", "C.short", "i16"))
