@@ -243,7 +243,7 @@ class RustGenerator(gen.FABGen):
     def start(self, module_name):
         super().start(module_name)
 
-        self._source += self.get_binding_api_declaration(module_name)
+        self._source += self.get_binding_api_declaration()
 
     def set_compilation_directives(self, directives):
         self.crust_directives = directives
@@ -321,6 +321,8 @@ struct %s {
         out += "// return the typetag of a userdata object, null ptr if not a FABGen object\n"
         out += "uint32_t %s(void* p); \n\n" % gen.apply_api_prefix(
             "get_wrapped_object_type_tag")
+        
+        return out
 
     def output_binding_api(self):
         '''
