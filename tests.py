@@ -56,7 +56,7 @@ failed_test_list = []
 
 
 def run_test(gen, name: str, testbed): # gen: lang.{lang}.{lang}Generator(gen.FABGen), name: str, testbed: {lang}Testbed
-	work_path = tempfile.mkdtemp()
+	work_path = tempfile.mkdtemp() # ./output/bind_dev
 	print('Working directory is ' + work_path)
 
 	test_module = importlib.import_module(name)
@@ -451,39 +451,6 @@ class GoTestBed:
 		print("Cleanup...")
 
 		return success
-	
-def build_and_deploy_rust_extension(work_path: str, build_path: str):
-	print("Generating build system...")
-	try:
-		if args.linux:
-			subprocess.check_output(['cmake', '..'])
-		else:
-			subprocess.check_output('cmake .. -G "%s"' % cmake_generator)
-	except subprocess.CalledProcessError as e:
-		print(e.output.decode('utf-8'))
-		return False
-
-	print("Building extension...")
-	try:
-		if args.linux:
-			subprocess.check_output(['make'])
-		else:
-			subprocess.check_output(['cmake', '--build', '.', '--config', 'Release'])
-	except subprocess.CalledProcessError as e:
-		print(e.output.decode('utf-8'))
-		return False
-
-	print("install extension...")
-	try:
-		if args.linux:
-			subprocess.check_output(['make', 'install'])
-		else:
-			subprocess.check_output(['cmake', '--install', '.', '--config', 'Release'])
-	except subprocess.CalledProcessError as e:
-		print(e.output.decode('utf-8'))
-		return False
-
-	return True
 
 def create_clang_rust_format_file(work_path):
 	with open(os.path.join(work_path, '_clang-format'), 'w') as file:
@@ -516,7 +483,7 @@ set_target_properties({name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_
 install(TARGETS {name} DESTINATION "${{CMAKE_SOURCE_DIR}}/" COMPONENT {name})
 """)
 
-def build_and_deploy_rust_extension(work_path, build_path):
+def build_and_deploy_rust_extension(work_path: str, build_path: str):
 	print("Generating build system...")
 	try:
 		if args.linux:
@@ -528,17 +495,17 @@ def build_and_deploy_rust_extension(work_path, build_path):
 		return False
 
 	print("Building extension...")
-	try: 
+	try:
 		if args.linux:
-			subprocess.check_output(['make', '..'])
+			subprocess.check_output(['make'])
 		else:
 			subprocess.check_output(['cmake', '--build', '.', '--config', 'Release'])
 	except subprocess.CalledProcessError as e:
 		print(e.output.decode('utf-8'))
 		return False
-	
+
 	print("install extension...")
-	try: 
+	try:
 		if args.linux:
 			subprocess.check_output(['make', 'install'])
 		else:
@@ -546,7 +513,7 @@ def build_and_deploy_rust_extension(work_path, build_path):
 	except subprocess.CalledProcessError as e:
 		print(e.output.decode('utf-8'))
 		return False
-	
+
 	return True
 
 class RustTestBed:
