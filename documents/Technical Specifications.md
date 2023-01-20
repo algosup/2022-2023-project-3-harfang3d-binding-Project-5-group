@@ -42,6 +42,7 @@
 - [Work estimate](#work-estimate)
     - [Code convention](#code-convention)
     - [Convert types](#convert-types)
+    - [Manage polymorphism](#manage-polymorphism)
 - [Deliberation](#deliberation)
     - [Discussion](#discussion)
     - [Open questions](#open-questions)
@@ -96,11 +97,11 @@ Taking any shortcut is a guaranteed core dump or memory leak on the user side at
 
 At the moment, all these features are not part of the project.
 
-- Make it compatible with Mac M1.
 - Add another language.
 - Compatible with versions that are not on the repository.
 - Compatible with the previous version.
 - Automatically supported for new versions.
+- Make the program as fast a the existing one.
 
 ## Assumptions
 
@@ -152,8 +153,6 @@ The proposed solution is to add more languages, starting with Rust.
     -   Link to C library (C++ has to be wrapped with C first).
 
 This solution will be added to the existing code of the [FABGen repository](https://github.com/ejulien/FABGen).
-
-We recommend using Docker[^docker] to avoid problems during development. It will emulate an os, which is interesting because the team use Mac M1.
 
 A compiled statically typed language will almost always support a mechanism to import and call functions from a C-style ABI. Most of the time this will be the only way to call into a different language and the only to write extensions using native code for the target language.
 
@@ -569,13 +568,88 @@ Rust has the &mut and & types which are used to borrow a reference to a variable
 
 Rust, pointers are not nullable by default, and the null pointer is represented by the std::ptr::null() or std::ptr::null_mut() functions, whereas in C, pointers can be assigned the value NULL, which is a macro that represents a null pointer.
 
+## Manage polymorphism
+
+There is two kinds of polymorphism[^poly] in Rust:
+
+- Enums,
+
+```Rust
+enum Shape {
+    Rectangle { width: f32, height: f32 },
+    Triangle { side: f32 },
+    Circle { radius: f32 },
+}
+
+impl Shape {
+
+    pub fn perimeter(&self) -> f32 {
+        match self {
+            Shape::Rectangle { width, height } => width * 2.0 + height * 2.0,
+            Shape::Triangle { side } => side * 3.0,
+            Shape::Circle { radius } => radius * 2.0 * std::f32::consts::PI
+        }
+    }
+
+    pub fn area(&self) -> f32 {
+        match self {
+            Shape::Rectangle { width, height } => width * height,
+            Shape::Triangle { side } => side * 0.5 * 3.0_f32.sqrt() / 2.0 * side,
+            Shape::Circle { radius } => radius * radius * std::f32::consts::PI
+        }
+    }
+}
+```
+
+
+- Traits.
+
+```Rust
+trait Shape {
+    fn perimeter(&self) -> f32;
+    fn area(&self) -> f32;
+}
+
+struct Rectangle { pub width: f32, pub height: f32 }
+struct Triangle { pub side: f32 }
+struct Circle { pub radius: f32 }
+
+impl Shape for Rectangle {
+    fn perimeter(&self) -> f32 {
+        self.width * 2.0 + self.height * 2.0
+    }
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+}
+
+impl Shape for Triangle {
+    fn perimeter(&self) -> f32 {
+        self.side * 3.0
+    }
+    fn area(&self) -> f32 {
+        self.side * 0.5 * 3.0_f32.sqrt() / 2.0 * self.side
+    }
+}
+
+impl Shape for Circle {
+    fn perimeter(&self) -> f32 {
+        self.radius * 2.0 * std::f32::consts::PI
+    }
+    fn area(&self) -> f32 {
+        self.radius * self.radius * std::f32::consts::PI
+    }
+}
+```
+
+
 # Deliberation  
 
 ## Discussion
 
 Here will be all the answers and decisions we made during the project.
 
-- We will use Docker[^docker] because of the non-compatibility of the project with our Mac M1.
+- At the start of the project, we ran into some issues that we thought were the use of Mac M1. So we decided to use Docker[^docker]. After several tests and advice, we finally decided not to use Docker, because it would complicate our tasks. After all, we need the debugger of VsCode.
 - Add comments to the existing code to make it easier to understand.
 
 ## Open questions
@@ -647,3 +721,5 @@ There will be all the questions that don't have an answer.
 [^rfc]: The [RFC 430](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md) is the code convention written by the developers of Rust.
 
 [^pep]: The [PEP-0008](https://peps.python.org/pep-0008/) is the code convention written by the developers of Python.
+
+[^poly]: Polymorphism is the provision of a single interface to entities of different types[1] or the use of a single symbol to represent multiple different types.
