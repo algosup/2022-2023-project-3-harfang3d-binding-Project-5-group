@@ -123,16 +123,16 @@
 			"args": ["--luabase", "D:/harfang/sdk", "--debug", "std_function", "--x64"],
 			"envFile": "${workspaceFolder}/.env",
 		},
-		// Rust: Tests 
+		// Rust: [DEV] Tests --debug
 		{
-			"name": "Rust: Tests",
+			"name": "Rust: [DEV] Tests --debug",
 			"type": "python",
 			"request": "launch",
 			"stopOnEntry": false,
 			"python": "${command:python.interpreterPath}",
-			"program": "${workspaceFolder}/tests.py",
+			"program": "${workspaceFolder}/bind.py",
 			"cwd": "${workspaceFolder}",
-			"args": ["--rust", "D:/harfang/sdk", "--x64"],
+			"args": ["--out", "./output/bind_dev", "--rust", "test_bind.py"],
 			"envFile": "${workspaceFolder}/.env",
 		},
 		//Rust: tests debug
