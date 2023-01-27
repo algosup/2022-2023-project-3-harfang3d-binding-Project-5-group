@@ -123,6 +123,18 @@
 			"args": ["--luabase", "D:/harfang/sdk", "--debug", "std_function", "--x64"],
 			"envFile": "${workspaceFolder}/.env",
 		},
+		// Rust: Tests --debug
+		{
+			"name": "Rust: Tests --debug",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["--linux", "--rust", "--debug", "basic_type_exchange"],
+			"envFile": "${workspaceFolder}/.env",
+		},
 		// Rust: [DEV] Tests --debug
 		{
 			"name": "Rust: [DEV] Tests --debug",
