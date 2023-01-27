@@ -40,7 +40,7 @@ package mytest
 
 '''
 
-tet_rust = '''\
+test_rust = '''\
 use my_test::*;
 
 #[test]

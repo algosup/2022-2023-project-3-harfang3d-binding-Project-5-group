@@ -537,6 +537,8 @@ class RustTestBed:
 		if not build_and_deploy_rust_extension(work_path, build_path):
 			return False
 
+		return True
+
 # Clang format
 def create_clang_format_file(work_path):
 	with open(os.path.join(work_path, '_clang-format'), 'w') as file:
