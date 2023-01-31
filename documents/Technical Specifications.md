@@ -249,6 +249,8 @@ print(f'x: {c.x} y: {c.y} z: {c.z}')
 
 Achieving this degree of integration of the native API types with CPython requires the use of PyTypeObject which is exactly what Fabgen does to implement support for operator overload and automatic memory management of native objects.
 
+We advise you to create a Makefile[^makefile] to automate the compilation of the project.
+
 ## New FABGen architecture
 
 FABGen had already a specific architecture for files and folders, so you must follow the pattern.
@@ -302,82 +304,120 @@ This test plan has been realised by Malo Archimaud, our quality assurance engine
 
 # Functions to implement
 
-First, you need to follow the FABGen architecture shown in the [New FABGen architecture](#new-fabgen-architecture), and then this part will guide you through the files you have create.
+Firstly, you need to follow the FABGen architecture shown in the [New FABGen architecture](#new-fabgen-architecture), and then this part will guide you through the files you have created.
 
+The first step is to create the a file called rust.py in the lang folder, we are going to follow the same architecture as the go file, because rust is similar to go.
+
+We are going to add some unused functions in the file to follow the same architecture as other files.
 
 
 ## rust.py
 
-The [rust.py](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/main/lang/rust.py) file as to be create in the lang folder.
+In this file, you will have to implement the following functions:
 
-The first step of this file is to implement these three functions:
+- class RustTypeConverterCommon(gen.TypeConverterCommon):
 
-- def route_lambda(name):
+This function will be used to concatenate the name of our functions in rust.
+- def route_lambda(name): 
 
+This function will be used to list all keywords in rust.
 - def clean_name(name):
-    - It will clean the name of your function. It will avoid having reserved words in the function name like:
-    as, break, const, continue, crate, else, enum, extern, false, fn, for, if, impl, in, let, loop, match, mod, move, mut, pub, ref,return,self, Self, static, struct, super, trait, true, type, unsafe, use, where, while, async, await, dyn.
 
+This function will be used to clean the name of our functions and format them in rust.
 - def clean_name_with_title(name):
-    - It transform the name of the function in Pascal case.
 
-The second step is to convert types. 
+Then we need to create a class that will be used to convert types. This class will be used to convert types in rust, it will be composed of three functions:
 
-For each type it binds, you need to creates a minimum of three functions:
+- class DummyTypeConverter(gen.TypeConverter):
 
-- **check**: Test if an object in the target language holds a copy or reference to a C/C++ object of a specific type.
+an init function that will be used to initialize the class.
+- def __init__(self, module):
 
-- **to_c**: Returns a reference to the C/C++ object held by an object in the target language.
+a function that will be used to get the type of the variable.
+- def get_type_api(self, module_name):
 
-- **from_c**: Return an object in the target language holding a copy or reference to a C/C++ object.
+a function that will convert from rust to c.
+- def to_c_call(self, type_name, var_name):
 
-
-```Python
-class RustTypeConverterCommon(gen.TypeConverter):
-    # To do
-
-```
-
-It will be use to convert Rust types to C++ types. It will initialize the TypeConverter function in gen.py. It will initialize the base_type as type, rust_to_c_type as none and rust_type as none.
+a function that will convert from c to rust.
+- def from_c_call(self, type_name, var_name):
 
 
-```Python
+After that we need to check if the type is a pointer or not. 
 
-class RustDummyTypeConverter(gen.TypeConverter):
-    # To do
+For this purpose we will have to create another class that will store the types of the variables. This class will be used to convert types in rust, it will inherit from the previous class and will be composed of 4 functions and 1 init function:
 
-```
+- class RustPtrTypeConverter(gen.TypeConverter):
 
-```Python
-class RustPtrTypeConverter(gen.TypeConverter):
-    # To do
-```
+an init function that will be used to initialize the class.
+- def __init__(self, module):
 
-```Python
-class RustClassTypeDefaultConverter(RustTypeConverterCommon):
-    # To do
-```
+then another function to get the type of the variable.
+- def get_type_api(self, module_name):
 
-```Python
-class RustExternTypeConverter(RustTypeConverterCommon):
+a function that will convert from rust to c.
+- def to_c_call(self, type_name, var_name):
 
-    # To do
-```
-```Python
-class RustGenerator(gen.FABGen):
+a function that will convert from c to rust
+- def from_c_call(self, type_name, var_name,):
 
-    # To do
-```
+a function that will check the call of the function.
+- def check_call(self, type_name, var_name):
 
+
+In rust we need to handle the "Extern" type, which is used to use all the external types. For this we will segment it into a class
+
+- class RustExternTypeConverter(RustTypeConverterCommon):
+
+an init function that will be used to initialize the class.
+- def __init__(self, module):
+
+a function to get the type of the variable.
+- def get_type_api(self, module_name):
 
 ## __ init __.py
 
 This will be an empty file.
 
 ## std.py
-//To do
+
+The first thing to do in this file is to import lang.go.
+
+In this file you need to bind all the types.
+
+```Python
+import lang.go
+
+def bind_std(gen):
+
+    class RustConstCharPtrConverter(lang.rust.RustTypeConverterCommon):
+        # To do
+
+    class RustBasicTypeConverter(lang.rust.RustTypeConverterCommon):
+        # To do
+
+    class RustBoolConverter(lang.rust.RustTypeConverterCommon):
+        # To do
+```
+
+
 ## stl.py
-// To do
+
+In this file, you need to bind vectors and strings.
+
+```Python
+import lang.rust
+
+def bind_stl(gen):
+    gen.add_include('vector', True)
+    gen.add_include('string', True)
+
+    class RustStringConverter(lang.rust.RustTypeConverterCommon):
+        # To do
+    class RustSliceToStdVectorConverter(lang.rust.RustTypeConverterCommon):
+        # To do
+```
+
 # Further considerations
 
 - Keep as much code as possible on the generic part of the generator ([gen.py](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/main/gen.py)).
@@ -661,11 +701,16 @@ Keywords in programming are predefined. These words have a reserved use because 
 |<pre>while i < 9 { ... }	</pre>|<pre>while (i < 9) { ... }</pre>|
 |<pre>loop {<br>    break;<br>    continue;<br>}</pre>|	<pre>while (true) {<br>    break;<br>    continue;<br>}</pre>|
 |<pre>'label: loop {<br>    break 'label;<br>    continue 'label;<br>}</pre>|<pre>while (true) {<br>    goto label_break;<br>    goto label_continue;<br>label_continue: } label_break:</pre>|
-|<pre></pre>|<pre></pre>|
+|<pre>other_var as f32</pre>|<pre>(float)other_var</pre>|
+|<pre>match var { ... }<br>42 => foo(),<br>42 => { foo(); bar(); },<br>_ => ...,</pre>|<pre>switch (var) { ... }<br>case 42: foo(); break;<br>case 42: foo(); bar(); break;<br>default: ... break;</pre>|
+|<pre>mod foo { ... }</pre>|<pre>namespace foo { ... }</pre>|
+|<pre>use foo as bar;</pre>|<pre>using namespace bar = foo;</pre>|
+|<pre>use foo::*;</pre>|<pre>using namespace foo;</pre>|
+|<pre>use foo::some_func;	</pre>|<pre>using foo::some_func;</pre>|
+|<pre>trait Interface {<br>    fn foo(&self, _: u32) -> u64;<br>    fn bar(&self, param: u32) -> u64 {<br>        self.foo(param)<br>    }<br>}</pre>|<pre>struct Interface {<br>    virtual uint64_t foo(uint32_t) = 0;<br>    virtual uint64_t bar(uint32_t param) {<br>        return this->foo(param);<br>    }<br>}</pre>|
+|<pre>fn add (a: i32, b: i32) -> i32 {<br>    a + b // Final statement, no semicolon<br>}</pre>|<pre>int32_t add (int32_t a, int32_t b) {<br>    return a + b;<br>}</pre>|
 
-// TO DO
-https://maulingmonkey.com/guide/cpp-vs-rust/
-https://gist.github.com/jharmer95/ba0dde7b47eb70b38362edd905ca1806
+
 
 
 
@@ -827,3 +872,5 @@ There will be all the questions that don't have an answer.
 [^pep]: The [PEP-0008](https://peps.python.org/pep-0008/) is the code convention written by the developers of Python.
 
 [^poly]: Polymorphism is the provision of a single interface to entities of different types[1] or the use of a single symbol to represent multiple different types.
+
+[^makefile]: Makefiles are files used by the make(1) program to automate a set of actions allowing the generation of files, most of the time resulting from a compilation.
