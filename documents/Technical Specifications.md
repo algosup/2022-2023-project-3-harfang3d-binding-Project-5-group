@@ -318,7 +318,7 @@ Firstly, you need to follow the FABGen architecture shown in the [New FABGen arc
 
 ## rust.py
 
-The first step is to create a file called rust.py in the lang folder, we are going to follow the same architecture as the go file because rust is similar to go.
+The first step is to create a file called rust.py in the lang folder, we are going to follow the same architecture as the Go file because Rust is similar to Go.
 
 We are going to add some unused functions in the file to follow the same architecture as other files.
 
@@ -326,62 +326,62 @@ In this file, you will have to implement the following functions:
 
 - class RustTypeConverterCommon(gen.TypeConverterCommon):
 
-This function will be used to concatenate the name of our functions in rust.
+This function will be used to concatenate the name of our functions in Rust.
 - def route_lambda(name): 
 
-This function will be used to list all keywords in rust.
+This function will be used to list all keywords in Rust.
 - def clean_name(name):
 
-This function will be used to clean the name of our functions and format them in rust.
+This function will be used to clean the name of our functions and format them in Rust.
 - def clean_name_with_title(name):
 
-Then we need to create a class that will be used to convert types. This class will be used to convert types in rust, it will be composed of three functions:
+Then we need to create a class that will be used to convert types. This class will be used to convert types in Rust, it will be composed of three functions:
 
 - class DummyTypeConverter(gen.TypeConverter):
 
-an init function that will be used to initialize the class.
+An init function that will be used to initialize the class.
 - def __init__(self, module):
 
-a function that will be used to get the type of the variable.
+A function that will be used to get the type of the variable.
 - def get_type_api(self, module_name):
 
-a function that will convert from rust to c.
+A function that will convert from Rust to c.
 - def to_c_call(self, type_name, var_name):
 
-a function that will convert from c to rust.
+A function that will convert from c to Rust.
 - def from_c_call(self, type_name, var_name):
 
 
 After that, we need to check if the type is a pointer or not. 
 
-For this purpose, we will have to create another class that will store the types of variables. This class will be used to convert types in rust, it will inherit from the previous class and will be composed of 4 functions and 1 init function:
+For this purpose, we will have to create another class that will store the types of variables. This class will be used to convert types in Rust, it will inherit from the previous class and will be composed of 4 functions and 1 init function:
 
 - class RustPtrTypeConverter(gen.TypeConverter):
 
-an init function that will be used to initialize the class.
+An init function that will be used to initialize the class.
 - def __init__(self, module):
 
-then another function to get the type of the variable.
+Then another function to get the type of the variable.
 - def get_type_api(self, module_name):
 
-a function that will convert from rust to c.
+A function that will convert from Rust to C.
 - def to_c_call(self, type_name, var_name):
 
-a function that will convert from c to rust
+A function that will convert from C to Rust.
 - def from_c_call(self, type_name, var_name,):
 
-a function that will check the call of the function.
+A function that will check the call of the function.
 - def check_call(self, type_name, var_name):
 
 
-In Rust, we need to handle the "Extern" type, which is used to use all the external types. For this, we will segment it into a class
+In Rust, we need to handle the "Extern" type, which is used to use all the external types. For this, we will segment it into a class.
 
 - class RustExternTypeConverter(RustTypeConverterCommon):
 
-an init function that will be used to initialize the class.
+An init function that will be used to initialize the class.
 - def __init__(self, module):
 
-a function to get the type of the variable.
+A function to get the type of the variable.
 - def get_type_api(self, module_name):
 
 ## __ init __.py
@@ -687,7 +687,7 @@ Rust, pointers are not nullable by default, and the null pointer is represented 
 
 ## Convert keywords
 
-Keywords in programming are predefined. These words have a reserved use because they have a special meaning for the compiler. You also need to follow the rights syntax.
+Keywords in programming are predefined. These words have a reserved use because they have a special meaning for the compiler. You also need to follow the syntax.
 
 |Rust|C++|
 |----|---|
