@@ -6,6 +6,9 @@
 <br>
 
 <p  align="center"> Clémentine Curel</p>  
+<br>
+<p style="font-weight: bold;" align=center> Team:</p>  
+<p align="center"> Victor Leroy, Théo Diancourt, Paul Maris, Malo AArchimbaud</p>  
 
 <br>
 
@@ -31,6 +34,11 @@
 	- [Proposed solution](#proposed-solution)
     - [New FABGen architecture](#new-fabgen-architecture)
 	- [Test plan](#test-plan)
+- [Functions to implement](#functions-to-implement)
+    - [rust.py](#rustpy)
+    - [__ init __.py](#__-init-__py)
+    - [std.py](#stdpy)
+    - [stl.py](#stlpy)
 - [Further considerations](#further-considerations)
     - [Impact on other teams](#impact-on-other-teams)
     - [Cost analysis](#cost-analysis)
@@ -42,6 +50,7 @@
 - [Work estimate](#work-estimate)
     - [Code convention](#code-convention)
     - [Convert types](#convert-types)
+    - [Convert keywords](#convert-keywords)
     - [Manage polymorphism](#manage-polymorphism)
 - [Deliberation](#deliberation)
     - [Discussion](#discussion)
@@ -88,9 +97,15 @@ These past years, Rust[^rust] has become one of the most loved programming langu
 
 ## Technical requirements
 
-You must know C++, the target language Rust, and its feature set. A deep understanding of those features and inner workings is required to come up with a correct solution. 
+For this project, you must know these three languages:
 
-Taking any shortcut is a guaranteed core dump or memory leak on the user side at a later point.
+- Rust, it's the target language of this project. You need to know the features set of it.
+
+- C++, it's the language you have to bind Rust. You need to know the features set of it.
+
+- Python, it's the language used to code the project.
+
+A deep understanding of those features and inner workings is required to come up with a correct solution. 
 
 
 ## Non-goals
@@ -116,12 +131,13 @@ You need to generate a code without dependencies and it has to be human-readable
 - Feature mechanism to extend types and prototypes such as:
 	-  `arg_out`, `arg_in_out` to support output arguments.
 	-  `route` to route methods to a customisable expression.
-	-  `proxy` to support wrapper types such as std::shared_ptr<T>.
+	-  `proxy` to support wrapper types such as std::shared_ptr< T>.
 - Extern type support to "link" C++ types shared by different bindings.
 - Simple and hopefully easy to dive into the codebase.
 
 The solution has to be available for Windows, Linux, and MacOS.
 
+Taking any shortcut is a guaranteed core dump or memory leak on the user side at a later point.
 
 # Solution
 
@@ -244,7 +260,7 @@ FABGen had already a specific architecture for files and folders, so you must fo
 |  ├── go.py
 |  ├── lua.py
 |  ├── xml.py
-|  └── <b>rust.py (added) </b>
+|  └── <b>rust.py (to add) </b>
 |
 ├── lib
 |  ├── cpython
@@ -259,7 +275,7 @@ FABGen had already a specific architecture for files and folders, so you must fo
 |  │	├── __init__.py
 |  │	├── std.py
 |  │	└── stl.py
-|  └── <b>rust (added)
+|  └── <b>rust (to add)
 |  	├── __init__.py
 |  	├── std.py
 |  	└── stl.py </b>
@@ -282,6 +298,86 @@ FABGen had already a specific architecture for files and folders, so you must fo
 
 Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/documents/documents/Quality_Assurance/TestPlan.md) of this project, it will helps us determine the effort needed to validate the quality of the project under test.
 
+This test plan has been realised by Malo Archimaud, our quality assurance engineer.
+
+# Functions to implement
+
+First, you need to follow the FABGen architecture shown in the [New FABGen architecture](#new-fabgen-architecture), and then this part will guide you through the files you have create.
+
+
+
+## rust.py
+
+The [rust.py](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/main/lang/rust.py) file as to be create in the lang folder.
+
+The first step of this file is to implement these three functions:
+
+- def route_lambda(name):
+
+- def clean_name(name):
+    - It will clean the name of your function. It will avoid having reserved words in the function name like:
+    as, break, const, continue, crate, else, enum, extern, false, fn, for, if, impl, in, let, loop, match, mod, move, mut, pub, ref,return,self, Self, static, struct, super, trait, true, type, unsafe, use, where, while, async, await, dyn.
+
+- def clean_name_with_title(name):
+    - It transform the name of the function in Pascal case.
+
+The second step is to convert types. 
+
+For each type it binds, you need to creates a minimum of three functions:
+
+- **check**: Test if an object in the target language holds a copy or reference to a C/C++ object of a specific type.
+
+- **to_c**: Returns a reference to the C/C++ object held by an object in the target language.
+
+- **from_c**: Return an object in the target language holding a copy or reference to a C/C++ object.
+
+
+```Python
+class RustTypeConverterCommon(gen.TypeConverter):
+    # To do
+
+```
+
+It will be use to convert Rust types to C++ types. It will initialize the TypeConverter function in gen.py. It will initialize the base_type as type, rust_to_c_type as none and rust_type as none.
+
+
+```Python
+
+class RustDummyTypeConverter(gen.TypeConverter):
+    # To do
+
+```
+
+```Python
+class RustPtrTypeConverter(gen.TypeConverter):
+    # To do
+```
+
+```Python
+class RustClassTypeDefaultConverter(RustTypeConverterCommon):
+    # To do
+```
+
+```Python
+class RustExternTypeConverter(RustTypeConverterCommon):
+
+    # To do
+```
+```Python
+class RustGenerator(gen.FABGen):
+
+    # To do
+```
+
+
+## __ init __.py
+
+This will be an empty file.
+
+## std.py
+//To do
+## stl.py
+// To do
 # Further considerations
 
 - Keep as much code as possible on the generic part of the generator ([gen.py](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/main/gen.py)).
@@ -336,46 +432,18 @@ Doing this type of project, we can have multiple problems like:
 
 # Success evaluation
 
-The project will be considered as successful when it will generate the API[^api] correctly with Rust code.
+The project will be considered as successful mission if:
 
-Here is an example of the final result in the other languages:
-
-The Python code with the API result:
-
-<img src="img/python.png" style="height: 300px">
-
-The Lua code generated by FABGen with the API result:
-
-<img src="img/lua.png" style="height: 300px">
-
-The Go code generated by FABGen with the API result:
-
-<img src="img/go.png" style="height: 300px">
-
-As you can see, The API result is always the same.
-Thus, the project will be considered complete when it generates Rust code with the same API result.
-In other words, the project will be successful if it's compatible with all the features of the engine.
+- You have implement all the functions for Rust,
+- All the tests pass.
 
 # Work estimate
 
-When the tasks of a milestones will be done, the milestones will be completed.
-
-|Milestones|Tasks|Priority|
-|----------|-----|------|
-|Understanding the project|Have a view of all the interesting files of the project|Medium|
-||Understanding the interesting files|High|
-|Documents|Technical specifications|Medium|
-||Architecture design choices|Medium|
-||Test plan|High|
-|Working tests|Working on Windows|High|
-||Working on Linux|High|
-||Working on MacOs|High|
-|Convert types|Rust types to C|High|
-||C types to Rust|High|
-|Convert keywords|Rust keywords to C|Medium|
-||C keywords to Rust|Medium|
+In this part of the technical specifications, you can find all the information you may need during the development of this project.
 
 ## Code convention
+
+To write code that can be readable and understandable by other people and to avoid as many problems as possible, you need to follow the code's convention.
 
 ### Rust
 
@@ -398,8 +466,8 @@ In general, Rust tends to use UpperCamelCase for "type-level" constructs and sna
 |Local variables|	snake_case|
 |Statics	|SCREAMING_SNAKE_CASE|
 |Constants	|SCREAMING_SNAKE_CASE|
-|Type parameters|	concise UpperCamelCase, usually single uppercase letter: T|
-|Lifetimes|	short lowercase, usually a single letter: 'a, 'de, 'src|
+|Type parameters|	Concise UpperCamelCase, usually single uppercase letter: T|
+|Lifetimes|	Short lowercase, usually a single letter: 'a, 'de, 'src|
 |Features|unclear but see C-FEATURE|
 
 
@@ -568,6 +636,39 @@ Rust has the &mut and & types which are used to borrow a reference to a variable
 
 Rust, pointers are not nullable by default, and the null pointer is represented by the std::ptr::null() or std::ptr::null_mut() functions, whereas in C, pointers can be assigned the value NULL, which is a macro that represents a null pointer.
 
+## Convert keywords
+
+Keywords in programming are predefined. These words have a reserved use because they have a special meaning for the compiler. You also need to follow the rights syntax.
+
+|Rust|C++|
+|----|---|
+|<pre>assert!(condition);</pre>|<pre>assert(condition);</pre>|
+|<pre>print!("Hello {}\n", world);</pre>|<pre>printf("Hello %s\n", world);</pre>|
+|<pre>if a == b { ... }<br>else if a == b { ... } <br>else { ... } </pre>|<pre>if (a == b) { ... } <br>else if (a == b) { ... } <br>else { ... } </pre>|
+|<pre>let foo = 42;	</pre>|<pre>const auto foo = 42;</pre>|
+|<pre>let foo = 42.0f32;</pre>|<pre>const auto foo = 42.0f;</pre>|
+|<pre>let foo = 42u32;	</pre>|<pre>const auto foo = 42u;</pre>|
+|<pre>let foo = 42u64;	</pre>|<pre>const auto foo = 42ull;</pre>|
+|<pre>let mut foo = 42;	</pre>|<pre>auto foo = 42;</pre>|
+|<pre>let mut foo : i32 = 42;	</pre>|<pre>int32_t foo = 42;</pre>|
+|<pre>let mut (x,y) = some_tuple;	</pre>|<pre>float x,y; std::tie(x,y) = some_tuple;</pre>|
+|<pre>let some_tuple = (1,2);	</pre>|<pre>const auto some_tuple=std::make_tuple(1,2);</pre>|
+|<pre>let a : [i32; 3] = [1, 2, 3];	</pre>|<pre>int32_t a[3] = { 1, 2, 3 };</pre>|
+|<pre>let v : Vec<i32> = vec![1, 2, 3];	</pre>|<pre>std::vector<int32_t> v = { 1, 2, 3 };</pre>|
+|<pre>for i in v { ... }	</pre>|<pre>for (auto i : v) { ... }</pre>|
+|<pre>for i in 1..9 { ... }	</pre>|<pre>for (size_t i = 1; i < 9; ++i) { ... }</pre>|
+|<pre>for i in 1..=9 { ... }</pre>|<pre>for (size_t i = 1; i <= 9; ++i) { ... }</pre>|
+|<pre>while i < 9 { ... }	</pre>|<pre>while (i < 9) { ... }</pre>|
+|<pre>loop {<br>    break;<br>    continue;<br>}</pre>|	<pre>while (true) {<br>    break;<br>    continue;<br>}</pre>|
+|<pre>'label: loop {<br>    break 'label;<br>    continue 'label;<br>}</pre>|<pre>while (true) {<br>    goto label_break;<br>    goto label_continue;<br>label_continue: } label_break:</pre>|
+|<pre></pre>|<pre></pre>|
+
+// TO DO
+https://maulingmonkey.com/guide/cpp-vs-rust/
+https://gist.github.com/jharmer95/ba0dde7b47eb70b38362edd905ca1806
+
+
+
 ## Manage polymorphism
 
 There is two kinds of polymorphism[^poly] in Rust:
@@ -642,7 +743,6 @@ impl Shape for Circle {
 }
 ```
 
-
 # Deliberation  
 
 ## Discussion
@@ -651,6 +751,10 @@ Here will be all the answers and decisions we made during the project.
 
 - At the start of the project, we ran into some issues that we thought were the use of Mac M1. So we decided to use Docker[^docker]. After several tests and advice, we finally decided not to use Docker, because it would complicate our tasks. After all, we need the debugger of VsCode.
 - Add comments to the existing code to make it easier to understand.
+
+- Do you consider the project as finished if all the tests pass? Or do you have other criteria for it? 
+
+    > Yes, that would be considered a successful mission.
 
 ## Open questions
 
