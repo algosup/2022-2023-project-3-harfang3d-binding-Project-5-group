@@ -24,19 +24,19 @@
 
 - [Summary](#summary)
 - [Introduction](#introduction)
-	- [Overview](#overview)
-	- [Context](#context)
-	- [Technical requirements](#technical-requirements)
-	- [Non-goals](#non-goals)
-	- [Assumptions](#assumptions)
+    - [Overview](#overview)
+    - [Context](#context)
+    - [Technical requirements](#technical-requirements)
+    - [Non-goals](#non-goals)
+    - [Assumptions](#assumptions)
 - [Solution](#solution)
-	- [Current solution](#current-solution)
-	- [Proposed solution](#proposed-solution)
+    - [Current solution](#current-solution)
+    - [Proposed solution](#proposed-solution)
         - [1. Create a mapping of elementary types](#1-create-a-mapping-of-elementary-types)
         - [2. Implement a C API wrapping the C/C++ objects](#2-implement-a-c-api-wrapping-the-cc-objects)
         - [3. Better integration with the target language](#3-better-integration-with-the-target-language)
     - [New FABGen architecture](#new-fabgen-architecture)
-	- [Test plan](#test-plan)
+    - [Test plan](#test-plan)
 - [Functions to implement](#functions-to-implement)
     - [rust.py](#rustpy)
     - [\_\_ init \_\_.py](#__-init-__py)
@@ -139,9 +139,9 @@ You need to generate a code without dependencies and it has to be human-readable
 - User-specifiable bound name.
 - Types can be hidden from the generated binding interface.
 - Feature mechanism to extend types and prototypes such as:
-	-  `arg_out`, `arg_in_out` to support output arguments.
-	-  `route` to route methods to a customisable expression.
-	-  `proxy` to support wrapper types such as std::shared_ptr< T>.
+    -  `arg_out`, `arg_in_out` to support output arguments.
+    -  `route` to route methods to a customisable expression.
+    -  `proxy` to support wrapper types such as std::shared_ptr< T>.
 - Extern type support to "link" C++ types shared by different bindings.
 - Simple and hopefully easy to dive into the codebase.
 
@@ -186,7 +186,7 @@ Adding support for such a language in Fabgen can be done using the following str
 
 ### 1. Create a mapping of elementary types
 
-Identify the elementary types common to both languages and create a mapping between them. C types might map to a single or more types in the Rust language.
+Identify the elementary types common to both languages and create a mapping between them. C types might map to a single or more type in the Rust language.
 
 ### 2. Implement a C API wrapping the C/C++ objects
 
@@ -200,8 +200,8 @@ This can be done by using a structure like the following:
 
 ``` C
 struct wrapped_native_obj {
-	uint32_t type_tag;
-	void *obj;
+    uint32_t type_tag;
+    void *obj;
 };
 ```  
 
@@ -209,7 +209,7 @@ The ownership of a wrapped object needs to be stored as well to properly handle 
 
 ``` C
 struct Vec3 {
-	float x, y, z;
+    float x, y, z;
 };
 
 const Vec3 *get_global_vec3();
@@ -276,22 +276,22 @@ FABGen had already a specific architecture for files and folders, so you must fo
 |
 ├── lib
 |  ├── cpython
-|  │	├── __init__.py
-|  │	├── std.py
-|  │	└── stl.py
+|  │    ├── __init__.py
+|  │    ├── std.py
+|  │    └── stl.py
 |  ├── lua
-|  │	├── __init__.py
-|  │	├── std.py
-|  │	└── stl.py
+|  │    ├── __init__.py
+|  │    ├── std.py
+|  │    └── stl.py
 |  ├── xml
-|  │	├── __init__.py
-|  │	├── std.py
-|  │	└── stl.py
+|  │    ├── __init__.py
+|  │    ├── std.py
+|  │    └── stl.py
 |  └── <b>rust (to add)
-|  	├── __init__.py
-|  	├── std.py
-|  	└── stl.py </b>
-|		
+|   ├── __init__.py
+|   ├── std.py
+|   └── stl.py </b>
+|       
 ├── tests
 ├── bind.py
 ├── gen.py
@@ -308,7 +308,7 @@ FABGen had already a specific architecture for files and folders, so you must fo
 
 ## Test plan
 
-Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/documents/documents/Quality_Assurance/TestPlan.md) of this project, it will helps us determine the effort needed to validate the quality of the project under test.
+Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/documents/documents/Quality_Assurance/TestPlan.md) of this project, it will help us determine the effort needed to validate the quality of the project under test.
 
 This test plan has been realised by Malo Archimaud, our quality assurance engineer.
 
@@ -318,7 +318,7 @@ Firstly, you need to follow the FABGen architecture shown in the [New FABGen arc
 
 ## rust.py
 
-The first step is to create the a file called rust.py in the lang folder, we are going to follow the same architecture as the go file, because rust is similar to go.
+The first step is to create a file called rust.py in the lang folder, we are going to follow the same architecture as the go file because rust is similar to go.
 
 We are going to add some unused functions in the file to follow the same architecture as other files.
 
@@ -352,9 +352,9 @@ a function that will convert from c to rust.
 - def from_c_call(self, type_name, var_name):
 
 
-After that we need to check if the type is a pointer or not. 
+After that, we need to check if the type is a pointer or not. 
 
-For this purpose we will have to create another class that will store the types of the variables. This class will be used to convert types in rust, it will inherit from the previous class and will be composed of 4 functions and 1 init function:
+For this purpose, we will have to create another class that will store the types of variables. This class will be used to convert types in rust, it will inherit from the previous class and will be composed of 4 functions and 1 init function:
 
 - class RustPtrTypeConverter(gen.TypeConverter):
 
@@ -374,7 +374,7 @@ a function that will check the call of the function.
 - def check_call(self, type_name, var_name):
 
 
-In rust we need to handle the "Extern" type, which is used to use all the external types. For this we will segment it into a class
+In Rust, we need to handle the "Extern" type, which is used to use all the external types. For this, we will segment it into a class
 
 - class RustExternTypeConverter(RustTypeConverterCommon):
 
@@ -392,7 +392,7 @@ This will be an empty file.
 
 The first thing to do in this file is to import lang.go.
 
-In this file you need to bind all the types.
+In this file, you need to bind all the types.
 
 ```Python
 import lang.go
@@ -481,9 +481,9 @@ Doing this type of project, we can have multiple problems like:
 
 # Success evaluation
 
-The project will be considered as successful mission if:
+The project will be considered a successful mission if:
 
-- You have implement all the functions for Rust,
+- You have implemented all the functions for Rust,
 - All the tests pass.
 
 # Work estimate
@@ -502,21 +502,21 @@ In general, Rust tends to use UpperCamelCase for "type-level" constructs and sna
 
 |Item|Convention|
 |-|-|
-|Crates	|unclear|
-|Modules	|snake_case|
-|Types	|UpperCamelCase|
-|Traits	|UpperCamelCase|
-|Enum variants|	UpperCamelCase|
-|Functions	|snake_case|
-|Methods	|snake_case|
-|General constructors|	new or with_more_details|
-|Conversion constructors|	from_some_other_type|
-|Macros|	snake_case!|
-|Local variables|	snake_case|
-|Statics	|SCREAMING_SNAKE_CASE|
-|Constants	|SCREAMING_SNAKE_CASE|
-|Type parameters|	Concise UpperCamelCase, usually single uppercase letter: T|
-|Lifetimes|	Short lowercase, usually a single letter: 'a, 'de, 'src|
+|Crates |unclear|
+|Modules    |snake_case|
+|Types  |UpperCamelCase|
+|Traits |UpperCamelCase|
+|Enum variants| UpperCamelCase|
+|Functions  |snake_case|
+|Methods    |snake_case|
+|General constructors|  new or with_more_details|
+|Conversion constructors|   from_some_other_type|
+|Macros|    snake_case!|
+|Local variables|   snake_case|
+|Statics    |SCREAMING_SNAKE_CASE|
+|Constants  |SCREAMING_SNAKE_CASE|
+|Type parameters|   Concise UpperCamelCase, usually single uppercase letter: T|
+|Lifetimes| Short lowercase, usually a single letter: 'a, 'de, 'src|
 |Features|unclear but see C-FEATURE|
 
 
@@ -551,7 +551,7 @@ The first step for converting Rust types to C is to know the corresponding type 
 ||u32|unsigned int|int32_t|
 ||u64|unsigned long|uint64_t|
 ||u64|unsigned long long int|uint64_t|
-||isize|-||	
+||isize|-|| 
 ||usize|size_t||
 |Floating types||||
 ||f32|float||
@@ -577,7 +577,7 @@ In Rust, an array is a fixed-size collection of elements of the same type, enclo
 
 - Slices: 
 
-In Rust, a slice is a dynamic view into a contiguous sequence of elements in memory. Slices are represented by the &[T] type, where T is the type of the elements. In C, slices can be represented by a pointer and a length.
+In Rust, a slice is a dynamic view of a contiguous sequence of elements in memory. Slices are represented by the &[T] type, where T is the type of the elements. In C, slices can be represented by a pointer and a length.
 
 
 ### User-defined types:
@@ -665,14 +665,14 @@ int add(int a, int b) {
 
 ### Pointer types:
 
-In Rust, pointer types are represented by the & operator, followed by the type of the data that the pointer points to.
+In Rust, pointer types are represented by the & operator, followed by the type of data that the pointer points to.
 
 ```Rust
 let x = 5;
 let x_ptr: &i32 = &x;
 ```
 
-In C, pointer types are represented by the * operator, followed by the type of the data that the pointer points to. 
+In C, pointer types are represented by the * operator, followed by the type of data that the pointer points to. 
 
 ```C
 int x = 5;
@@ -694,28 +694,28 @@ Keywords in programming are predefined. These words have a reserved use because 
 |<pre>assert!(condition);</pre>|<pre>assert(condition);</pre>|
 |<pre>print!("Hello {}\n", world);</pre>|<pre>printf("Hello %s\n", world);</pre>|
 |<pre>if a == b { ... }<br>else if a == b { ... } <br>else { ... } </pre>|<pre>if (a == b) { ... } <br>else if (a == b) { ... } <br>else { ... } </pre>|
-|<pre>let foo = 42;	</pre>|<pre>const auto foo = 42;</pre>|
+|<pre>let foo = 42; </pre>|<pre>const auto foo = 42;</pre>|
 |<pre>let foo = 42.0f32;</pre>|<pre>const auto foo = 42.0f;</pre>|
-|<pre>let foo = 42u32;	</pre>|<pre>const auto foo = 42u;</pre>|
-|<pre>let foo = 42u64;	</pre>|<pre>const auto foo = 42ull;</pre>|
-|<pre>let mut foo = 42;	</pre>|<pre>auto foo = 42;</pre>|
-|<pre>let mut foo : i32 = 42;	</pre>|<pre>int32_t foo = 42;</pre>|
-|<pre>let mut (x,y) = some_tuple;	</pre>|<pre>float x,y; std::tie(x,y) = some_tuple;</pre>|
-|<pre>let some_tuple = (1,2);	</pre>|<pre>const auto some_tuple=std::make_tuple(1,2);</pre>|
-|<pre>let a : [i32; 3] = [1, 2, 3];	</pre>|<pre>int32_t a[3] = { 1, 2, 3 };</pre>|
-|<pre>let v : Vec<i32> = vec![1, 2, 3];	</pre>|<pre>std::vector<int32_t> v = { 1, 2, 3 };</pre>|
-|<pre>for i in v { ... }	</pre>|<pre>for (auto i : v) { ... }</pre>|
-|<pre>for i in 1..9 { ... }	</pre>|<pre>for (size_t i = 1; i < 9; ++i) { ... }</pre>|
+|<pre>let foo = 42u32;  </pre>|<pre>const auto foo = 42u;</pre>|
+|<pre>let foo = 42u64;  </pre>|<pre>const auto foo = 42ull;</pre>|
+|<pre>let mut foo = 42; </pre>|<pre>auto foo = 42;</pre>|
+|<pre>let mut foo : i32 = 42;   </pre>|<pre>int32_t foo = 42;</pre>|
+|<pre>let mut (x,y) = some_tuple;   </pre>|<pre>float x,y; std::tie(x,y) = some_tuple;</pre>|
+|<pre>let some_tuple = (1,2);   </pre>|<pre>const auto some_tuple=std::make_tuple(1,2);</pre>|
+|<pre>let a : [i32; 3] = [1, 2, 3]; </pre>|<pre>int32_t a[3] = { 1, 2, 3 };</pre>|
+|<pre>let v : Vec<i32> = vec![1, 2, 3]; </pre>|<pre>std::vector<int32_t> v = { 1, 2, 3 };</pre>|
+|<pre>for i in v { ... }    </pre>|<pre>for (auto i : v) { ... }</pre>|
+|<pre>for i in 1..9 { ... } </pre>|<pre>for (size_t i = 1; i < 9; ++i) { ... }</pre>|
 |<pre>for i in 1..=9 { ... }</pre>|<pre>for (size_t i = 1; i <= 9; ++i) { ... }</pre>|
-|<pre>while i < 9 { ... }	</pre>|<pre>while (i < 9) { ... }</pre>|
-|<pre>loop {<br>    break;<br>    continue;<br>}</pre>|	<pre>while (true) {<br>    break;<br>    continue;<br>}</pre>|
+|<pre>while i < 9 { ... }   </pre>|<pre>while (i < 9) { ... }</pre>|
+|<pre>loop {<br>    break;<br>    continue;<br>}</pre>| <pre>while (true) {<br>    break;<br>    continue;<br>}</pre>|
 |<pre>'label: loop {<br>    break 'label;<br>    continue 'label;<br>}</pre>|<pre>while (true) {<br>    goto label_break;<br>    goto label_continue;<br>label_continue: } label_break:</pre>|
 |<pre>other_var as f32</pre>|<pre>(float)other_var</pre>|
 |<pre>match var { ... }<br>42 => foo(),<br>42 => { foo(); bar(); },<br>_ => ...,</pre>|<pre>switch (var) { ... }<br>case 42: foo(); break;<br>case 42: foo(); bar(); break;<br>default: ... break;</pre>|
 |<pre>mod foo { ... }</pre>|<pre>namespace foo { ... }</pre>|
 |<pre>use foo as bar;</pre>|<pre>using namespace bar = foo;</pre>|
 |<pre>use foo::*;</pre>|<pre>using namespace foo;</pre>|
-|<pre>use foo::some_func;	</pre>|<pre>using foo::some_func;</pre>|
+|<pre>use foo::some_func;   </pre>|<pre>using foo::some_func;</pre>|
 |<pre>trait Interface {<br>    fn foo(&self, _: u32) -> u64;<br>    fn bar(&self, param: u32) -> u64 {<br>        self.foo(param)<br>    }<br>}</pre>|<pre>struct Interface {<br>    virtual uint64_t foo(uint32_t) = 0;<br>    virtual uint64_t bar(uint32_t param) {<br>        return this->foo(param);<br>    }<br>}</pre>|
 |<pre>fn add (a: i32, b: i32) -> i32 {<br>    a + b // Final statement, no semicolon<br>}</pre>|<pre>int32_t add (int32_t a, int32_t b) {<br>    return a + b;<br>}</pre>|
 
@@ -801,12 +801,12 @@ impl Shape for Circle {
 
 ## Discussion
 
-Here will be all the answers and decisions we made during the project.
+There will be all the answers and decisions we made during the project.
 
 - At the start of the project, we ran into some issues that we thought were the use of Mac M1. So we decided to use Docker[^docker]. After several tests and advice, we finally decided not to use Docker, because it would complicate our tasks. After all, we need the debugger of VsCode.
 - Add comments to the existing code to make it easier to understand.
 
-- Do you consider the project as finished if all the tests pass? Or do you have other criteria for it? 
+- Do you consider the project finished if all the tests pass? Or do you have other criteria for it? 
 
     > Yes, that would be considered a successful mission.
 
@@ -874,7 +874,7 @@ There will be all the questions that don't have an answer.
 
 [^os]: An operating system (OS) is the software that manages a computer's hardware and provides an interface for interacting with it.
 
-[^contain]: A technology like Docker allow you to run your application in a container that isolates it from the underlying operating system, this way you can ensure that your application works on any system that supports running that container.
+[^contain]: A technology like Docker allows you to run your application in a container that isolates it from the underlying operating system, this way you can ensure that your application works on any system that supports running that container.
 
 [^rfc]: The [RFC 430](https://github.com/rust-lang/rfcs/blob/master/text/0430-finalizing-naming-conventions.md) is the code convention written by the developers of Rust.
 
