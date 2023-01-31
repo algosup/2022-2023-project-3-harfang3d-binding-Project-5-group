@@ -310,7 +310,7 @@ FABGen had already a specific architecture for files and folders, so you must fo
 
 Here is the [Test plan](https://github.com/algosup/2022-2023-project-3-harfang3d-binding-Project-5-group/blob/documents/documents/Quality_Assurance/TestPlan.md) of this project, it will help us determine the effort needed to validate the quality of the project under test.
 
-This test plan has been realised by Malo Archimaud, our quality assurance engineer.
+This test plan has been realised by Malo Archimbaud, our quality assurance engineer.
 
 # Functions to implement
 
