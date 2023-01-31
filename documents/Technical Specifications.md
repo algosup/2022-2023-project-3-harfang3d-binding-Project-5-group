@@ -8,7 +8,7 @@
 <p  align="center"> Clémentine Curel</p>  
 <br>
 <p style="font-weight: bold;" align=center> Team:</p>  
-<p align="center"> Victor Leroy, Théo Diancourt, Paul Maris, Malo AArchimbaud</p>  
+<p align="center"> Victor Leroy, Théo Diancourt, Paul Maris, Malo Archimbaud</p>  
 
 <br>
 
@@ -32,11 +32,14 @@
 - [Solution](#solution)
 	- [Current solution](#current-solution)
 	- [Proposed solution](#proposed-solution)
+        - [1. Create a mapping of elementary types](#1-create-a-mapping-of-elementary-types)
+        - [2. Implement a C API wrapping the C/C++ objects](#2-implement-a-c-api-wrapping-the-cc-objects)
+        - [3. Better integration with the target language](#3-better-integration-with-the-target-language)
     - [New FABGen architecture](#new-fabgen-architecture)
 	- [Test plan](#test-plan)
 - [Functions to implement](#functions-to-implement)
     - [rust.py](#rustpy)
-    - [__ init __.py](#__-init-__py)
+    - [\_\_ init \_\_.py](#__-init-__py)
     - [std.py](#stdpy)
     - [stl.py](#stlpy)
 - [Further considerations](#further-considerations)
@@ -49,9 +52,17 @@
 - [Success evaluation](#success-evaluation)
 - [Work estimate](#work-estimate)
     - [Code convention](#code-convention)
+        - [Rust](#rust)
+        - [Pyhton](#pyhton)
     - [Convert types](#convert-types)
-    - [Convert keywords](#convert-keywords)
-    - [Manage polymorphism](#manage-polymorphism)
+        - [Convert types](#convert-types)
+        - [Primitives types:](#primitives-types)
+        - [Sequence types:](#sequence-types)
+        - [User-defined types:](#user-defined-types)
+        - [Function types:](#function-types)
+        - [Pointer types:](#pointer-types)
+  - [Convert keywords](#convert-keywords)
+  - [Manage polymorphism](#manage-polymorphism)
 - [Deliberation](#deliberation)
     - [Discussion](#discussion)
     - [Open questions](#open-questions)
@@ -106,7 +117,6 @@ For this project, you must know these three languages:
 - Python, it's the language used to code the project.
 
 A deep understanding of those features and inner workings is required to come up with a correct solution. 
-
 
 ## Non-goals
 
@@ -306,12 +316,11 @@ This test plan has been realised by Malo Archimaud, our quality assurance engine
 
 Firstly, you need to follow the FABGen architecture shown in the [New FABGen architecture](#new-fabgen-architecture), and then this part will guide you through the files you have created.
 
+## rust.py
+
 The first step is to create the a file called rust.py in the lang folder, we are going to follow the same architecture as the go file, because rust is similar to go.
 
 We are going to add some unused functions in the file to follow the same architecture as other files.
-
-
-## rust.py
 
 In this file, you will have to implement the following functions:
 
