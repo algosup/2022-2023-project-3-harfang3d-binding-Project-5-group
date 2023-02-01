@@ -42,6 +42,7 @@
     - [\_\_ init \_\_.py](#__-init-__py)
     - [std.py](#stdpy)
     - [stl.py](#stlpy)
+    - [Tests folder](#tests-folder)
 - [Further considerations](#further-considerations)
     - [Impact on other teams](#impact-on-other-teams)
     - [Cost analysis](#cost-analysis)
@@ -426,6 +427,49 @@ def bind_stl(gen):
     class RustSliceToStdVectorConverter(lang.rust.RustTypeConverterCommon):
         # To do
 ```
+
+# Tests folder
+
+In the tests folder, you will find several Python files here to test your code.
+
+Each file starts with this piece of code. The last line will be different following the test.
+
+```Python
+import lib 
+
+def bind_test(gen):
+	gen.start('my_test')
+
+	lib.bind_defaults(gen)
+
+	gen.insert_code('''...''')
+```
+
+After this, it's the implementation of the languages. So you have:
+
+```Python
+
+test_python = '''\
+    ...
+'''
+
+test_lua = '''\
+    ...
+'''
+
+test_go = '''\
+    ...
+'''
+
+# So you need to add:
+
+test_rust = '''\
+    ...
+'''
+
+```
+
+To pass the test, you have to complete the test_rust. And do the same with all the files.
 
 # Further considerations
 
