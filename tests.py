@@ -537,6 +537,12 @@ class RustTestBed:
 		if not build_and_deploy_rust_extension(work_path, build_path):
 			return False
 
+		try:
+			raise Exception("Not implemented yet")
+		except subprocess.CalledProcessError as e:
+			print(e.output.decode('utf-8'))
+			return False
+
 		return True
 
 # Clang format
