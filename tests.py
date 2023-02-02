@@ -537,8 +537,25 @@ class RustTestBed:
 		if not build_and_deploy_rust_extension(work_path, build_path):
 			return False
 
+		os.chdir(work_path)
 		try:
-			raise Exception("Not implemented yet")
+			subprocess.check_output(
+				'cargo new test_rust', shell=True, stderr=subprocess.STDOUT)
+			os.chdir(os.path.join(work_path, 'test_rust'))
+
+			data = data2 = ''
+			with open(work_path+'/bind.rs', 'r') as fp: data = fp.read()
+			with open(work_path+'/test.rs', 'r') as fp: data2 = fp.read()
+			data += "\n" + data2
+			with open(work_path+'/test_rust/src/main.rs', 'w') as fp: fp.write(data)
+
+			# shutil.move(f"{work_path}/test.rs",
+			#             f"{work_path}/test_rust/src/main.rs")
+			# shutil.move(f"{work_path}/bind.rs",
+			#             f"{work_path}/test_rust/src/bind.rs")
+			print(subprocess.check_output('cat main.rs', shell=True, stderr=subprocess.STDOUT, cwd=work_path+'/test_rust/src').decode('utf-8'))
+			subprocess.check_output('cargo test', shell=True, stderr=subprocess.STDOUT)
+
 		except subprocess.CalledProcessError as e:
 			print(e.output.decode('utf-8'))
 			return False
