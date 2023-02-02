@@ -764,9 +764,6 @@ Keywords in programming are predefined. These words have a reserved use because 
 |<pre>fn add (a: i32, b: i32) -> i32 {<br>    a + b // Final statement, no semicolon<br>}</pre>|<pre>int32_t add (int32_t a, int32_t b) {<br>    return a + b;<br>}</pre>|
 
 
-
-
-
 ## Manage polymorphism
 
 There is two kinds of polymorphism[^poly] in Rust:
