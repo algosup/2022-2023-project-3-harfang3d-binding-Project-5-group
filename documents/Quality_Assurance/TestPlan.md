@@ -14,8 +14,6 @@ Author: [Malo Archimbaud](https://github.com/Malo-Archimbaud)
 - [3 Test Strategy](#3-test-strategy)
 - [4 Test Environment](#4-test-environment)
 - [5 Testing](#5-testing)
-  - [5.1 Functionnal Test Table](#51-functionnal-test-table)
-  - [5.2 Test cases](#52-test-cases)
 
 </details>
 
@@ -47,16 +45,4 @@ All the test are going to be run on Mac M1 with the M1 chip. Since the already a
 
 # 5 Testing
 
-## 5.1 Functionnal Test Table
-
-| Function number | Description | Test Number | Test type |
-| --- | --- | --- | --- | 
-| F1 || FT1 ||
-
-## 5.2 Test cases
-
-- FT1
-  - 
-    | Tests | Sub tests | Exit criteria |
-    |---|---|---|
-
+To test if our solution is working as it should, we will use the test that are directly implemented in FABGen. We will also test our solution on some libraries and check if the output is acceptable.
