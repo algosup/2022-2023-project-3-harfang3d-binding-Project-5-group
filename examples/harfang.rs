@@ -4,7 +4,7 @@
 
 use std::{os::raw::c_int, ffi::CString};
 
-include!("bindings.rs");
+include!("bind.rs");
 
 fn main(){
     unsafe {
