@@ -550,38 +550,32 @@ class RustTestBed:
 		if not build_and_deploy_rust_extension(work_path, build_path):
 			return False
 
-		# after build, delete the wrapper.cpp to test the lib which has been build
-		#if os.path.exists(os.path.join(work_path, 'wrapper.cpp')):
-		#	os.remove(os.path.join(work_path, 'wrapper.cpp'))
-
-		print("Executing Rust test...")
 		os.chdir(work_path)
-
-		success = True
 		try:
-			subprocess.check_output('cargo new test_rust', shell=True, stderr=subprocess.STDOUT)
+			subprocess.check_output(
+				'cargo new test_rust', shell=True, stderr=subprocess.STDOUT)
 			os.chdir(os.path.join(work_path, 'test_rust'))
-			# subprocess.Popen(os.getcwd())
-			print(work_path)
-			shutil.move(f"{work_path}/test.rs", f"{work_path}/test_rust/src/main.rs")
-			# exit()
-			# subprocess.call("mv ../test.rs ./src/main.rs", shell=False, stderr=subprocess.STDOUT)
-			subprocess.check_output("cargo test", shell=True, stderr=subprocess.STDOUT)
-	
-			#subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
-			#subprocess.check_output('go test -run ""', shell=True, stderr=subprocess.STDOUT)
+
+			data = data2 = ''
+			with open(work_path+'/bind.rs', 'r') as fp: data = fp.read()
+			with open(work_path+'/test.rs', 'r') as fp: data2 = fp.read()
+			data += "\n" + data2
+			with open(work_path+'/test_rust/src/main.rs', 'w') as fp: fp.write(data)
+
+			# shutil.move(f"{work_path}/test.rs",
+			#             f"{work_path}/test_rust/src/main.rs")
+			# shutil.move(f"{work_path}/bind.rs",
+			#             f"{work_path}/test_rust/src/bind.rs")
+			print(subprocess.check_output('cat main.rs', shell=True, stderr=subprocess.STDOUT, cwd=work_path+'/test_rust/src').decode('utf-8'))
+			subprocess.check_output('cargo test', shell=True, stderr=subprocess.STDOUT)
+
 		except subprocess.CalledProcessError as e:
 			print(e.output.decode('utf-8'))
-			success = False
+			return False
 
-		print("Cleanup...")
+		return True
 
-		return success
-
-
-
-
-#endregion
+#endregion Rust
 
 # Clang format
 def create_clang_format_file(work_path):

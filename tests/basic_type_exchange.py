@@ -121,15 +121,4 @@ mod tests {
 		}
 	}
 }
-
 '''
-
-# test_rust = '''\
-# #[test]
-# fn test() {
-# 	let x = 5;
-# 	let y = 6;
-# 	let z = x + y;
-# 	assert_eq!(z, 11);
-# }
-# '''
