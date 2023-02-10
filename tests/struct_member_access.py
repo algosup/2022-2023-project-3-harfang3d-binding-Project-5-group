@@ -142,32 +142,34 @@ test_rust = '''\
 use my_test::*;
 
 #[test]
+#[test]
 fn test() {
-	let s = return_simple_struct_by_pointer();
+    let s = return_simple_struct_by_pointer();
 
-	assert_eq!(s.a, 7, "should be the same);
-	assert_eq!(s.b, 17.5, "should be the same);
-	assert_eq!(s.c, true, "should be the same);
-	assert_eq!(s.d, 9, "should be the same);
-	assert_eq!(s.text_field, "some content", "should be the same);
+    assert_eq!(s.get_a(), 7);
+    assert_eq!(s.get_b(), 17.5);
+    assert_eq!(s.get_c(), true);
+    assert_eq!(s.get_d(), 9);
+    assert_eq!(s.get_text_field(), "some content");
 
-	s.a = -2;
-	s.b = -4.5;
-	s.c = false;
+    s.set_a(-2);
+    s.set_b(-4.5);
+    s.set_c(false);
 
-	assert_eq!(s.a, -2, "should be the same);
-	assert_eq!(s.b, -4.5, "should be the same);
-	assert_eq!(s.c, false, "should be the same);
+    assert_eq!(s.get_a(), -2);
+    assert_eq!(s.get_b(), -4.5);
+    assert_eq!(s.get_c(), false);
 
-	s.a += 4;
-	assert_eq!(s.a, 2, "should be the same);
+    s.set_a(s.get_a() + 4);
+    assert_eq!(s.get_a(), 2);
 
-	// # write to const member
-	//  can't set d because it's a const
-	// check if it didn't bind it
-	let write_to_const_failed = interface{}(s).as_ref().map(|s| s.set_d());
-	assert_eq!(write_to_const_failed, None, "should be the same.");
+    // Check if write to const member is not possible
+    let write_to_const_failed = match s.set_d() {
+        Ok(_) => false,
+        Err(_) => true,
+    };
+    assert_eq!(write_to_const_failed, true);
 
-	assert_eq!(s.get_d(), 9, "should be the same.");
+    assert_eq!(s.get_d(), 9);
 }
 '''

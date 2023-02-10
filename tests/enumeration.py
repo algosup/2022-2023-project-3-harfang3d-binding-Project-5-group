@@ -113,8 +113,8 @@ fn test() {
 	assert_eq!(TypedEnum::TE_b as i16, 1, "should be the same.");
 	assert_eq!(TypedEnum::TE_c as i16, 16384, "should be the same.");
 
-	assert_eq(NamedEnum::NE_a as i32, 0, "should be the same.");
-	assert_eq(NamedEnum::NE_b as i32, 1, "should be the same.");
-	assert_eq(NamedEnum::NE_c as i32, 4096, "should be the same.");
+	assert_eq!(NamedEnum::NE_a as i32, 0, "should be the same.");
+	assert_eq!(NamedEnum::NE_b as i32, 1, "should be the same.");
+	assert_eq!(NamedEnum::NE_c as i32, 4096, "should be the same.");
 }
 '''

@@ -33,6 +33,9 @@ int consume_pointer_to_int(const int *p) {
 	elif gen.get_language() == 'Go':
 		gen.bind_type(lib.go.stl.GoSliceToStdVectorConverter('GoSliceOfInt', int_conv))
 		gen.bind_type(lib.go.stl.GoSliceToStdVectorConverter('GoSliceOfInt_ptr', int_ptr))
+	elif gen.get_language() == 'Rust':
+		gen.bind_type(lib.rust.stl.RustSliceToStdVectorConverter('RustSliceOfInt', int_conv))
+		gen.bind_type(lib.rust.stl.RustSliceToStdVectorConverter('RustSliceOfInt_ptr', int_ptr))
 
 	std_vector_int = gen.begin_class('std::vector<int>', features={'sequence': lib.std.VectorSequenceFeature(int_conv)})
 
@@ -42,6 +45,8 @@ int consume_pointer_to_int(const int *p) {
 		gen.bind_constructor(std_vector_int, ['?LuaTableOfInt sequence'])
 	elif gen.get_language() == 'Go':
 		gen.bind_constructor(std_vector_int, ['?GoSliceOfInt sequence'])
+	elif gen.get_language() == 'Rust':
+		gen.bind_constructor(std_vector_int, ['?RustSliceOfInt sequence'])
 
 	gen.bind_method(std_vector_int, 'size', 'int', [])
 	gen.bind_method(std_vector_int, 'push_back', 'void', ['int v'])
@@ -63,6 +68,8 @@ int consume_pointer_to_int(const int *p) {
 		gen.bind_constructor(std_vector_int_ptr, ['?LuaTableOfInt_ptr sequence'])
 	elif gen.get_language() == 'Go':
 		gen.bind_constructor(std_vector_int_ptr, ['?GoSliceOfInt_ptr sequence'])
+	elif gen.get_language() == 'Rust':
+		gen.bind_constructor(std_vector_int_ptr, ['?RustSliceOfInt_ptr sequence'])
 
 	gen.bind_method(std_vector_int_ptr, 'size', 'int', [])
 	gen.bind_method(std_vector_int_ptr, 'push_back', 'void', ['int* v'])
@@ -280,7 +287,7 @@ fn test() {
 
 	v.set(0, v.get(0)*4);
 
-	assert_eq(v.get(0), 20, "should be the same.");
+	assert_eq!(v.get(0), 20, "should be the same.");
 
 	assert_eq!(consume_pointer_to_int(v.data()), 16, "should be the same.");
 

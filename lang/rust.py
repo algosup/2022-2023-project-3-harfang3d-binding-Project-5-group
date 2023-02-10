@@ -586,7 +586,7 @@ uint32_t %s(void* p) {
                 # check if owning to have the right to destroy it
                 if rval_ownership != "NonOwning" and not is_ref and not non_owning:
                         src += f"  let {retval_name}_rust, fn(cleanval &{retval_boundname}) {{\n" \
-                               f"  libc::{clean_name_with_title(self.name)}{retval_boundname}libc::free(cleanval);\n" \
+                               f"  libc::{clean_name_with_title(self._name)}{retval_boundname}libc::free(cleanval);\n" \
                             f"	}})\n"
                 src += "}\n"
                 retval_name = f"{retval_name}_rust"
@@ -2102,6 +2102,7 @@ uint32_t %s(void* p) {
 
         self.output_binding_api()
 
+        # self.rust_h = self._write_header()
         self.rust_h = self._write_header()
         self.rust_c = self._write_C_code()
         self.rust_bind = self._write_rust_bind()
