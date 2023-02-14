@@ -14,18 +14,21 @@
       - [How does it work?](#how-does-it-work-1)
     - [Why Rust?](#why-rust)
   - [Audience](#audience)
+  - [What is the problem](#what-is-the-problem)
   - [Personas](#personas)
     - [Persona 1](#persona-1)
     - [Persona 2](#persona-2)
     - [Persona 3](#persona-3)
     - [Persona 4](#persona-4)
   - [Laws and regulations](#laws-and-regulations)
+  - [Ressources](#ressources)
   - [Functionalities](#functionalities)
     - [Compatibility](#compatibility)
     - [Documentation](#documentation)
     - [Testing](#testing)
   - [Cost analysis](#cost-analysis)
   - [Privacy](#privacy)
+  - [After binding](#after-binding)
   - [Non-functional requirements](#non-functional-requirements)
     - [Performance](#performance)
     - [Security](#security)
@@ -34,6 +37,8 @@
       - [Python Case](#python-case)
   - [Risks and assumptions](#risks-and-assumptions)
     - [Development environment](#development-environment)
+  - [Evolution](#evolution)
+    - [Rust Evolution](#rust-evolution)
   - [Success criteria](#success-criteria)
   - [Out of scope](#out-of-scope)
   - [Glossary](#glossary)
@@ -111,6 +116,14 @@ In the recent surveys from the developers, Rust is one of the most popular langu
 
 Which will result in more opportunities for the engine and the people who are using it. 
 
+## What is the problem 
+
+Rust tends to be used more and more in the industry, and especially in these fields to replace C++, we can see that a lot of software is being translated into Rust for memory safety purposes.
+
+Creating a binding in Rust for this engine is the first step for them to convert their software into Rust if they want to. 
+
+It will also allow more people to use the engine and use it for their projects.
+
 ## Personas
 
 ### Persona 1
@@ -183,6 +196,16 @@ For this kind of software, there are a couple of laws and regulations that must 
 
 However, since we are not going to change the code of the engine and we are only going to add bindings to FABGen, we should not have any problems with this section. 
 
+## Ressources 
+
+For this project, we have a lot of resources provided, we have the Harfang 3D engine, the FABGen project, and the Harfang 3D documentation. 
+
+These are the 3 main resources that we will be using for this project.
+
+We need to create the binding on top of the FABGen project, for this purpose we need to bring the FABGen project to our repository, and then we will be able to start working on the binding. 
+
+We don't need to change any files of the Harfang 3D engine however we can still change the files related to the functionalities of FABGen for instance the CMake. 
+
 ## Functionalities
 
 We need to implement access to all of the available functionalities of the Harfang 3D engine in Rust.
@@ -236,6 +259,16 @@ We are not expecting any cost for this project.
 No personal data will be collected, we are not going to sell our solution to anyone, we are not supposed to work with any third party, and we are not expected to not share any information about our project.
 
 In addition, the original project is under the GPL-3.0 license, which means that we are not allowed to sell our solution but we are allowed to modify it and share it with anyone.
+
+## After binding 
+
+After the core functionalities of the binding are implemented, we will need to add some additional things to the project, such as:
+
+- Modifying the files of Harfang 3D to be compatible with the binding, so the client can use the binding directly without any additional work. 
+- Add documentation for the client to know how to use the binding. 
+- Add the binding on cargo, such as pip for Python or go get for Go, it will allow the users to install the binding directly from the command line. 
+
+You can find the GitHub repository of Harfang 3D [here](https://github.com/harfang3d/harfang3d)
 
 ## Non-functional requirements
 
@@ -305,6 +338,16 @@ We have access to different tools like docker to help us if some compatibility i
 
 We can also assure that the binding will be fully compatible with the operating systems that are already supported by FABGen, even if there are some issues related to the architecture of our machine during the development process because the binding on itself does not require to be compiled on the machine of the user, it is only a library that is used by the user.
 
+## Evolution
+
+The project is only an evolution of what FABGen already is, we are not going to change the engine, we are only going to add a new way to access it.
+
+It will still be possible for the FABGen team to support other languages in the future,
+
+### Rust Evolution
+
+Rust is a very young language, that is constantly evolving, we need to make sure that the binding is compatible with the latest version of Rust, on top of that rust already has some keywords that are reserved for the future, since we do not know what will be added and if the name will be definitive, we need to make a code readable and easy to maintain, with that when a new keyword is added to Rust, it will be easy to update the binding.
+
 ## Success criteria 
 
 The binding will be considered a success if it is compatible with all the features of the engine and if it is on the same degree of performance as other bindings in other languages. 
@@ -350,3 +393,7 @@ Making all the components of FABGen available on Mac M1, MacOS M1 machines use a
 - Docker: Docker is a set of platform service products that use virtualization at the operating system level to deliver software in packages called containers. Containers are isolated from one another and bundle their software, libraries, and configuration files; they can communicate with each other through well-defined channels. In our case, it is used to resolve compatibilty, issues between different architectures.
 
 - Code Convention: Code conventions are a set of rules that are used to make the code more readable and easier to understand.
+
+- CMake: CMake is an open-source, cross-platform family of tools designed to build, test and package software. It is used to build the engine.
+
+- Cargo: Cargo is a package manager for Rust. Similar to pip for Python.
