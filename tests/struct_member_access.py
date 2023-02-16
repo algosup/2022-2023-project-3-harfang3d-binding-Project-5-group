@@ -137,3 +137,37 @@ func Test(t *testing.T) {
 	assert.Equal(t, s.GetD(), int32(9), "should be the same.")
 }
 """
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let s = return_simple_struct_by_pointer();
+
+	assert_eq!(s.a, 7, "should be the same);
+	assert_eq!(s.b, 17.5, "should be the same);
+	assert_eq!(s.c, true, "should be the same);
+	assert_eq!(s.d, 9, "should be the same);
+	assert_eq!(s.text_field, "some content", "should be the same);
+
+	s.a = -2;
+	s.b = -4.5;
+	s.c = false;
+
+	assert_eq!(s.a, -2, "should be the same);
+	assert_eq!(s.b, -4.5, "should be the same);
+	assert_eq!(s.c, false, "should be the same);
+
+	s.a += 4;
+	assert_eq!(s.a, 2, "should be the same);
+
+	// # write to const member
+	//  can't set d because it's a const
+	// check if it didn't bind it
+	let write_to_const_failed = interface{}(s).as_ref().map(|s| s.set_d());
+	assert_eq!(write_to_const_failed, None, "should be the same.");
+
+	assert_eq!(s.get_d(), 9, "should be the same.");
+}
+'''

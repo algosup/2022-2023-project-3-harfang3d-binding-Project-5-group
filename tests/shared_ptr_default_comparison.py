@@ -92,3 +92,25 @@ func Test(t *testing.T) {
 	assert.True(t, a.Equal(d), "should be the equal.")
 }
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let a = get_obj0();
+	let b = get_obj0();
+
+	assert!(a == b, "should be the equal.");
+
+	let c = get_obj1();
+
+	assert!(a != c, "should be different.");
+	assert!(b != c, "should be different.");
+
+	let d = get_obj2();
+
+	assert!(a == d, "should be the equal.");
+}
+'''
+

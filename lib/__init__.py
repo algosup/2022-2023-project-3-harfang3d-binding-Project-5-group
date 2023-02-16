@@ -26,3 +26,6 @@ def bind_defaults(gen):
 
 		lib.rust.std.bind_std(gen)
 		lib.rust.stl.bind_stl(gen)
+  # This is not in the original code, but it's a good thing to have it to facilitate the development 
+	else :
+		raise NameError("Unsupported generator: " + gen.get_language())

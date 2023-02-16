@@ -120,3 +120,33 @@ func Test(t *testing.T) {
 	assert.Equal(t, w, int32(20), "should be the same.")
 }
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let mut a = A::new();
+	modify_in_out_struct(&mut a);
+	assert_eq!(a.get_v(), 3);
+
+	let (c, b) = out_values_function_call(2, 3);
+	assert_eq!(*c, 16);
+	assert_eq!(*b, 42);
+
+	let (r, c, b) = out_values_function_call_rval(2);
+	assert_eq!(r, 2);
+	assert_eq!(*c, 16);
+	assert_eq!(*b, 28);
+
+	let (r, c, b) = out_values_function_call_rval_with_k(2, 2);
+	assert_eq!(r, 4);
+	assert_eq!(*c, 16);
+	assert_eq!(*b, 28);
+
+	let mut w = 5;
+	let rb = in_out_value(&mut w);
+	assert!(rb);
+	assert_eq!(w, 20);
+}
+'''

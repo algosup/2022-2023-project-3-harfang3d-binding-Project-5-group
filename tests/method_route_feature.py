@@ -54,3 +54,12 @@ func Test(t *testing.T) {
 }
 """
 
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let o = Object::new();
+	assert_eq!(o.get(4), 15, "should be the same.");
+}
+'''

@@ -43,3 +43,13 @@ func Test(t *testing.T) {
 	assert.Nil(t, v, "should be nil.")
 }
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let v = return_nullptr();
+	assert!(v.is_none(), "should be none.");
+}
+'''

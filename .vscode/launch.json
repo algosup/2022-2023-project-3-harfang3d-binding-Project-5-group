@@ -96,7 +96,7 @@
 			"python": "${command:python.interpreterPath}",
 			"program": "${workspaceFolder}/tests.py",
 			"cwd": "${workspaceFolder}",
-			"args": ["--pybase", "${command:python.interpreterPath}", "--debug", "const_support", "--x64"],
+			"args": ["--pybase", "${command:python.interpreterPath}", "--debug", "basic_type_exchange", "--x64"],
 			"envFile": "${workspaceFolder}/.env",
 		},
 		// TODO (Missing SDK) Lua53: Tests
@@ -121,6 +121,30 @@
 			"program": "${workspaceFolder}/tests.py",
 			"cwd": "${workspaceFolder}",
 			"args": ["--luabase", "D:/harfang/sdk", "--debug", "std_function", "--x64"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// Rust: Tests --debug
+		{
+			"name": "Rust: Tests --debug",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/tests.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["--linux", "--rust", "--debug", "basic_type_exchange"],
+			"envFile": "${workspaceFolder}/.env",
+		},
+		// Rust: [DEV] Tests --debug
+		{
+			"name": "Rust: [DEV] Tests --debug",
+			"type": "python",
+			"request": "launch",
+			"stopOnEntry": false,
+			"python": "${command:python.interpreterPath}",
+			"program": "${workspaceFolder}/bind.py",
+			"cwd": "${workspaceFolder}",
+			"args": ["--out", "./output/bind_dev", "--rust", "test_bind.py"],
 			"envFile": "${workspaceFolder}/.env",
 		},
 		// TODO (Missing SDK) All: Tests

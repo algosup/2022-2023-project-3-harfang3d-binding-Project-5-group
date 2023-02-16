@@ -1,18 +1,39 @@
 import lib
 
 def bind(gen):
-    gen.start('float_value')
+    gen.start('my_test')
 
-    lib.bind_defaults(gen)  # bind default types (int, float, etc...)
+    lib.bind_defaults(gen)
 
-    float_value = gen.begin_class('FloatValue')  # begin type definition
-    gen.bind_constructor(float_value, ['?float value'])  # declare constructor
+    # inject test code in the wrapper
+    gen.insert_code('''\
+    // basic interoperability
+    int return_int() { return 8; }
+    float return_float() { return 8.f; }
+    const char *return_const_char_ptr() { return "const char * -> string"; }
 
-    gen.bind_method(float_value, 'Get', 'float', [])  # declare getter method
-    gen.bind_method(float_value, 'Set', 'void', ['float value'])  # declare setter method
+    static int static_int = 9;
 
-    gen.bind_arithmetic_ops_overloads(float_value, ['+'], [('FloatValue', ['const FloatValue &b'], [])])  # bind arithmetic operator
+    int *return_int_by_pointer() { return &static_int; }
+    int &return_int_by_reference() { return static_int; }
 
-    gen.end_class(float_value)
+    // argument passing
+    int add_int_by_value(int a, int b) { return a + b; }
+    int add_int_by_pointer(int *a, int *b) { return *a + *b; }
+    int add_int_by_reference(int &a, int &b) { return a + b; }
+    \n''', True, False)
+
+    gen.add_include('string', True)
+
+    gen.bind_function('return_int', 'int', [])
+    gen.bind_function('return_float', 'float', [])
+    gen.bind_function('return_const_char_ptr', 'const char *', [])
+
+    gen.bind_function('return_int_by_pointer', 'int*', [])
+    gen.bind_function('return_int_by_reference', 'int&', [])
+
+    gen.bind_function('add_int_by_value', 'int', ['int a', 'int b'])
+    gen.bind_function('add_int_by_pointer', 'int', ['int *a', 'int *b'])
+    gen.bind_function('add_int_by_reference', 'int', ['int &a', 'int &b'])
 
     gen.finalize()

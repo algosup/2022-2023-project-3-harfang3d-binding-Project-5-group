@@ -26,6 +26,7 @@ tests-lua54: tests-echo # Run lua54 tests.
 	docker run -it --rm --name tests-lua54 --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --luabase /usr
 
 tests-rust: tests-echo # Run rust tests.
-	docker run -it --rm --name tests-rust --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --rust --debug variable_access
+	docker run -it --rm --name tests-rust --volume $(CURRENT_DIR):/usr/src/tests fabgen-builder:1.0 python3 tests.py --linux --rust 
+# --debug basic_type_exchange
 
 tests-all: tests-python tests-golang tests-lua54 tests-rust # Run all tests.

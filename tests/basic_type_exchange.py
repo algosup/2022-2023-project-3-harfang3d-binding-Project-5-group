@@ -96,3 +96,29 @@ func Test(t *testing.T) {
 	assert.Equal(t, AddIntByReference(&a, &b), 7, "should be the same.")
 }
 '''
+
+#use my_test::*;
+
+test_rust = '''\
+#[cfg(test)]
+mod tests {
+	#[test]
+	fn test() {
+		unsafe {
+			assert_eq!(ReturnInt(), 8, "should be the same.");
+			// Unfortunately we can't assign a float to an integer in Rust
+			assert_eq!(ReturnFloat(), 8.0, "should be the same.");
+			assert_eq!(return_const_char_ptr(), "const char * -> string", "should be the same.");
+
+			assert_eq!(return_int_by_pointer(), 9, "should be the same.");
+			assert_eq!(return_int_by_reference(), 9, "should be the same.");
+
+			assert_eq!(add_int_by_value(3, 4), 7, "should be the same.");
+			let a:i32 = 3;
+			let b:i32 = 4;
+			assert_eq!(add_int_by_pointer(&a, &b), 7, "should be the same.");
+			assert_eq!(add_int_by_reference(&a, &b), 7, "should be the same.");
+		}
+	}
+}
+'''

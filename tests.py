@@ -1,11 +1,14 @@
 # FABGen - The FABulous binding Generator for CPython and Lua
 #	Copyright (C) 2018 Emmanuel Julien
 
+#region Imports
+
 import importlib
 import tempfile
 import subprocess
 import argparse
 import shutil
+import lib
 import sys
 import os
 
@@ -13,8 +16,9 @@ import lang.cpython
 import lang.lua
 import lang.go
 import lang.rust
+#endregion
 
-
+#region Parsing
 start_path = os.path.dirname(__file__)
 
 parser = argparse.ArgumentParser(description='Run generator unit tests.')
@@ -52,6 +56,7 @@ if not args.linux:
 run_test_list = []
 failed_test_list = []
 
+#endregion
 
 def run_test(gen, name, testbed):
 	work_path = tempfile.mkdtemp()
@@ -110,7 +115,7 @@ def run_tests(gen, names, testbed):
 	print("[Test summary: %d run, %d failed]" % (run_test_count, failed_test_count))
 	print("Done with fabgen generator %s\n" % gen.get_language())
 
-
+#region CPython
 # CPython test bed
 def create_cpython_cmake_file(module, work_path, sources, site_package, include_dir, python_lib):
 	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
@@ -226,7 +231,9 @@ class CPythonTestBed:
 
 		return success
 
+#endregion
 
+#region Lua
 # Lua test bed
 def create_lua_cmake_file(module, work_path, sources, sdk_path):
 	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
@@ -340,8 +347,9 @@ class LuaTestBed:
 		print("Cleanup...")
 
 		return success
+#endregion
 
-
+#region Go
 # GO test bed
 def create_go_cmake_file(module, work_path, sources):
 	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
@@ -387,7 +395,8 @@ def build_and_deploy_go_extension(work_path, build_path):
 		else:
 			subprocess.check_output(['cmake', '--build', '.', '--config', 'Release'])
 	except subprocess.CalledProcessError as e:
-		print(e.output.decode('utf-8'))
+		# print(e.output.decode('utf-8'))
+		sys.stdout.buffer.write(bytes(e.output))
 		return False
 
 	print("install extension...")
@@ -430,8 +439,8 @@ class GoTestBed:
 			return False
 
 		# after build, delete the wrapper.cpp to test the lib which has been build
-		if os.path.exists(os.path.join(work_path, 'wrapper.cpp')):
-			os.remove(os.path.join(work_path, 'wrapper.cpp'))
+		# if os.path.exists(os.path.join(work_path, 'wrapper.cpp')):
+		# 	os.remove(os.path.join(work_path, 'wrapper.cpp'))
 
 		print("Executing Go test...")
 		os.chdir(work_path)
@@ -439,9 +448,9 @@ class GoTestBed:
 		success = True
 		try:
 			subprocess.check_output('go mod init mytest', shell=True, stderr=subprocess.STDOUT)
-			subprocess.check_output("go fmt mytest", shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output("go mod tidy", shell=True, stderr=subprocess.STDOUT)
-			#subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
+			subprocess.check_output("go fmt mytest", shell=True, stderr=subprocess.STDOUT)
+			subprocess.check_output("goimports -w bind.go", shell=True, stderr=subprocess.STDOUT)
 			subprocess.check_output('go test -run ""', shell=True, stderr=subprocess.STDOUT)
 		except subprocess.CalledProcessError as e:
 			print(e.output.decode('utf-8'))
@@ -450,10 +459,123 @@ class GoTestBed:
 		print("Cleanup...")
 
 		return success
-	
+
+#endregion Go
+
+#region Rust
+# Rust test bed
+def create_rust_cmake_file(module, work_path, sources):
+	cmake_path = os.path.join(work_path, 'CMakeLists.txt')
+
+	with open(cmake_path, 'w') as file:
+		quoted_sources = ['"%s"' % source for source in sources if ".rust" not in source]
+
+		work_place_ = work_path.replace('\\', '/')
+
+		file.write(f"""
+cmake_minimum_required(VERSION 3.1)
+
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+set(CMAKE_MODULE_PATH ${{CMAKE_MODULE_PATH}} "${{CMAKE_SOURCE_DIR}}/")
+
+project({module})
+enable_language(C CXX)
+set(CMAKE_CXX_STANDARD 14)
+
+add_library(my_test SHARED {' '.join(quoted_sources)})
+set_target_properties(my_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE "{work_place_}")
+
+install(TARGETS my_test DESTINATION "${{CMAKE_SOURCE_DIR}}/" COMPONENT my_test)
+""")
+
+
+def build_and_deploy_rust_extension(work_path, build_path):
+	print("Generating build system...")
+	#try:
+	#	if args.linux:
+	#		subprocess.check_output(['cmake', '..'])
+	#	else:
+	#		subprocess.check_output('cmake .. -G "%s"' % cmake_generator)
+	#except subprocess.CalledProcessError as e:
+	#	print(e.output.decode('utf-8'))
+	#	return False
+
+	print("Building extension...")
+	#try:
+	#	if args.linux:
+	#		subprocess.check_output(['make'])
+	#	else:
+	#		subprocess.check_output(['cmake', '--build', '.', '--config', 'Release'])
+	#except subprocess.CalledProcessError as e:
+	#	print(e.output.decode('utf-8'))
+	#	return False
+
+	print("install extension...")
+	#try:
+	#	if args.linux:
+	#		subprocess.check_output(['make', 'install'])
+	#	else:
+	#		subprocess.check_output(['cmake', '--install', '.', '--config', 'Release'])
+	#except subprocess.CalledProcessError as e:
+	#	print(e.output.decode('utf-8'))
+	#	return False
+
+	return True
+
 class RustTestBed:
 	def build_and_test_extension(self, work_path, module, sources):
-		raise NotImplementedError("RustTestBed not implemented yet")
+		if not hasattr(module, "test_rust"):
+			print("Can't find test_rust")
+			return False
+
+		# copy test file
+		test_path = os.path.join(work_path, 'test.rs')
+		with open(test_path, 'w') as file:
+			file.write(module.test_rust)
+
+		# if need special other file in package
+		if hasattr(module, "test_special_rust"):
+			test_path = os.path.join(work_path, 'test_rust.rs')
+			with open(test_path, 'w') as file:
+				file.write(module.test_special_rustt)
+
+		build_path = os.path.join(work_path, 'build')
+		os.mkdir(build_path)
+		os.chdir(build_path)
+
+		create_rust_cmake_file("test", work_path, sources)
+		create_clang_format_file(work_path)
+
+		if not build_and_deploy_rust_extension(work_path, build_path):
+			return False
+
+		os.chdir(work_path)
+		try:
+			subprocess.check_output(
+				'cargo new test_rust', shell=True, stderr=subprocess.STDOUT)
+			os.chdir(os.path.join(work_path, 'test_rust'))
+
+			data = data2 = ''
+			with open(work_path+'/bind.rs', 'r') as fp: data = fp.read()
+			with open(work_path+'/test.rs', 'r') as fp: data2 = fp.read()
+			data += "\n" + data2
+			with open(work_path+'/test_rust/src/main.rs', 'w') as fp: fp.write(data)
+
+			# shutil.move(f"{work_path}/test.rs",
+			#             f"{work_path}/test_rust/src/main.rs")
+			# shutil.move(f"{work_path}/bind.rs",
+			#             f"{work_path}/test_rust/src/bind.rs")
+			print(subprocess.check_output('cat main.rs', shell=True, stderr=subprocess.STDOUT, cwd=work_path+'/test_rust/src').decode('utf-8'))
+			subprocess.check_output('cargo test', shell=True, stderr=subprocess.STDOUT)
+
+		except subprocess.CalledProcessError as e:
+			print(e.output.decode('utf-8'))
+			return False
+
+		return True
+
+#endregion Rust
 
 # Clang format
 def create_clang_format_file(work_path):
@@ -495,8 +617,9 @@ if args.go_build:
 
 if args.rust_build:
 	gen = lang.rust.RustGenerator()
-	gen.verbose = False
+	gen.verbose = True
 	run_tests(gen, test_names, RustTestBed())
+
 
 #
 print("[Final summary]")
@@ -507,4 +630,16 @@ else:
 	print("The following tests failed:")
 	for test in failed_test_list:
 		print(" - " + test)
-		#sys.exit(1)
+	sys.exit(1)
+
+"""
+! Linux:
+1. Init with selected {lang}
+2. run_tests for each: {[names]}
+3. run_test {name}
+4. Generate the C interface file
+5. Testbed.build_and_test_extension
+6. create file with the right test_{lang} in it (test.{lang.ext})
+7. create_{lang}_cmake_file
+8. (don't care) create_clang_{lang}_format_file
+"""

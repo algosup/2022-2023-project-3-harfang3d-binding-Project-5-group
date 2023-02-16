@@ -246,3 +246,59 @@ func Test(t *testing.T) {
 	assert.Equal(t, vPtr.Len(), int32(2), "should be the same.")
 }
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let mut v = vector_of_int();
+
+	assert_eq!(v.size(), 0, "should be the same.");
+	assert_eq!(v.len(), 0, "should be the same.");
+
+	v.push_back(5);
+	v.push_back(1);
+	v.push_back(9);
+
+	assert_eq!(v.size(), 3, "should be the same.");
+	assert_eq!(v.len(), 3, "should be the same.");
+
+	assert_eq!(&v.at(1), 1, "should be the same.");
+	assert_eq!(&v.at(2), 9, "should be the same.");
+	assert_eq!(&v.at(0), 5, "should be the same.");
+
+	assert_eq!(v.get(1), 1, "should be the same.");
+	assert_eq!(v.get(2), 9, "should be the same.");
+	assert_eq!(v.get(0), 5, "should be the same.");
+
+	v.set(1, 16);
+
+	assert_eq!(v.get(2), 9, "should be the same.");
+	assert_eq!(v.get(0), 5, "should be the same.");
+	assert_eq!(v.get(1), 16, "should be the same.");
+
+	v.set(0, v.get(0)*4);
+
+	assert_eq(v.get(0), 20, "should be the same.");
+
+	assert_eq!(consume_pointer_to_int(v.data()), 16, "should be the same.");
+
+	// implicit cast to const int *
+	//	assert_eq!(consume_pointer_to_int(v), 16, "should be the same.");
+
+	// construct from rust slice
+	let w = vector_of_int_with_sequence(&[5, 2, 8]);
+	
+	assert_eq!(w.get(0), 5, "should be the same.");
+	assert_eq!(w.get(1), 2, "should be the same.");
+	assert_eq!(w.get(2), 8, "should be the same.");
+
+	let mut v_ptr = vector_of_int_ptr();
+	v_ptr.push_back(None);
+	v_ptr.push_back(v.data());
+
+	assert_eq!(v_ptr.size(), 2, "should be the same.");
+	assert_eq!(v_ptr.len(), 2, "should be the same.");
+}
+'''

@@ -45,3 +45,20 @@ end
 test_go = '''\
 package mytest
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let exception_raised = false;
+
+	if let Err(_) = std::panic::catch_unwind(|| {
+		get_int();
+	}) {
+		exception_raised = true;
+	}
+
+	assert!(exception_raised);
+}
+'''

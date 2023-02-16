@@ -39,3 +39,15 @@ test_go = '''\
 package mytest
 
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let o = SomeStruct::new();
+
+	assert_eq!(o, "repr!");
+}
+'''
+

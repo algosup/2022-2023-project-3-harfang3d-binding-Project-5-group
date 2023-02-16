@@ -98,3 +98,24 @@ func Test(t *testing.T) {
 	assert.Equal(t, e.GetN().GetV(), int32(24), "should be the same.")
 }
 '''
+
+test_rust = '''\
+use my_test::*;
+
+#[test]
+fn test() {
+	let n = nested_struct::new();
+	assert_eq!(n.v(), 8, "should be the same.");
+	n.set_v(n.v() - 4);
+	assert_eq!(n.v(), 4, "should be the same.");
+
+	let e = enclosing_struct::new();
+	assert_eq!(e.n().v(), 8, "should be the same.");
+	e.n().set_v(12);
+	assert_eq!(e.n().v(), 12, "should be the same.");
+	e.n().set_v(e.n().v() * 4);
+	assert_eq!(e.n().v(), 48, "should be the same.");
+	e.n().set_v(e.n().v() / 2);
+	assert_eq!(e.n().v(), 24, "should be the same.");
+}
+'''
