@@ -30,6 +30,8 @@ def clean_name_with_title(name, type=None):
 
     However in rust, there is 2 keywords with a problem, "'union" and "Self" which is different from self, we need to handle both of them differently
     '''
+    if len(name) <= 0 or name is None:
+        return ""
     if name[0].isupper():
         return re.sub(r'([A-Z])', lambda m: '_' + m.group(1).lower(), name)[1:]
     else:
@@ -210,6 +212,7 @@ class RustGenerator(gen.FABGen):
         self.check_self_type_in_ops = True
         self.rust = ''
         self.crust_directives = ''
+        self.name = ""
 
     def get_language(self):
         return "Rust"
